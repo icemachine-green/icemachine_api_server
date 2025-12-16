@@ -1,0 +1,68 @@
+.ice-header {
+  position: sticky;
+  top: 0;
+
+  height: 56px;
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* 로고 버튼 */
+.ice-header__logoBtn {
+  height: 56px;
+  width: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ice-header__logoImg {
+  height: 30px;
+  display: block;
+}
+
+/* 가운데 빈 공간 */
+.ice-header__spacer {
+  height: 56px;
+}
+
+/* 로그인 버튼 */
+.ice-header__loginBtn {
+  margin-right: 10px;
+  height: 34px;
+  padding: 0 10px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+
+  cursor: pointer;
+}
+
+.ice-header__loginIcon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.ice-header__loginText {
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: #0b2a3a;
+}
