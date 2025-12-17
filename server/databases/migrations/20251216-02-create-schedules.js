@@ -1,3 +1,8 @@
+/**
+ * @file databases/migrations/20251216-02-create-schedules.js
+ * @description 'schedules' 테이블 생성 마이그레이션
+ * 251216 v1.0.0 Lee init
+ */
 import { DataTypes } from "sequelize";
 
 const tableName = "schedules";

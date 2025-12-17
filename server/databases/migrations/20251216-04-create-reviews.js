@@ -1,3 +1,8 @@
+/**
+ * @file databases/migrations/20251216-04-create-reviews.js
+ * @description 'reviews' 테이블 생성 마이그레이션
+ * 251216 v1.0.0 Lee init
+ */
 import { DataTypes } from "sequelize";
 
 const tableName = "reviews";

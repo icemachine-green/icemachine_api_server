@@ -1,3 +1,8 @@
+/**
+ * @file app/models/EngineerBadge.js
+ * @description 엔지니어 뱃지 모델
+ * 251216 v1.0.0 Lee init
+ */
 import dayjs from "dayjs";
 import { DataTypes } from "sequelize";
 

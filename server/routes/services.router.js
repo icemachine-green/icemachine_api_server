@@ -1,3 +1,8 @@
+/**
+ * @file routes/services.router.js
+ * @description 서비스 관련 라우터
+ * 251216 v1.0.0 Lee init
+ */
 import express from "express";
 
 const router = express.Router();

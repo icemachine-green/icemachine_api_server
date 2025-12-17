@@ -1,3 +1,8 @@
+/**
+ * @file app.js
+ * @description Express 앱 초기화
+ * 251216 v1.0.0 Lee init
+ */
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv"; // 환경 변수 한번에 불러오기

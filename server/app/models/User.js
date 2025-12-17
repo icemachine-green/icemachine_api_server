@@ -1,6 +1,7 @@
 /**
  * @file app/models/User.js
- * @description user model
+ * @description 유저 모델
+ * 251216 v1.0.0 Lee init
  */
 
 import dayjs from "dayjs";

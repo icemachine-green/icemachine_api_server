@@ -1,3 +1,8 @@
+/**
+ * @file app/models/index.js
+ * @description Sequelize 모델 초기화
+ * 251216 v1.0.0 Lee init
+ */
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 import User from "./User.js"; // User 모델 import

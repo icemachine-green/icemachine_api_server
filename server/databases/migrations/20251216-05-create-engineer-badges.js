@@ -1,3 +1,8 @@
+/**
+ * @file databases/migrations/20251216-05-create-engineer-badges.js
+ * @description 'engineer_badges' 테이블 생성 마이그레이션
+ * 251216 v1.0.0 Lee init
+ */
 import { DataTypes } from "sequelize";
 
 const tableName = "engineer_badges";
