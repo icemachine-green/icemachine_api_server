@@ -1,7 +1,7 @@
 /**
- * @file databases/migrations/20251216-04-create-reviews.js
+ * @file databases/migrations/20251222053250-create-reviews.js
  * @description 'reviews' 테이블 생성 마이그레이션
- * 251216 v1.0.0 Lee init
+ * 251222 v1.0.0 Lee-init
  */
 import { DataTypes } from "sequelize";
 
@@ -14,56 +14,43 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: "리뷰 고유 식별자",
+    comment: "리뷰 PK",
   },
-  schedule_id: {
-    field: "schedule_id",
+  user_id: {
+    field: "user_id",
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true, // Assuming one review per schedule
+    comment: "Users 테이블의 PK (외래키)",
     references: {
-      model: "schedules",
-      key: "id",
+      model: 'users',
+      key: 'id',
     },
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE", // If a schedule is deleted, its review should also be deleted
-    comment: "예약 ID",
-  },
-  customer_id: {
-    field: "customer_id",
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: "users",
-      key: "id",
-    },
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE", // If customer is deleted, review can remain with null customer_id
-    comment: "리뷰 작성 고객 ID",
-  },
-  engineer_id: {
-    field: "engineer_id",
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: "users",
-      key: "id",
-    },
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE", // If engineer is deleted, review can remain with null engineer_id
-    comment: "리뷰 대상 엔지니어 ID",
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
   },
   rating: {
     field: "rating",
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     allowNull: false,
-    comment: "평점 (1~5)",
+    comment: "별점 (1~5)",
   },
-  comment: {
-    field: "comment",
+  quick_option: {
+    field: "quick_option",
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: "빠른 선택지 (예: 친절해요)",
+  },
+  content: {
+    field: "content",
     type: DataTypes.TEXT,
     allowNull: true,
     comment: "리뷰 내용",
+  },
+  image_url: {
+    field: "image_url",
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: "리뷰 사진 URL",
   },
   createdAt: {
     field: "created_at",

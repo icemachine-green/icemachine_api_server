@@ -1,7 +1,7 @@
 /**
- * @file databases/migrations/20251216-03-create-schedule-photos.js
+ * @file databases/migrations/20251222053321-create-schedule-photos.js
  * @description 'schedule_photos' 테이블 생성 마이그레이션
- * 251216 v1.0.0 Lee init
+ * 251222 v1.0.0 Lee-init
  */
 import { DataTypes } from "sequelize";
 
@@ -14,31 +14,38 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: "사진 고유 식별자",
+    comment: "스케줄 사진 PK",
   },
-  schedule_id: {
-    field: "schedule_id",
+  reservation_id: {
+    field: "reservation_id",
     type: DataTypes.INTEGER,
     allowNull: false,
+    comment: "Reservations 테이블의 PK (외래키)",
     references: {
-      model: "schedules",
-      key: "id",
+      model: 'reservations',
+      key: 'id',
     },
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE", // If a schedule is deleted, its photos should also be deleted
-    comment: "예약 ID",
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
   },
-  photo_url: {
-    field: "photo_url",
-    type: DataTypes.STRING(255),
+  image_url: {
+    field: "image_url",
+    type: DataTypes.STRING,
     allowNull: false,
     comment: "사진 URL",
   },
-  type: {
-    field: "type",
-    type: DataTypes.ENUM("BEFORE", "AFTER"),
+  photo_type: {
+    field: "photo_type",
+    type: DataTypes.ENUM('BEFORE', 'AFTER', 'ISSUE'),
     allowNull: false,
-    comment: "사진 종류",
+    defaultValue: 'BEFORE',
+    comment: "사진 유형 ('BEFORE', 'AFTER', 'ISSUE')",
+  },
+  description: {
+    field: "description",
+    type: DataTypes.TEXT,
+    allowNull: true,
+    comment: "사진 설명",
   },
   createdAt: {
     field: "created_at",
@@ -49,11 +56,6 @@ const attributes = {
     field: "updated_at",
     type: DataTypes.DATE,
     allowNull: false,
-  },
-  deletedAt: {
-    field: "deleted_at",
-    type: DataTypes.DATE,
-    allowNull: true,
   },
 };
 

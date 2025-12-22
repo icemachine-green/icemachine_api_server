@@ -1,11 +1,11 @@
 /**
- * @file databases/migrations/20251216-01-create-services.js
- * @description 'services' 테이블 생성 마이그레이션
- * 251216 v1.0.0 Lee init
+ * @file databases/migrations/20251222053055-create-service-policies.js
+ * @description 'service_policies' 테이블 생성 마이그레이션
+ * 251222 v1.0.0 Lee-init
  */
 import { DataTypes } from "sequelize";
 
-const tableName = "services";
+const tableName = "service_policies";
 
 const attributes = {
   id: {
@@ -14,31 +14,31 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: "서비스 고유 식별자",
+    comment: "서비스 정책 PK",
   },
-  name: {
-    field: "name",
-    type: DataTypes.STRING(100),
+  size_type: {
+    field: "size_type",
+    type: DataTypes.STRING,
     allowNull: false,
-    comment: "서비스 이름 (예: 딥클린)",
+    comment: "'소형' | '중형' | '대형'",
+  },
+  service_type: {
+    field: "service_type",
+    type: DataTypes.ENUM('VISIT_CHECK', 'STANDARD_CLEAN', 'DEEP_CLEAN', 'PREMIUM_CLEAN', 'SUBSCRIPTION'),
+    allowNull: false,
+    comment: "서비스 종류",
+  },
+  standard_duration: {
+    field: "standard_duration",
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    comment: "작업 시간 (분 단위)",
   },
   description: {
     field: "description",
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: true,
-    comment: "서비스 상세 설명",
-  },
-  duration_hours: {
-    field: "duration_hours",
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    comment: "예상 소요 시간",
-  },
-  base_price: {
-    field: "base_price",
-    type: DataTypes.DECIMAL,
-    allowNull: false,
-    comment: "기본 가격",
+    comment: "내부 설명용",
   },
   createdAt: {
     field: "created_at",
@@ -49,11 +49,6 @@ const attributes = {
     field: "updated_at",
     type: DataTypes.DATE,
     allowNull: false,
-  },
-  deletedAt: {
-    field: "deleted_at",
-    type: DataTypes.DATE,
-    allowNull: true,
   },
 };
 

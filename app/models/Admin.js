@@ -1,12 +1,12 @@
 /**
- * @file app/models/User.js
- * @description 'users' 테이블 모델
+ * @file app/models/Admin.js
+ * @description 'admins' 테이블 모델
  * 251222 v1.0.0 Lee-init
  */
 import dayjs from 'dayjs';
 import { DataTypes } from 'sequelize';
 
-const modelName = 'User';
+const modelName = 'Admin';
 
 const attributes = {
   id: {
@@ -15,52 +15,56 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: '유저 PK',
+    comment: '관리자 PK',
   },
-  socialId: {
-    field: 'social_id',
+  username: {
+    field: 'username',
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    comment: '소셜 로그인 ID',
+    comment: '로그인 아이디',
   },
-  email: {
-    field: 'email',
-    type: DataTypes.STRING(100),
+  passwordHash: {
+    field: 'password_hash',
+    type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
-    comment: '카카오 이메일',
-  },
-  provider: {
-    field: 'provider',
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    comment: "로그인 제공자 ('kakao')",
+    comment: '해시된 비밀번호',
   },
   name: {
     field: 'name',
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING,
     allowNull: false,
-    comment: '사용자 이름',
-  },
-  phoneNumber: {
-    field: 'phone_number',
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    comment: '연락처',
-  },
-  address: {
-    field: 'address',
-    type: DataTypes.STRING(255),
-    allowNull: false,
-    comment: '주소',
+    comment: '관리자 실명',
   },
   role: {
     field: 'role',
-    type: DataTypes.ENUM('customer', 'engineer', 'admin'),
+    type: DataTypes.ENUM('SUPER_ADMIN', 'ADMIN'),
     allowNull: false,
-    defaultValue: 'customer',
-    comment: '유저 권한(customer, engineer, admin)',
+    comment: '관리자 권한',
+  },
+  isActive: {
+    field: 'is_active',
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    comment: '계정 활성/비활성 여부',
+  },
+  lastLoginAt: {
+    field: 'last_login_at',
+    type: DataTypes.DATE,
+    allowNull: true,
+    get() {
+      const val = this.getDataValue('lastLoginAt');
+      if (!val) return null;
+      return dayjs(val).format('YYYY-MM-DD HH:mm:ss');
+    },
+    comment: '마지막 로그인 시간',
+  },
+  lastLoginIp: {
+    field: 'last_login_ip',
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '마지막 로그인 IP',
   },
   createdAt: {
     field: 'created_at',
@@ -91,19 +95,19 @@ const attributes = {
 };
 
 const options = {
-  tableName: 'users',
+  tableName: 'admins',
   timestamps: true,
   paranoid: true,
 };
 
-const User = {
+const Admin = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
   },
 
   associate: (db) => {
-    // 예: db.User.hasMany(db.IceMachine, { foreignKey: 'user_id', sourceKey: 'id' });
+    // Associations for Admin model if any
   },
 };
 
-export default User;
+export default Admin;

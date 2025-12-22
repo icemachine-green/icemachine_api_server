@@ -1,12 +1,12 @@
 /**
- * @file app/models/SchedulePhoto.js
- * @description 'schedule_photos' 테이블 모델
+ * @file app/models/IceMachine.js
+ * @description 'ice_machines' 테이블 모델
  * 251222 v1.0.0 Lee-init
  */
 import dayjs from 'dayjs';
 import { DataTypes } from 'sequelize';
 
-const modelName = 'SchedulePhoto';
+const modelName = 'IceMachine';
 
 const attributes = {
   id: {
@@ -15,32 +15,37 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: '스케줄 사진 PK',
+    comment: '제빙기 PK',
   },
-  reservationId: {
-    field: 'reservation_id',
+  userId: {
+    field: 'user_id',
     type: DataTypes.INTEGER,
     allowNull: false,
-    comment: 'Reservations 테이블의 PK (외래키)',
+    comment: 'Users 테이블의 PK (외래키)',
   },
-  imageUrl: {
-    field: 'image_url',
+  modelType: {
+    field: 'model_type',
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '사진 URL',
+    comment: "'옵션선택값' | '모름' | '기타'",
   },
-  photoType: {
-    field: 'photo_type',
-    type: DataTypes.ENUM('BEFORE', 'AFTER', 'ISSUE'),
+  sizeType: {
+    field: 'size_type',
+    type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'BEFORE',
-    comment: '사진 유형 (\'BEFORE\', \'AFTER\', \'ISSUE\')',
+    comment: "'소형' | '중형' | '대형' | '모름' | '기타'",
   },
-  description: {
-    field: 'description',
-    type: DataTypes.TEXT,
+  modelName: {
+    field: 'model_name',
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: "기타 입력 or 실제 모델명 or 모름",
+  },
+  modelPic: {
+    field: 'model_pic',
+    type: DataTypes.STRING,
     allowNull: true,
-    comment: '사진 설명',
+    comment: '모델 사진 URL',
   },
   createdAt: {
     field: 'created_at',
@@ -61,22 +66,22 @@ const attributes = {
 };
 
 const options = {
-  tableName: 'schedule_photos',
+  tableName: 'ice_machines',
   timestamps: true,
   paranoid: false, // deletedAt 컬럼이 스키마에 없으므로 paranoid는 false
 };
 
-const SchedulePhoto = {
+const IceMachine = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
   },
 
   associate: (db) => {
-    db.SchedulePhoto.belongsTo(db.Reservation, {
-      foreignKey: 'reservation_id',
+    db.IceMachine.belongsTo(db.User, {
+      foreignKey: 'user_id',
       targetKey: 'id',
     });
   },
 };
 
-export default SchedulePhoto;
+export default IceMachine;

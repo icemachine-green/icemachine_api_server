@@ -1,12 +1,12 @@
 /**
- * @file app/models/SchedulePhoto.js
- * @description 'schedule_photos' 테이블 모델
+ * @file app/models/ServicePolicy.js
+ * @description 'service_policies' 테이블 모델
  * 251222 v1.0.0 Lee-init
  */
 import dayjs from 'dayjs';
 import { DataTypes } from 'sequelize';
 
-const modelName = 'SchedulePhoto';
+const modelName = 'ServicePolicy';
 
 const attributes = {
   id: {
@@ -15,32 +15,31 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: '스케줄 사진 PK',
+    comment: '서비스 정책 PK',
   },
-  reservationId: {
-    field: 'reservation_id',
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    comment: 'Reservations 테이블의 PK (외래키)',
-  },
-  imageUrl: {
-    field: 'image_url',
+  sizeType: {
+    field: 'size_type',
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '사진 URL',
+    comment: "'소형' | '중형' | '대형'",
   },
-  photoType: {
-    field: 'photo_type',
-    type: DataTypes.ENUM('BEFORE', 'AFTER', 'ISSUE'),
+  serviceType: {
+    field: 'service_type',
+    type: DataTypes.ENUM('VISIT_CHECK', 'STANDARD_CLEAN', 'DEEP_CLEAN', 'PREMIUM_CLEAN', 'SUBSCRIPTION'),
     allowNull: false,
-    defaultValue: 'BEFORE',
-    comment: '사진 유형 (\'BEFORE\', \'AFTER\', \'ISSUE\')',
+    comment: '서비스 종류',
+  },
+  standardDuration: {
+    field: 'standard_duration',
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    comment: '작업 시간 (분 단위)',
   },
   description: {
     field: 'description',
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: true,
-    comment: '사진 설명',
+    comment: '내부 설명용',
   },
   createdAt: {
     field: 'created_at',
@@ -61,22 +60,19 @@ const attributes = {
 };
 
 const options = {
-  tableName: 'schedule_photos',
+  tableName: 'service_policies',
   timestamps: true,
   paranoid: false, // deletedAt 컬럼이 스키마에 없으므로 paranoid는 false
 };
 
-const SchedulePhoto = {
+const ServicePolicy = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
   },
 
   associate: (db) => {
-    db.SchedulePhoto.belongsTo(db.Reservation, {
-      foreignKey: 'reservation_id',
-      targetKey: 'id',
-    });
+    // Associations for ServicePolicy model if any
   },
 };
 
-export default SchedulePhoto;
+export default ServicePolicy;

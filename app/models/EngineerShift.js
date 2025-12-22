@@ -1,12 +1,12 @@
 /**
- * @file app/models/Review.js
- * @description 'reviews' 테이블 모델
+ * @file app/models/EngineerShift.js
+ * @description 'engineer_shifts' 테이블 모델
  * 251222 v1.0.0 Lee-init
  */
 import dayjs from 'dayjs';
 import { DataTypes } from 'sequelize';
 
-const modelName = 'Review';
+const modelName = 'EngineerShift';
 
 const attributes = {
   id: {
@@ -15,37 +15,31 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: '리뷰 PK',
+    comment: '근무 시간 PK',
   },
-  userId: {
-    field: 'user_id',
+  engineerId: {
+    field: 'engineer_id',
     type: DataTypes.INTEGER,
     allowNull: false,
-    comment: 'Users 테이블의 PK (외래키)',
+    comment: 'Engineer 테이블의 user_id (외래키)',
   },
-  rating: {
-    field: 'rating',
-    type: DataTypes.TINYINT,
+  availableDate: {
+    field: 'available_date',
+    type: DataTypes.INTEGER,
     allowNull: false,
-    comment: '별점 (1~5)',
+    comment: '요일 (0=일요일, 6=토요일)',
   },
-  quickOption: {
-    field: 'quick_option',
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '빠른 선택지 (예: 친절해요)',
+  shiftStart: {
+    field: 'shift_start',
+    type: DataTypes.TIME,
+    allowNull: false,
+    comment: '근무 시작 시간',
   },
-  content: {
-    field: 'content',
-    type: DataTypes.TEXT,
-    allowNull: true,
-    comment: '리뷰 내용',
-  },
-  imageUrl: {
-    field: 'image_url',
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '리뷰 사진 URL',
+  shiftEnd: {
+    field: 'shift_end',
+    type: DataTypes.TIME,
+    allowNull: false,
+    comment: '근무 종료 시간',
   },
   createdAt: {
     field: 'created_at',
@@ -76,22 +70,22 @@ const attributes = {
 };
 
 const options = {
-  tableName: 'reviews',
+  tableName: 'engineer_shifts',
   timestamps: true,
   paranoid: true,
 };
 
-const Review = {
+const EngineerShift = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
   },
 
   associate: (db) => {
-    db.Review.belongsTo(db.User, {
-      foreignKey: 'user_id',
-      targetKey: 'id',
+    db.EngineerShift.belongsTo(db.Engineer, {
+      foreignKey: 'engineer_id',
+      targetKey: 'user_id',
     });
   },
 };
 
-export default Review;
+export default EngineerShift;

@@ -1,51 +1,40 @@
 /**
- * @file app/models/Review.js
- * @description 'reviews' 테이블 모델
+ * @file app/models/Engineer.js
+ * @description 'engineers' 테이블 모델
  * 251222 v1.0.0 Lee-init
  */
 import dayjs from 'dayjs';
 import { DataTypes } from 'sequelize';
 
-const modelName = 'Review';
+const modelName = 'Engineer';
 
 const attributes = {
-  id: {
-    field: 'id',
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false,
-    comment: '리뷰 PK',
-  },
   userId: {
     field: 'user_id',
     type: DataTypes.INTEGER,
+    primaryKey: true,
     allowNull: false,
     comment: 'Users 테이블의 PK (외래키)',
   },
-  rating: {
-    field: 'rating',
-    type: DataTypes.TINYINT,
+  skillLevel: {
+    field: 'skill_level',
+    type: DataTypes.ENUM('JUNIOR', 'SENIOR', 'MASTER'),
     allowNull: false,
-    comment: '별점 (1~5)',
+    defaultValue: 'JUNIOR',
+    comment: '기사 기술 등급',
   },
-  quickOption: {
-    field: 'quick_option',
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '빠른 선택지 (예: 친절해요)',
-  },
-  content: {
-    field: 'content',
+  introduction: {
+    field: 'introduction',
     type: DataTypes.TEXT,
     allowNull: true,
-    comment: '리뷰 내용',
+    comment: '고객에게 노출되는 기사 소개글',
   },
-  imageUrl: {
-    field: 'image_url',
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '리뷰 사진 URL',
+  isActive: {
+    field: 'is_active',
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    comment: '현재 배정 가능한 상태인지 여부',
   },
   createdAt: {
     field: 'created_at',
@@ -76,22 +65,22 @@ const attributes = {
 };
 
 const options = {
-  tableName: 'reviews',
+  tableName: 'engineers',
   timestamps: true,
   paranoid: true,
 };
 
-const Review = {
+const Engineer = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
   },
 
   associate: (db) => {
-    db.Review.belongsTo(db.User, {
+    db.Engineer.belongsTo(db.User, {
       foreignKey: 'user_id',
       targetKey: 'id',
     });
   },
 };
 
-export default Review;
+export default Engineer;

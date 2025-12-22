@@ -2,15 +2,19 @@
  * @file app/models/index.js
  * @description Sequelize 모델 초기화
  * 251216 v1.0.0 Lee init
+ * 251222 v1.1.0 Lee update new schema models
  */
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
-import User from "./User.js"; // User 모델 import
-import Service from "./Service.js"; // Service 모델 import
-import Schedule from "./Schedule.js"; // Schedule 모델 import
-import SchedulePhoto from "./SchedulePhoto.js"; // SchedulePhoto 모델 import
-import Review from "./Review.js"; // Review 모델 import
-import EngineerBadge from "./EngineerBadge.js"; // EngineerBadge 모델 import
+import User from "./User.js";
+import Admin from "./Admin.js";
+import Engineer from "./Engineer.js";
+import EngineerShift from "./EngineerShift.js";
+import IceMachine from "./IceMachine.js";
+import ServicePolicy from "./ServicePolicy.js";
+import Reservation from "./Reservation.js";
+import Review from "./Review.js";
+import SchedulePhoto from "./SchedulePhoto.js";
 
 dotenv.config();
 
@@ -38,16 +42,14 @@ const sequelize = new Sequelize(
 // 아래 forEach로 자동 init 및 관계 설정
 const modelsToInit = [
   User,
-  Service,
-  Schedule,
-  SchedulePhoto,
+  Admin,
+  Engineer,
+  EngineerShift,
+  IceMachine,
+  ServicePolicy,
+  Reservation,
   Review,
-  EngineerBadge,
-  // Service,
-  // Schedule,
-  // Review,
-  // Payment,
-  // EngineerBadge
+  SchedulePhoto,
 ];
 
 // Sequelize 인스턴스 주입
