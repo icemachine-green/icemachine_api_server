@@ -14,4 +14,7 @@ router.get("/kakao/authorize", usersController.kakaoAuthorize);
 // 카카오 콜백 처리
 router.get("/kakao/callback", usersController.kakaoCallback);
 
+// 소셜 회원가입 추가 정보 제출
+router.post("/social-signup", usersController.socialSignup);
+
 export default router;

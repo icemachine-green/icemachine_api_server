@@ -104,7 +104,10 @@ function getClaimWithVerifyToken(token) {
     } else if (error instanceof jwt.JsonWebTokenError) {
       throw myError("토큰 이상 감지", INVALID_TOKEN_ERROR);
     } else {
-      throw myError(error.message || "알 수 없는 토큰 오류", INVALID_TOKEN_ERROR);
+      throw myError(
+        error.message || "알 수 없는 토큰 오류",
+        INVALID_TOKEN_ERROR
+      );
     }
   }
 }
@@ -112,7 +115,6 @@ function getClaimWithVerifyToken(token) {
 // 내보내기
 // generateToken: private이라 export 하지 않음.
 export default {
-  generateAccessToken,
   generateRefreshToken,
   getBearerToken,
   getClaimWithVerifyToken,
