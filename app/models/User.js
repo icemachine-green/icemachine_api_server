@@ -49,6 +49,12 @@ const attributes = {
     allowNull: false,
     comment: '연락처',
   },
+  refreshToken: {
+    field: 'refresh_token',
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '리프레시 토큰',
+  },
   role: {
     field: 'role',
     type: DataTypes.ENUM('customer', 'engineer', 'admin'),

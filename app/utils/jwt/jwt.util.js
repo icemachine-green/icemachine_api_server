@@ -115,6 +115,7 @@ function getClaimWithVerifyToken(token) {
 // 내보내기
 // generateToken: private이라 export 하지 않음.
 export default {
+  generateAccessToken,
   generateRefreshToken,
   getBearerToken,
   getClaimWithVerifyToken,

@@ -4,11 +4,13 @@
  * 251216 v1.0.0 Lee init
  */
 import usersService from "../services/users.service.js";
+import authService from "../services/auth.service.js";
 import { createBaseResponse } from "../utils/createBaseResponse.util.js";
-import { SUCCESS } from "../../configs/responseCode.config.js";
+import { SUCCESS, REISSUE_ERROR } from "../../configs/responseCode.config.js";
 import socialKakaoUtil from "../utils/social/social.kakao.util.js";
 import jwtUtil from "../utils/jwt/jwt.util.js";
 import cookieUtil from "../utils/cookie/cookie.util.js";
+import myError from "../errors/customs/my.error.js";
 
 async function kakaoAuthorize(req, res, next) {
   try {
@@ -23,22 +25,6 @@ async function kakaoAuthorize(req, res, next) {
 async function kakaoCallback(req, res, next) {
   const { code } = req.query;
   try {
-    // 필수 환경 변수 확인
-    const requiredEnvVars = [
-      'SOCIAL_KAKAO_API_URL_TOKEN',
-      'SOCIAL_KAKAO_REST_API_KEY',
-      'APP_URL',
-      'SOCIAL_KAKAO_CALLBACK_URL',
-      'SOCIAL_KAKAO_API_URL_USER_INFO',
-      'SOCIAL_CLIENT_SIGNUP_URL' // 신규 사용자 리다이렉트 URL
-    ];
-
-    for (const envVar of requiredEnvVars) {
-      if (!process.env[envVar]) {
-        throw new Error(`환경 변수 ${envVar}가 설정되지 않았습니다.`);
-      }
-    }
-    
     const tokenResponse = await fetch(process.env.SOCIAL_KAKAO_API_URL_TOKEN, {
       method: "POST",
       headers: {
@@ -66,9 +52,8 @@ async function kakaoCallback(req, res, next) {
 
     if (user) {
       // 기존 사용자 로그인
-      const accessToken = jwtUtil.generateAccessToken(user);
-      const refreshToken = jwtUtil.generateRefreshToken(user);
-      cookieUtil.setRefreshToken(res, refreshToken);
+      const { accessToken, refreshToken } = await authService.loginUser(user);
+      cookieUtil.setCookieRefreshToken(res, refreshToken);
       return res
         .status(SUCCESS.status)
         .send(createBaseResponse(SUCCESS, { accessToken, user }));
@@ -94,22 +79,20 @@ async function kakaoCallback(req, res, next) {
 async function socialSignup(req, res, next) {
   try {
     const { socialId, provider, name, phoneNumber, email } = req.body;
-    const newUser = await usersService.createSocialUser(
-      socialId,
-      provider,
-      name,
-      phoneNumber,
-      email
-    );
+    const { accessToken, refreshToken, user } =
+      await authService.createAndLoginSocialUser(
+        socialId,
+        provider,
+        name,
+        phoneNumber,
+        email
+      );
 
-    // 회원가입 후 바로 로그인
-    const accessToken = jwtUtil.generateAccessToken(newUser);
-    const refreshToken = jwtUtil.generateRefreshToken(newUser);
-    cookieUtil.setRefreshToken(res, refreshToken);
+    cookieUtil.setCookieRefreshToken(res, refreshToken);
 
     return res
       .status(SUCCESS.status)
-      .send(createBaseResponse(SUCCESS, { accessToken, user: newUser }));
+      .send(createBaseResponse(SUCCESS, { accessToken, user }));
   } catch (err) {
     console.error(err);
     if (err.status) {
@@ -119,4 +102,30 @@ async function socialSignup(req, res, next) {
   }
 }
 
-export default { socialSignup, kakaoAuthorize, kakaoCallback };
+async function reissue(req, res, next) {
+  console.log(req.cookies);
+  try {
+    const token = cookieUtil.getCookieRefreshToken(req);
+
+    // 토큰 존재 여부 확인
+    if (!token) {
+      throw myError("리프래시 토큰 없음", REISSUE_ERROR);
+    }
+
+    // 토큰 재발급 처리
+    const { accessToken, refreshToken, user } = await authService.reissue(
+      token
+    );
+
+    // 쿠키에 refresh token 설정
+    cookieUtil.setCookieRefreshToken(res, refreshToken);
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, { accessToken, user }));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export default { socialSignup, kakaoAuthorize, kakaoCallback, reissue };

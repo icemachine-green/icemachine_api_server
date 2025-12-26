@@ -24,4 +24,25 @@ const findUserBySocialId = async (socialId) => {
   });
 };
 
-export default { findUserByEmail, createUser, findUserBySocialId };
+const findUserById = async (id) => {
+  return await User.findByPk(id);
+};
+
+const findUserByRefreshToken = async (token) => {
+  return await User.findOne({
+    where: { refreshToken: token },
+  });
+};
+
+const save = async (user) => {
+  return await user.save();
+};
+
+export default {
+  findUserByEmail,
+  createUser,
+  findUserBySocialId,
+  findUserById,
+  findUserByRefreshToken,
+  save,
+};

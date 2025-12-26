@@ -5,17 +5,7 @@
  */
 import express from "express";
 import usersController from "../app/controllers/users.controller.js";
-import socialSignupValidator from "../app/middlewares/validations/validators/user.social-signup.validator.js";
-import validationHandler from "../app/middlewares/validations/validation.handler.js";
 
 const router = express.Router();
-
-// 소셜 회원가입 API
-router.post(
-  "/social-signup",
-  socialSignupValidator,
-  validationHandler,
-  usersController.socialSignup
-);
 
 export default router;
