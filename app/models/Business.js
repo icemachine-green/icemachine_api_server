@@ -1,12 +1,12 @@
 /**
- * @file app/models/User.js
- * @description 'users' 테이블 모델
- * 251222 v1.0.0 Lee-init
+ * @file app/models/Business.js
+ * @description 'businesses' 테이블 모델
+ * 251224 v1.0.0 Taeho-init
  */
 import dayjs from 'dayjs';
 import { DataTypes } from 'sequelize';
 
-const modelName = 'User';
+const modelName = 'Business';
 
 const attributes = {
   id: {
@@ -15,46 +15,31 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: '유저 PK',
+    comment: '업체 PK',
   },
-  socialId: {
-    field: 'social_id',
-    type: DataTypes.STRING,
+  userId: {
+    field: 'user_id',
+    type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true,
-    comment: '소셜 로그인 ID',
-  },
-  email: {
-    field: 'email',
-    type: DataTypes.STRING(100),
-    allowNull: false,
-    unique: true,
-    comment: '카카오 이메일',
-  },
-  provider: {
-    field: 'provider',
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    comment: "로그인 제공자 ('kakao')",
+    comment: 'Users 테이블의 PK (소유주)',
   },
   name: {
     field: 'name',
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(100),
     allowNull: false,
-    comment: '사용자 이름',
+    comment: '업체명',
+  },
+  address: {
+    field: 'address',
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    comment: '업체 주소',
   },
   phoneNumber: {
     field: 'phone_number',
     type: DataTypes.STRING(20),
     allowNull: false,
-    comment: '연락처',
-  },
-  role: {
-    field: 'role',
-    type: DataTypes.ENUM('customer', 'engineer', 'admin'),
-    allowNull: false,
-    defaultValue: 'customer',
-    comment: '유저 권한(customer, engineer, admin)',
+    comment: '업체 연락처',
   },
   createdAt: {
     field: 'created_at',
@@ -85,19 +70,26 @@ const attributes = {
 };
 
 const options = {
-  tableName: 'users',
+  tableName: 'businesses',
   timestamps: true,
   paranoid: true,
 };
 
-const User = {
+const Business = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
   },
 
   associate: (db) => {
-    db.User.hasMany(db.Business, { foreignKey: 'user_id', sourceKey: 'id' });
+    db.Business.belongsTo(db.User, {
+      foreignKey: 'user_id',
+      targetKey: 'id',
+    });
+    db.Business.hasMany(db.IceMachine, {
+      foreignKey: 'business_id',
+      sourceKey: 'id',
+    });
   },
 };
 
-export default User;
+export default Business;

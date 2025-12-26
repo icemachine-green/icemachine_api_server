@@ -17,11 +17,11 @@ const attributes = {
     allowNull: false,
     comment: '제빙기 PK',
   },
-  userId: {
-    field: 'user_id',
+  businessId: {
+    field: 'business_id',
     type: DataTypes.INTEGER,
     allowNull: false,
-    comment: 'Users 테이블의 PK (외래키)',
+    comment: 'Businesses 테이블의 PK (외래키)',
   },
   modelType: {
     field: 'model_type',
@@ -77,8 +77,8 @@ const IceMachine = {
   },
 
   associate: (db) => {
-    db.IceMachine.belongsTo(db.User, {
-      foreignKey: 'user_id',
+    db.IceMachine.belongsTo(db.Business, {
+      foreignKey: 'business_id',
       targetKey: 'id',
     });
   },

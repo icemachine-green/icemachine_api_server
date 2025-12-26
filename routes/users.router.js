@@ -5,17 +5,17 @@
  */
 import express from "express";
 import usersController from "../app/controllers/users.controller.js";
-import signupValidator from "../app/middlewares/validations/validators/user.signup.validator.js";
+import socialSignupValidator from "../app/middlewares/validations/validators/user.social-signup.validator.js";
 import validationHandler from "../app/middlewares/validations/validation.handler.js";
 
 const router = express.Router();
 
-// 회원가입 API
+// 소셜 회원가입 API
 router.post(
-  "/signup",
-  signupValidator,
+  "/social-signup",
+  socialSignupValidator,
   validationHandler,
-  usersController.signup
+  usersController.socialSignup
 );
 
 export default router;

@@ -1,0 +1,17 @@
+/**
+ * @file routes/auth.router.js
+ * @description 인증 관련 라우터
+ * 251224 v1.0.0 Taeho-init
+ */
+import express from "express";
+import usersController from "../app/controllers/users.controller.js"; // usersController에서 인증 관련 함수를 가져옴
+
+const router = express.Router();
+
+// 카카오 인가 코드 요청을 위한 리다이렉트
+router.get("/kakao/authorize", usersController.kakaoAuthorize);
+
+// 카카오 콜백 처리
+router.get("/kakao/callback", usersController.kakaoCallback);
+
+export default router;

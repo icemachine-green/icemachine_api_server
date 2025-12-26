@@ -8,9 +8,9 @@ import db from "../models/index.js";
 
 const { User } = db;
 
-const findUserByEmailOrName = async (email, name) => {
+const findUserByEmail = async (email) => {
   return await User.findOne({
-    where: { [Op.or]: [{ email }, { name }] },
+    where: { email },
   });
 };
 
@@ -18,4 +18,10 @@ const createUser = async (userData) => {
   return await User.create(userData);
 };
 
-export default { findUserByEmailOrName, createUser };
+const findUserBySocialId = async (socialId) => {
+  return await User.findOne({
+    where: { socialId },
+  });
+};
+
+export default { findUserByEmail, createUser, findUserBySocialId };

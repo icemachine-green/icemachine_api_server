@@ -26,3 +26,17 @@ dotenv.config({
   debug: filePath === ".env" ? true : false,
 });
 console.log(`Loaded env: ${filePath}`);
+
+// --- 디버깅용 로그 추가 ---
+console.log('[DEBUG] APP_URL:', process.env.APP_URL);
+console.log('[DEBUG] KAKAO_REST_API_KEY:', process.env.SOCIAL_KAKAO_REST_API_KEY);
+// -------------------------
+
+// Kakao API 환경 변수
+// SOCIAL_KAKAO_API_URL_AUTHORIZE
+// SOCIAL_KAKAO_API_URL_TOKEN
+// SOCIAL_KAKAO_API_URL_LOGOUT
+// SOCIAL_KAKAO_API_URL_USER_INFO
+// SOCIAL_KAKAO_CALLBACK_URL
+// SOCIAL_KAKAO_REST_API_KEY
+// SOCIAL_CLIENT_CALLBACK_URL

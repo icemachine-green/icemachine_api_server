@@ -8,6 +8,7 @@ import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 import User from "./User.js";
 import Admin from "./Admin.js";
+import Business from "./Business.js"; // Business 모델 추가
 import Engineer from "./Engineer.js";
 import EngineerShift from "./EngineerShift.js";
 import IceMachine from "./IceMachine.js";
@@ -43,6 +44,7 @@ const sequelize = new Sequelize(
 const modelsToInit = [
   User,
   Admin,
+  Business, // Business 모델 추가
   Engineer,
   EngineerShift,
   IceMachine,

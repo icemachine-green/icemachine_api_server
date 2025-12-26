@@ -4,40 +4,31 @@
  * 251216 v1.0.0 Lee init
  */
 import usersRepository from "../repositories/users.repository.js";
-import bcrypt from "bcrypt";
 import { CONFLICT_ERROR } from "../../configs/responseCode.config.js";
 
-const signup = async (email, password, name, phone_number, role, address, provider, social_id, profile_image_url) => {
-  // 이메일 또는 이름 중복 확인 (Repository 사용)
-  const existingUser = await usersRepository.findUserByEmailOrName(email, name);
+const processKakaoUser = async (socialId) => {
+  const user = await usersRepository.findUserBySocialId(socialId);
+  return user;
+};
 
+const createSocialUser = async (socialId, provider, name, phoneNumber, email) => {
+  // 이메일 중복 확인
+  const existingUser = await usersRepository.findUserByEmail(email);
   if (existingUser) {
-    let err;
-    if (existingUser.email === email) {
-      err = { ...CONFLICT_ERROR, info: "이미 존재하는 이메일입니다."};
-    } else { // existingUser.name === name
-      err = { ...CONFLICT_ERROR, info: "이미 존재하는 이름입니다."};
-    }
-    throw err;
+    throw { ...CONFLICT_ERROR, info: "이미 존재하는 이메일입니다." };
   }
 
-  // 비밀번호 해싱
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // 사용자 생성 (Repository 사용)
+  // 신규 소셜 사용자 생성
   const newUser = await usersRepository.createUser({
-    email,
-    password: hashedPassword,
-    name,
-    phone_number,
-    role,
-    address,
+    socialId,
     provider,
-    social_id,
-    profile_image_url,
+    name,
+    phoneNumber,
+    email,
+    role: 'customer', // 신규 가입 시 기본 역할
   });
 
   return newUser;
 };
 
-export default { signup };
+export default { processKakaoUser, createSocialUser };
