@@ -1,0 +1,45 @@
+/**
+ * @file app/controllers/reviews.controller.js
+ * @description 리뷰 관련 컨트롤러
+ * 251229 v1.0.0 Lee init
+ */
+import reviewsService from '../services/reviews.service.js';
+import { createBaseResponse } from '../utils/createBaseResponse.util.js';
+import { SUCCESS } from '../../configs/responseCode.config.js';
+
+async function getAllReviews(req, res, next) {
+  try {
+    // 쿼리 스트링에서 정렬 옵션 획득 (e.g., /api/reviews?sort=highest)
+    const { sort } = req.query;
+
+    const reviews = await reviewsService.getAllReviews(sort);
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, reviews));
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function createReview(req, res, next) {
+  try {
+    // 인증 미들웨어를 통해 전달된 사용자 ID 획득
+    const { id: userId } = req.user;
+    const reviewDto = req.body;
+
+    const newReview = await reviewsService.createReview(userId, reviewDto);
+
+    // 201 Created가 더 적합하지만, 프로젝트 컨벤션에 따라 200 OK와 SUCCESS 코드를 사용
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, newReview));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export default {
+  getAllReviews,
+  createReview,
+};

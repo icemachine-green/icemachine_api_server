@@ -7,8 +7,12 @@ import "./configs/env.config.js"; // 환경변수 설정 파일 임포트
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser"; // cookie-parser import
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerOptions from './configs/swagger.config.js';
 import usersRouter from "./routes/users.router.js"; // 사용자 라우터 import
 import authRouter from "./routes/auth.router.js"; // 인증 라우터 import
+import reviewsRouter from "./routes/reviews.router.js"; // 리뷰 라우터 import
 
 const app = express();
 const port = process.env.PORT;
@@ -29,6 +33,10 @@ app.use((req, res, next) => {
 });
 // -----------------------------
 
+// Swagger UI 설정
+const specs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 // 간단한 기본 라우트
 app.get("/", (req, res) => {
   res.send("Server is running!");
@@ -37,6 +45,7 @@ app.get("/", (req, res) => {
 // API 라우터 등록
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter); // 인증 라우터 등록
+app.use("/api/reviews", reviewsRouter); // 리뷰 라우터 등록
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
