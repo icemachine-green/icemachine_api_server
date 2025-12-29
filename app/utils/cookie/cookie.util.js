@@ -25,7 +25,7 @@ function setCookie(
   cookieValue,
   ttl,
   httpOnlyFlg = true,
-  secureFlg = false,
+  secureFlg = true,
   path = null
 ) {
   const options = {

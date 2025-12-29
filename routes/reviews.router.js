@@ -133,4 +133,46 @@ router.get("/", reviewsController.getAllReviews);
  */
 router.post("/", authMiddleware, reviewsController.createReview);
 
+/**
+ * @swagger
+ * /api/reviews/{reviewId}:
+ *   delete:
+ *     summary: 리뷰 삭제
+ *     tags: [Reviews]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: reviewId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: 삭제할 리뷰의 ID
+ *     responses:
+ *       200:
+ *         description: 리뷰 삭제 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isSuccess:
+ *                   type: boolean
+ *                   example: true
+ *                 code:
+ *                   type: string
+ *                   example: "00"
+ *                 payload:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "리뷰가 성공적으로 삭제되었습니다."
+ *       401:
+ *         description: 인증 실패 (토큰 누락, 유효하지 않은 토큰 등)
+ *       404:
+ *         description: 리뷰를 찾을 수 없거나 삭제 권한이 없음
+ */
+router.delete("/:reviewId", authMiddleware, reviewsController.deleteReview);
+
 export default router;

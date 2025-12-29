@@ -29,11 +29,23 @@ const attributes = {
     allowNull: false,
     comment: '업체명',
   },
-  address: {
-    field: 'address',
+  mainAddress: {
+    field: 'main_address',
     type: DataTypes.STRING(255),
     allowNull: false,
-    comment: '업체 주소',
+    comment: '기본 주소',
+  },
+  detailedAddress: {
+    field: 'detailed_address',
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    comment: '상세 주소',
+  },
+  managerName: {
+    field: 'manager_name',
+    type: DataTypes.STRING(100),
+    allowNull: true,
+    comment: '담당자 이름',
   },
   phoneNumber: {
     field: 'phone_number',

@@ -39,7 +39,21 @@ const createReview = async (reviewData) => {
   return await Review.create(reviewData);
 };
 
+const deleteReview = async (reviewId, userId) => {
+  const review = await Review.findOne({
+    where: { id: reviewId, userId: userId },
+  });
+
+  if (!review) {
+    return null; // Review not found or doesn't belong to the user
+  }
+
+  await review.destroy();
+  return true; // Deletion successful
+};
+
 export default {
   findAllReviews,
   createReview,
+  deleteReview,
 };

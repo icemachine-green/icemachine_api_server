@@ -39,7 +39,23 @@ async function createReview(req, res, next) {
   }
 }
 
+async function deleteReview(req, res, next) {
+  try {
+    const { reviewId } = req.params;
+    const { id: userId } = req.user; // From authMiddleware
+
+    await reviewsService.deleteReview(reviewId, userId);
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, { message: '리뷰가 성공적으로 삭제되었습니다.' }));
+  } catch (error) {
+    next(error);
+  }
+}
+
 export default {
   getAllReviews,
   createReview,
+  deleteReview,
 };

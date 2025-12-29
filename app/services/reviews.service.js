@@ -3,7 +3,9 @@
  * @description 리뷰 관련 서비스
  * 251229 v1.0.0 Lee init
  */
-import reviewsRepository from '../repositories/reviews.repository.js';
+import reviewsRepository from "../repositories/reviews.repository.js";
+import myError from "../errors/customs/my.error.js"; // myError import
+import { NOT_FOUND_ERROR } from "../../configs/responseCode.config.js"; // NOT_FOUND_ERROR import
 
 const getAllReviews = async (sort) => {
   const reviews = await reviewsRepository.findAllReviews(sort);
@@ -33,7 +35,22 @@ const createReview = async (userId, reviewDto) => {
   return newReview;
 };
 
+const deleteReview = async (reviewId, userId) => {
+  const isDeleted = await reviewsRepository.deleteReview(reviewId, userId);
+
+  if (isDeleted === null) {
+    // 리뷰를 찾을 수 없거나 해당 사용자의 리뷰가 아님을 알림
+    throw myError(
+      "리뷰를 찾을 수 없거나 삭제 권한이 없습니다.",
+      NOT_FOUND_ERROR
+    );
+  }
+
+  return true; // 삭제 성공
+};
+
 export default {
   getAllReviews,
   createReview,
+  deleteReview,
 };

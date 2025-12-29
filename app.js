@@ -13,6 +13,7 @@ import swaggerOptions from './configs/swagger.config.js';
 import usersRouter from "./routes/users.router.js"; // 사용자 라우터 import
 import authRouter from "./routes/auth.router.js"; // 인증 라우터 import
 import reviewsRouter from "./routes/reviews.router.js"; // 리뷰 라우터 import
+import businessesRouter from "./routes/businesses.router.js"; // 업체 라우터 import
 
 const app = express();
 const port = process.env.PORT;
@@ -46,6 +47,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter); // 인증 라우터 등록
 app.use("/api/reviews", reviewsRouter); // 리뷰 라우터 등록
+app.use("/api/businesses", businessesRouter); // 업체 라우터 등록
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);

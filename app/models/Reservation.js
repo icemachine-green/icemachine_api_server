@@ -23,6 +23,12 @@ const attributes = {
     allowNull: false,
     comment: "Users 테이블의 PK (외래키)",
   },
+  businessId: {
+    field: "business_id",
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    comment: "Businesses 테이블의 PK (외래키)",
+  },
   engineerId: {
     field: "engineer_id",
     type: DataTypes.INTEGER,
@@ -131,6 +137,10 @@ const Reservation = {
   associate: (db) => {
     db.Reservation.belongsTo(db.User, {
       foreignKey: "user_id",
+      targetKey: "id",
+    });
+    db.Reservation.belongsTo(db.Business, {
+      foreignKey: "business_id",
       targetKey: "id",
     });
     db.Reservation.belongsTo(db.Engineer, {
