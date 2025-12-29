@@ -3,6 +3,7 @@
  * @description 유저 관련 컨트롤러
  * 251216 v1.0.0 Lee init
  */
+import { URL } from "url";
 import usersService from "../services/users.service.js";
 import authService from "../services/auth.service.js";
 import { createBaseResponse } from "../utils/createBaseResponse.util.js";
@@ -54,7 +55,8 @@ async function kakaoCallback(req, res, next) {
       // 기존 사용자 로그인
       const { refreshToken } = await authService.loginUser(user);
       cookieUtil.setCookieRefreshToken(res, refreshToken);
-      return res.redirect(process.env.CLIENT_REGISTER_BUSINESS_URL);
+      const homeUrl = new URL(process.env.SOCIAL_CLIENT_SIGNUP_URL).origin;
+      return res.redirect(homeUrl);
     } else {
       // 신규 사용자, 회원가입 페이지로 리다이렉트
       const { id, kakao_account } = userData;
