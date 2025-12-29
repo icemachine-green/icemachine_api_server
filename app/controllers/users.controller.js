@@ -52,11 +52,9 @@ async function kakaoCallback(req, res, next) {
 
     if (user) {
       // 기존 사용자 로그인
-      const { accessToken, refreshToken } = await authService.loginUser(user);
+      const { refreshToken } = await authService.loginUser(user);
       cookieUtil.setCookieRefreshToken(res, refreshToken);
-      return res
-        .status(SUCCESS.status)
-        .send(createBaseResponse(SUCCESS, { accessToken, user }));
+      return res.redirect(process.env.CLIENT_REGISTER_BUSINESS_URL);
     } else {
       // 신규 사용자, 회원가입 페이지로 리다이렉트
       const { id, kakao_account } = userData;
@@ -79,20 +77,17 @@ async function kakaoCallback(req, res, next) {
 async function socialSignup(req, res, next) {
   try {
     const { socialId, provider, name, phoneNumber, email } = req.body;
-    const { accessToken, refreshToken, user } =
-      await authService.createAndLoginSocialUser(
-        socialId,
-        provider,
-        name,
-        phoneNumber,
-        email
-      );
+    const { refreshToken } = await authService.createAndLoginSocialUser(
+      socialId,
+      provider,
+      name,
+      phoneNumber,
+      email
+    );
 
     cookieUtil.setCookieRefreshToken(res, refreshToken);
 
-    return res
-      .status(SUCCESS.status)
-      .send(createBaseResponse(SUCCESS, { accessToken, user }));
+    return res.redirect(process.env.CLIENT_REGISTER_BUSINESS_URL);
   } catch (err) {
     console.error(err);
     if (err.status) {
