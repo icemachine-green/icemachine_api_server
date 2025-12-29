@@ -33,12 +33,14 @@ function setCookie(
     httpOnly: httpOnlyFlg,
     secure: secureFlg,
     sameSite: "none", // domain 검증 실행 여부
-    path: "",
   };
 
   if (path) {
     options.path = path;
   }
+
+  console.log("Setting cookie with options:", options); // DEBUGGING
+
   res.cookie(cookieName, cookieValue, options);
 }
 

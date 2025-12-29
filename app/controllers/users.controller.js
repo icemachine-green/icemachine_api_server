@@ -55,7 +55,7 @@ async function kakaoCallback(req, res, next) {
       // 기존 사용자 로그인
       const { refreshToken } = await authService.loginUser(user);
       cookieUtil.setCookieRefreshToken(res, refreshToken);
-      const homeUrl = new URL(process.env.SOCIAL_CLIENT_SIGNUP_URL).origin;
+      const homeUrl = process.env.SOCIAL_CLIENT_CALLBACK_URL;
       return res.redirect(homeUrl);
     } else {
       // 신규 사용자, 회원가입 페이지로 리다이렉트

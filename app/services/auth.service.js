@@ -16,10 +16,10 @@ const reissue = async (token) => {
   const claims = jwtUtil.getClaimWithVerifyToken(token);
 
   // 2. DB에서 리프레시 토큰으로 사용자 조회
-  const user = await usersRepository.findUserByRefreshToken(token);
+  const user = await usersRepository.findUserById(claims.sub);
 
-  // 3. 사용자가 없거나, 토큰의 사용자 ID와 조회된 사용자 ID가 다를 경우 에러
-  if (!user || user.id !== claims.sub) {
+  // 3. 사용자가 없거나, 리프래시토큰이 다를 경우 에러
+  if (!user || user.refreshToken !== token) {
     throw myError("유효하지 않은 리프레시 토큰입니다.", REISSUE_ERROR);
   }
 
