@@ -102,7 +102,7 @@ function setCookieRefreshToken(res, refreshToken) {
     process.env.JWT_REFRESH_TOKEN_COOKIE_NAME,
     refreshToken,
     parseInt(process.env.JWT_REFRESH_TOKEN_COOKIE_EXPIRY),
-    true,
+    true, // secureFlg
     true,
     process.env.JWT_REISSUE_URI
   );

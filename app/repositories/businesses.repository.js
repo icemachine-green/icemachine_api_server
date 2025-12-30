@@ -41,7 +41,6 @@ const deleteBusiness = async (businessId, userId) => {
 
 export default {
   createBusiness,
-  createIceMachine,
   findBusinessesByUserId,
   findBusinessById,
   updateBusiness,

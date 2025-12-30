@@ -37,7 +37,7 @@ const swaggerDefinition = {
 const options = {
   swaggerDefinition,
   // API 주석이 포함된 파일 경로
-  apis: ['./routes/*.js'], // routes 폴더 내의 모든 .js 파일을 대상으로 함
+  apis: ['./swagger/*.js'], // swagger 폴더 내의 모든 .js 파일을 대상으로 함
 };
 
 export default options;

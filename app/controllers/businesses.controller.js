@@ -3,10 +3,11 @@
  * @description 업체 관련 컨트롤러
  * 251229 v1.0.0 Lee init
  */
-import businessesService from '../services/businesses.service.js';
-import { createBaseResponse } from '../utils/createBaseResponse.util.js';
-import { SUCCESS } from '../../configs/responseCode.config.js';
+import businessesService from "../services/businesses.service.js";
+import { createBaseResponse } from "../utils/createBaseResponse.util.js";
+import { SUCCESS } from "../../configs/responseCode.config.js";
 
+// 매장 + 제빙기 동시 등록
 async function registerBusiness(req, res, next) {
   try {
     // authMiddleware를 통해 req.user에 주입된 사용자 ID를 획득합니다.
@@ -19,14 +20,13 @@ async function registerBusiness(req, res, next) {
       iceMachinesDto
     );
 
-    return res
-      .status(SUCCESS.status)
-      .send(createBaseResponse(SUCCESS, result));
+    return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS, result));
   } catch (error) {
     next(error);
   }
 }
 
+// 내가 소유한 매장 목록 조회
 async function getBusinesses(req, res, next) {
   try {
     // authMiddleware를 통해 req.user에 주입된 사용자 ID를 획득합니다.
@@ -42,11 +42,12 @@ async function getBusinesses(req, res, next) {
   }
 }
 
+// 특정 매장 상세 조회
 async function getBusiness(req, res, next) {
   try {
     const { businessId } = req.params;
     // req.user 객체 전체를 서비스로 전달하여 역할 기반 접근 제어를 수행합니다.
-    const user = req.user; 
+    const user = req.user;
 
     const business = await businessesService.getBusinessById(businessId, user);
 
@@ -58,13 +59,18 @@ async function getBusiness(req, res, next) {
   }
 }
 
+// 매장 정보 수정
 async function updateBusiness(req, res, next) {
   try {
     const { businessId } = req.params;
     const user = req.user; // From authMiddleware
     const updateDto = req.body;
 
-    const updatedBusiness = await businessesService.updateBusiness(businessId, user, updateDto);
+    const updatedBusiness = await businessesService.updateBusiness(
+      businessId,
+      user,
+      updateDto
+    );
 
     return res
       .status(SUCCESS.status)
@@ -74,6 +80,7 @@ async function updateBusiness(req, res, next) {
   }
 }
 
+// 매장 삭제 (소프트 삭제)
 async function deleteBusiness(req, res, next) {
   try {
     const { businessId } = req.params;
@@ -81,9 +88,11 @@ async function deleteBusiness(req, res, next) {
 
     await businessesService.deleteBusiness(businessId, user);
 
-    return res
-      .status(SUCCESS.status)
-      .send(createBaseResponse(SUCCESS, { message: '매장이 성공적으로 삭제되었습니다.' }));
+    return res.status(SUCCESS.status).send(
+      createBaseResponse(SUCCESS, {
+        message: "매장이 성공적으로 삭제되었습니다.",
+      })
+    );
   } catch (error) {
     next(error);
   }

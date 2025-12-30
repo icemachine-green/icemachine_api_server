@@ -63,12 +63,22 @@ const attributes = {
       return dayjs(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
     },
   },
+  deletedAt: {
+    field: 'deleted_at',
+    type: DataTypes.DATE,
+    allowNull: true,
+    get() {
+      const val = this.getDataValue('deletedAt');
+      if (!val) return null;
+      return dayjs(val).format('YYYY-MM-DD HH:mm:ss');
+    },
+  },
 };
 
 const options = {
   tableName: 'ice_machines',
   timestamps: true,
-  paranoid: false, // deletedAt 컬럼이 스키마에 없으므로 paranoid는 false
+  paranoid: true, // 소프트 삭제를 위해 paranoid true 설정
 };
 
 const IceMachine = {

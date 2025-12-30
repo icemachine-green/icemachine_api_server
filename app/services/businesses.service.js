@@ -4,6 +4,7 @@
  * 251229 v1.0.0 Lee init
  */
 import businessesRepository from "../repositories/businesses.repository.js";
+import icemachinesService from "../services/icemachines.service.js"; // icemachinesService import
 import db from "../models/index.js"; // for transaction
 import myError from "../errors/customs/my.error.js"; // myError import
 import {
@@ -36,18 +37,9 @@ const registerBusinessWithIceMachines = async (
     // 2. 제빙기(IceMachine) 정보 생성
     const iceMachines = [];
     for (const iceMachineDto of iceMachinesDto) {
-      const iceMachineData = {
-        businessId: newBusiness.id, // 새로 생성된 매장의 ID를 연결
-        modelType: iceMachineDto.model ? "기타" : "모름", // model이 있으면 '기타', 없으면 '모름'으로 가정
-        sizeType: iceMachineDto.size || "모름", // 제공된 size를 사용하거나 '모름'
-        modelName:
-          iceMachineDto.brand && iceMachineDto.model
-            ? `${iceMachineDto.brand} ${iceMachineDto.model}` // 브랜드와 모델명 조합
-            : iceMachineDto.brand || iceMachineDto.model || "모름", // 둘 중 하나라도 없으면 있는 것을, 둘 다 없으면 '모름'
-        // modelPic: iceMachineDto.modelPic, // 선택 사항이므로 DTO에 있다면 추가
-      };
-      const newIceMachine = await businessesRepository.createIceMachine(
-        iceMachineData,
+      const newIceMachine = await icemachinesService.addIceMachineToBusiness(
+        newBusiness.id,
+        iceMachineDto,
         t
       );
       iceMachines.push(newIceMachine);
