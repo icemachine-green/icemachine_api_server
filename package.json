@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "seed": "npx sequelize-cli db:seed:all",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -28,6 +29,7 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
     "nodemon": "^3.1.11",
     "sequelize-cli": "^6.6.3"
   }
