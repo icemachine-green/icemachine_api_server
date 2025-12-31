@@ -25,15 +25,21 @@ async function getAllReviews(req, res, next) {
 async function createReview(req, res, next) {
   try {
     // 인증 미들웨어를 통해 전달된 사용자 ID 획득
-    const { id: userId } = req.user;
-    const reviewDto = req.body;
+    // const userId  = req.user?.id; // TODO: 로그인 완성되면 이코드로 변경
+    const userId  = 1; // TODO: 로그인 완성되면 삭제
+    const reviewDto = {
+      rating: req.body?.rating ? req.body?.rating : null,
+      content: req.body?.content ? req.body?.content : null,
+      quickOption: req.body?.quickOption ? req.body?.quickOption : null,
+      imageUrl: req.file?.filename ? req.file?.filename : null
+    };
 
     const newReview = await reviewsService.createReview(userId, reviewDto);
 
     // 201 Created가 더 적합하지만, 프로젝트 컨벤션에 따라 200 OK와 SUCCESS 코드를 사용
     return res
       .status(SUCCESS.status)
-      .send(createBaseResponse(SUCCESS, newReview));
+      .send(createBaseResponse(SUCCESS, newReview)); 
   } catch (error) {
     next(error);
   }

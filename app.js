@@ -35,6 +35,11 @@ app.use((req, res, next) => {
 });
 // -----------------------------
 
+// --------------------
+//  정적 파일 제공 등록
+// --------------------
+app.use(process.env.FILE_STATIC_PATH_REVIEW, express.static(process.env.FILE_STORAGE_PATH_REVIEW));
+
 // Swagger UI 설정
 const specs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
