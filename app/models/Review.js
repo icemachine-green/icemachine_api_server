@@ -23,12 +23,6 @@ const attributes = {
     allowNull: false,
     comment: 'Users 테이블의 PK (외래키)',
   },
-  reservationId: {
-    field: 'reservation_id',
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    comment: 'Reservations 테이블의 PK (외래키)',
-  },
   rating: {
     field: 'rating',
     type: DataTypes.TINYINT,
@@ -52,6 +46,13 @@ const attributes = {
     type: DataTypes.STRING,
     allowNull: true,
     comment: '리뷰 사진 URL',
+    get() {
+      const filename = this.getDataValue('imageUrl');
+      if(!filename) {
+        return null;
+      }
+      return `${process.env.APP_URL}${process.env.FILE_STATIC_PATH_REVIEW}/${filename}`;
+    }
   },
   createdAt: {
     field: 'created_at',
