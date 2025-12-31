@@ -15,6 +15,7 @@ import authRouter from "./routes/auth.router.js"; // 인증 라우터 import
 import reviewsRouter from "./routes/reviews.router.js"; // 리뷰 라우터 import
 import businessesRouter from "./routes/businesses.router.js"; // 업체 라우터 import
 import icemachinesRouter from "./routes/icemachines.router.js"; // 제빙기 라우터 import
+import reservationsRouter from "./routes/reservations.router.js"; // 예약 라우터 import
 
 const app = express();
 const port = process.env.PORT;
@@ -55,6 +56,7 @@ app.use("/api/auth", authRouter); // 인증 라우터 등록
 app.use("/api/reviews", reviewsRouter); // 리뷰 라우터 등록
 app.use("/api/businesses", businessesRouter); // 업체 라우터 등록
 app.use("/api/icemachines", icemachinesRouter); // 제빙기 라우터 등록
+app.use("/api/reservations", reservationsRouter); // 예약 라우터 등록
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
