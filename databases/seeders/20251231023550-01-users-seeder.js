@@ -1,17 +1,15 @@
+// seeders/20251231-01-user-seeder.js
 import { faker } from "@faker-js/faker";
+import dayjs from "dayjs";
 
-/**
- * 휴대폰 번호 생성
- */
+// 휴대폰 번호 생성
 const generatePhoneNumber = () => {
   const middle = Math.floor(1000 + Math.random() * 9000);
   const last = Math.floor(1000 + Math.random() * 9000);
   return `010-${middle}-${last}`;
 };
 
-/**
- * 한국 이름 생성
- */
+// 한국 이름 생성
 const LAST_NAMES = [
   "김",
   "이",
@@ -34,7 +32,6 @@ const LAST_NAMES = [
   "류",
   "전",
 ];
-
 const FIRST_NAMES = [
   "민수",
   "서연",
@@ -63,7 +60,6 @@ const generateKoreanName = () => {
 export default {
   async up(queryInterface) {
     const users = [];
-
     const CUSTOMER_COUNT = 1000;
     const ENGINEER_COUNT = 48;
 
@@ -77,8 +73,8 @@ export default {
         phone_number: generatePhoneNumber(),
         refresh_token: null,
         role: "customer",
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+        updated_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
         deleted_at: null,
       });
     }
@@ -93,8 +89,8 @@ export default {
         phone_number: generatePhoneNumber(),
         refresh_token: null,
         role: "engineer",
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+        updated_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
         deleted_at: null,
       });
     }

@@ -23,6 +23,12 @@ const attributes = {
     allowNull: false,
     comment: 'Users 테이블의 PK (외래키)',
   },
+  reservationId: {
+    field: 'reservation_id',
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    comment: 'Reservations 테이블의 PK (외래키)',
+  },
   rating: {
     field: 'rating',
     type: DataTypes.TINYINT,
@@ -89,6 +95,11 @@ const Review = {
   associate: (db) => {
     db.Review.belongsTo(db.User, {
       foreignKey: 'user_id',
+      targetKey: 'id',
+    });
+
+    db.Review.belongsTo(db.Reservation, {
+      foreignKey: 'reservation_id',
       targetKey: 'id',
     });
   },
