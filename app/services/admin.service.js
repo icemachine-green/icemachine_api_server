@@ -13,7 +13,7 @@ async function getAllCustomers() {
   allCustomers.sort((a, b) => b.createdAt - a.createdAt);
 
   // 필요한 정보만 가공하여 반환
-  return allUsers.map(user => ({
+  return allCustomers.map(user => ({
     userId: user.id,
     socialId: user.socialId,
     email: user.email,
