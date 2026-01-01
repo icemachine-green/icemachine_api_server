@@ -22,6 +22,29 @@ async function getAllReviews(req, res, next) {
   }
 }
 
+async function getMyReviews(req, res, next) {
+  try {
+    // TODO: 로그인 미완성 → 임시
+    // const userId = req.user.id;
+    const userId = 1;
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 5;
+
+    const result = await reviewsService.getMyReviews({
+      userId,
+      page,
+      limit,
+    });
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, result));
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function createReview(req, res, next) {
   try {
     // 인증 미들웨어를 통해 전달된 사용자 ID 획득
@@ -48,7 +71,8 @@ async function createReview(req, res, next) {
 async function deleteReview(req, res, next) {
   try {
     const { reviewId } = req.params;
-    const { id: userId } = req.user; // From authMiddleware
+    // const { id: userId } = req.user; // From authMiddleware // TODO: 로그인 완성되면 이코드로 변경
+    const userId = 1; // TODO: 로그인 완성되면 삭제
 
     await reviewsService.deleteReview(reviewId, userId);
 
@@ -62,6 +86,7 @@ async function deleteReview(req, res, next) {
 
 export default {
   getAllReviews,
+  getMyReviews,
   createReview,
   deleteReview,
 };

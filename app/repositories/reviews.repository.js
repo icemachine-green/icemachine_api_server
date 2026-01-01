@@ -24,7 +24,7 @@ const findAllReviews = async (sort = 'latest') => {
   }
 
   return await Review.findAll({
-    attributes: ['imageUrl', 'rating', 'content', 'createdAt'],
+    attributes: ['id', 'userId', 'imageUrl', 'rating', 'content', 'createdAt'],
     include: [
       {
         model: User,
@@ -33,6 +33,23 @@ const findAllReviews = async (sort = 'latest') => {
     ],
     order, // 결정된 정렬 순서 적용
   });
+};
+
+const findReviewsByUserId = async ({ userId, limit, offset }) => {
+  const { rows, count } = await Review.findAndCountAll({
+    where: { userId },
+    include: [
+      {
+        model: User,
+        attributes: ['name'],
+      },
+    ],
+    limit,
+    offset,
+    order: [['createdAt', 'DESC']],
+  });
+
+   return { rows, count };
 };
 
 const createReview = async (reviewData) => {
@@ -54,6 +71,7 @@ const deleteReview = async (reviewId, userId) => {
 
 export default {
   findAllReviews,
+  findReviewsByUserId,
   createReview,
   deleteReview,
 };

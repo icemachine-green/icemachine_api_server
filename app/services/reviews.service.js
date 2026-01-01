@@ -13,13 +13,42 @@ const getAllReviews = async (sort) => {
   // 컨트롤러에 전달하기 전에 데이터 형태를 가공
   return reviews.map((review) => {
     return {
+      id: review.id,
       imageUrl: review.imageUrl,
       rating: review.rating,
       content: review.content,
       createdAt: review.createdAt,
-      user_name: review.User.name, // 중첩된 User 객체의 name을 user_name으로 변경
+      user_name: review.User? review.User.name : '알 수 없는 사용자', // 중첩된 User 객체의 name을 user_name으로 변경
     };
   });
+};
+
+const getMyReviews = async ({ userId, page = 1, limit = 5 }) => {
+  const offset = (page - 1) * limit;
+
+  const { rows, count } =
+    await reviewsRepository.findReviewsByUserId({
+      userId,
+      limit,
+      offset,
+    });
+
+    const processedReviews = rows.map(review => ({
+      id: review.id,
+      imageUrl: review.imageUrl,
+      rating: review.rating,
+      content: review.content,
+      createdAt: review.createdAt,
+      user_name: review.User ? review.User.name : '알 수 없는 사용자',
+    }));
+
+  return {
+    reviews: processedReviews,
+    page,
+    limit,
+    totalCount: count,
+    totalPages: Math.ceil(count / limit),
+  };
 };
 
 const createReview = async (userId, reviewDto) => {
@@ -51,6 +80,7 @@ const deleteReview = async (reviewId, userId) => {
 
 export default {
   getAllReviews,
+  getMyReviews,
   createReview,
   deleteReview,
 };
