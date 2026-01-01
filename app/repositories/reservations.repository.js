@@ -1,10 +1,5 @@
-/**
- * @file app/repositories/reservations.repository.js
- * @description 예약 관련 레포지토리
- * 251231 v1.0.0 You init
- */
-import db from '../models/index.js';
-import { Op } from 'sequelize';
+import db from "../models/index.js";
+import { Op } from "sequelize";
 
 const { Reservation } = db;
 
@@ -17,6 +12,7 @@ const updateReservation = async (reservationId, updateData, transaction) => {
     where: { id: reservationId },
     transaction,
   });
+
   return updatedRows > 0;
 };
 
@@ -24,6 +20,9 @@ const findReservationById = async (reservationId, transaction) => {
   return await Reservation.findByPk(reservationId, { transaction });
 };
 
+/**
+ * 특정 기간 내 예약 목록 조회
+ */
 const findReservationsByDateRange = async (startDate, endDate) => {
   return await Reservation.findAll({
     where: {
@@ -31,8 +30,8 @@ const findReservationsByDateRange = async (startDate, endDate) => {
         [Op.between]: [startDate, endDate],
       },
       status: {
-        [Op.in]: ['PENDING', 'CONFIRMED', 'START'],
-      }
+        [Op.in]: ["PENDING", "CONFIRMED", "START"],
+      },
     },
     raw: true,
   });

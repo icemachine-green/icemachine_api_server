@@ -145,7 +145,7 @@ const Reservation = {
     });
     db.Reservation.belongsTo(db.Engineer, {
       foreignKey: "engineer_id",
-      targetKey: "user_id",
+      targetKey: "id", // Engineer 테이블의 PK 기준
     });
     db.Reservation.belongsTo(db.IceMachine, {
       foreignKey: "ice_machine_id",
@@ -157,8 +157,8 @@ const Reservation = {
     });
 
     db.Reservation.hasMany(db.Review, {
-      foreignKey: 'reservation_id',
-      sourceKey: 'id',
+      foreignKey: "reservation_id",
+      sourceKey: "id",
     });
   },
 };
