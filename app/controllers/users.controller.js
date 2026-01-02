@@ -125,4 +125,89 @@ async function reissue(req, res, next) {
   }
 }
 
-export default { socialSignup, kakaoAuthorize, kakaoCallback, reissue };
+/**
+ * 내 정보 조회
+ */
+async function getMe(req, res, next) {
+  try {
+    // 로그인 전 테스트용
+    // const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
+    const userId = 3; // TODO: 로그인 완성되면 삭제
+
+    const user = await usersService.getMe(userId);
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, user));
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * 내 정보 수정
+ */
+const updateMe = async (req, res, next) => {
+  try {
+    // 로그인 전 테스트용
+    // const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
+    const userId = 3; // TODO: 로그인 완성되면 삭제
+
+    const updateDto = {
+      name: req.body?.name,
+      email: req.body?.email,
+      phoneNumber: req.body?.phoneNumber,
+    };
+
+    const updatedUser = await usersService.updateMe(userId, updateDto);
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, updatedUser));
+  } catch (error) {
+    next(error);
+  }
+};
+
+const checkEmailDuplicate = async (req, res, next) => {
+  try {
+    const { email } = req.query;
+
+    const exists = await usersService.checkEmailDuplicate(email);
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, exists));
+  } catch (error) {
+    next(error);
+  }
+};
+
+const withdrawMe = async (req, res) => {
+  try {
+    // 로그인 전 테스트용
+    // const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
+    const userId = 3; // TODO: 로그인 완성되면 삭제
+
+    await usersService.withdrawUser(userId);
+
+    return res.status(200).json({
+      message: "회원 탈퇴가 완료되었습니다.",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+export default {
+  socialSignup,
+  kakaoAuthorize,
+  kakaoCallback,
+  reissue,
+  getMe,
+  updateMe,
+  checkEmailDuplicate,
+  withdrawMe,
+};
