@@ -6,6 +6,7 @@
 import reviewsRepository from "../repositories/reviews.repository.js";
 import myError from "../errors/customs/my.error.js"; // myError import
 import { NOT_FOUND_ERROR } from "../../configs/responseCode.config.js"; // NOT_FOUND_ERROR import
+import usersRepository from "../repositories/users.repository.js";
 
 const getAllReviews = async (sort) => {
   const reviews = await reviewsRepository.findAllReviews(sort);
@@ -61,7 +62,16 @@ const createReview = async (userId, reviewDto) => {
   };
 
   const newReview = await reviewsRepository.createReview(reviewData);
-  return newReview;
+  const user = await usersRepository.findUserById(newReview.userId);
+  
+  return {
+    id: newReview.id,
+    imageUrl: newReview.imageUrl,
+    rating: newReview.rating,
+    content: newReview.content,
+    createdAt: newReview.createdAt,
+    user_name: user? user.name : '알 수 없는 사용자', // 중첩된 User 객체의 name을 user_name으로 변경
+  };
 };
 
 const deleteReview = async (reviewId, userId) => {
