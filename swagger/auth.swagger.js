@@ -13,30 +13,6 @@
 
 /**
  * @swagger
- * /api/auth/kakao/authorize:
- *   get:
- *     summary: 카카오 로그인 시작
- *     tags: [Auth]
- *     description: 사용자를 카카오 인증 페이지로 리다이렉트시킵니다. API 테스트보다는 브라우저 주소창에 직접 입력하여 사용합니다.
- *     responses:
- *       302:
- *         description: 카카오 인증 페이지로 리다이렉트됩니다.
- */
-
-/**
- * @swagger
- * /api/auth/kakao/callback:
- *   get:
- *     summary: 카카오 로그인 콜백 (내부용)
- *     tags: [Auth]
- *     description: 카카오 인증 후, 백엔드가 사용자를 처리하기 위해 사용하는 내부 콜백 경로입니다. 사용자가 직접 호출하지 않습니다.
- *     responses:
- *       302:
- *         description: 로그인 성공 시 메인 페이지, 신규 가입 시 추가 정보 입력 페이지로 리다이렉트됩니다.
- */
-
-/**
- * @swagger
  * /api/auth/social-signup:
  *   post:
  *     summary: 소셜 회원가입 (추가 정보 입력)
@@ -93,4 +69,28 @@
  *                       type: object
  *       401:
  *         description: 쿠키에 유효한 refreshToken이 없거나 만료되었을 경우 인증 에러가 발생합니다.
+ */
+
+/**
+ * @swagger
+ * /api/auth/kakao/authorize:
+ *   get:
+ *     summary: 카카오 로그인 시작
+ *     tags: [Auth]
+ *     description: 사용자를 카카오 인증 페이지로 리다이렉트시킵니다. API 테스트보다는 브라우저 주소창에 직접 입력하여 사용합니다.
+ *     responses:
+ *       302:
+ *         description: 카카오 인증 페이지로 리다이렉트됩니다.
+ */
+
+/**
+ * @swagger
+ * /api/auth/kakao/callback:
+ *   get:
+ *     summary: 카카오 로그인 콜백 (내부용)
+ *     tags: [Auth]
+ *     description: 카카오 인증 후, 백엔드가 사용자를 처리하기 위해 사용하는 내부 콜백 경로입니다. 사용자가 직접 호출하지 않습니다.
+ *     responses:
+ *       302:
+ *         description: 로그인 성공 시 메인 페이지, 신규 가입 시 추가 정보 입력 페이지로 리다이렉트됩니다.
  */
