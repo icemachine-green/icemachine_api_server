@@ -28,7 +28,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST,
     dialect: "mysql",
-    logging: false, // 로깅이 필요하면 console.log로 변경
+    logging: process.env.APP_MODE === 'development' && console.log, // 로깅이 필요하면 console.log로 변경
     pool: {
       max: parseInt(process.env.DB_POOL_MAX),
       min: parseInt(process.env.DB_POOL_MIN),
