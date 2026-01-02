@@ -155,11 +155,6 @@ const Reservation = {
       foreignKey: "service_policy_id",
       targetKey: "id",
     });
-
-    db.Reservation.hasMany(db.Review, {
-      foreignKey: 'reservation_id',
-      sourceKey: 'id',
-    });
   },
 };
 

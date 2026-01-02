@@ -36,7 +36,6 @@ export default {
 
       reviews.push({
         user_id: r.user_id,
-        reservation_id: r.reservation_id,
         rating: faker.number.int({ min: 3, max: 5 }),
         quick_option: faker.helpers.arrayElement(QUICK_OPTIONS),
         content: faker.lorem.sentences(faker.number.int({ min: 1, max: 3 })),

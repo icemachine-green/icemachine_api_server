@@ -98,11 +98,6 @@ const Review = {
       foreignKey: 'user_id',
       targetKey: 'id',
     });
-
-    db.Review.belongsTo(db.Reservation, {
-      foreignKey: 'reservation_id',
-      targetKey: 'id',
-    });
   },
 };
 
