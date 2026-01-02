@@ -131,8 +131,8 @@ async function reissue(req, res, next) {
 async function getMe(req, res, next) {
   try {
     // 로그인 전 테스트용
-    // const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
-    const userId = 3; // TODO: 로그인 완성되면 삭제
+    const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
+    // const userId = 3; // TODO: 로그인 완성되면 삭제
 
     const user = await usersService.getMe(userId);
 
@@ -150,8 +150,8 @@ async function getMe(req, res, next) {
 const updateMe = async (req, res, next) => {
   try {
     // 로그인 전 테스트용
-    // const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
-    const userId = 3; // TODO: 로그인 완성되면 삭제
+    const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
+    // const userId = 3; // TODO: 로그인 완성되면 삭제
 
     const updateDto = {
       name: req.body?.name,
@@ -186,8 +186,8 @@ const checkEmailDuplicate = async (req, res, next) => {
 const withdrawMe = async (req, res) => {
   try {
     // 로그인 전 테스트용
-    // const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
-    const userId = 3; // TODO: 로그인 완성되면 삭제
+    const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
+    // const userId = 3; // TODO: 로그인 완성되면 삭제
 
     await usersService.withdrawUser(userId);
 

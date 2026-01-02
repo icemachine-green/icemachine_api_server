@@ -9,12 +9,9 @@ import authMiddleware from "../app/middlewares/auth/auth.middleware.js";
 
 const router = express.Router();
 
-// router.get("/me", authMiddleware, usersController.getMe); // TODO: 배포시 해당 코드로 수정
-router.get("/me", usersController.getMe);
+router.get("/me", authMiddleware, usersController.getMe);
 router.get("/check-email", usersController.checkEmailDuplicate);
-// router.put("/me", authMiddleware, usersController.updateMe); // TODO: 배포시 해당 코드로 수정
-router.put("/me", usersController.updateMe);
-// router.delete("/me", authMiddleware, usersController.withdrawMe); // TODO: 배포시 해당 코드로 수정
-router.delete("/me", usersController.withdrawMe);
+router.put("/me", authMiddleware, usersController.updateMe);
+router.delete("/me", authMiddleware, usersController.withdrawMe);
 
 export default router;

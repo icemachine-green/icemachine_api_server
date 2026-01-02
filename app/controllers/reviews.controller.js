@@ -24,9 +24,7 @@ async function getAllReviews(req, res, next) {
 
 async function getMyReviews(req, res, next) {
   try {
-    // TODO: 로그인 미완성 → 임시
-    // const userId = req.user.id;
-    const userId = 1;
+    const userId = req.user.id;
 
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 5;
@@ -47,9 +45,8 @@ async function getMyReviews(req, res, next) {
 
 async function createReview(req, res, next) {
   try {
-    // 인증 미들웨어를 통해 전달된 사용자 ID 획득
-    // const userId  = req.user?.id; // TODO: 로그인 완성되면 이코드로 변경
-    const userId  = 1; // TODO: 로그인 완성되면 삭제
+    const userId  = req.user?.id;
+    
     const reviewDto = {
       rating: req.body?.rating ? req.body?.rating : null,
       content: req.body?.content ? req.body?.content : null,
@@ -71,8 +68,7 @@ async function createReview(req, res, next) {
 async function deleteReview(req, res, next) {
   try {
     const { reviewId } = req.params;
-    // const { id: userId } = req.user; // From authMiddleware // TODO: 로그인 완성되면 이코드로 변경
-    const userId = 1; // TODO: 로그인 완성되면 삭제
+    const userId  = req.user?.id;
 
     await reviewsService.deleteReview(reviewId, userId);
 
