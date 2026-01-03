@@ -38,6 +38,22 @@ const updateMe = async (userId, updateDto) => {
     throw new Error("USER_NOT_FOUND");
   }
 
+  // 이메일 수정인 경우 중복 체크
+  if (
+    updateDto.email !== undefined &&
+    updateDto.email !== user.email
+  ) {
+    const existingUser = await usersRepository.findUserByEmail(
+      updateDto.email
+    );
+
+    if (existingUser && existingUser.id !== userId) {
+      const error = new Error("이미 사용 중인 이메일입니다.");
+      error.status = 409;
+      throw error;
+    }
+  }
+
   // 필요한 필드만 업데이트
   if (updateDto.name !== undefined) {
     user.name = updateDto.name;

@@ -164,7 +164,12 @@ const updateMe = async (req, res, next) => {
     return res
       .status(SUCCESS.status)
       .send(createBaseResponse(SUCCESS, updatedUser));
-  } catch (error) {
+    } catch (error) {
+    if (error.status) {
+      return res
+        .status(error.status)
+        .send(createBaseResponse(error));
+    }
     next(error);
   }
 };
