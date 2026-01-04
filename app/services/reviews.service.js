@@ -17,6 +17,7 @@ const getAllReviews = async (sort) => {
       id: review.id,
       imageUrl: review.imageUrl,
       rating: review.rating,
+      quickOption: review.quickOption,
       content: review.content,
       createdAt: review.createdAt,
       user_name: review.User? review.User.name : '알 수 없는 사용자', // 중첩된 User 객체의 name을 user_name으로 변경
@@ -38,6 +39,7 @@ const getMyReviews = async ({ userId, page = 1, limit = 5 }) => {
       id: review.id,
       imageUrl: review.imageUrl,
       rating: review.rating,
+      quickOption: review.quickOption,
       content: review.content,
       createdAt: review.createdAt,
       user_name: review.User ? review.User.name : '알 수 없는 사용자',
@@ -68,6 +70,7 @@ const createReview = async (userId, reviewDto) => {
     id: newReview.id,
     imageUrl: newReview.imageUrl,
     rating: newReview.rating,
+    quickOption: newReview.quickOption,
     content: newReview.content,
     createdAt: newReview.createdAt,
     user_name: user? user.name : '알 수 없는 사용자', // 중첩된 User 객체의 name을 user_name으로 변경

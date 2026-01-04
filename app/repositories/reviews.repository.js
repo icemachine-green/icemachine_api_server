@@ -24,7 +24,7 @@ const findAllReviews = async (sort = 'latest') => {
   }
 
   return await Review.findAll({
-    attributes: ['id', 'userId', 'imageUrl', 'rating', 'content', 'createdAt'],
+    attributes: ['id', 'userId', 'imageUrl', 'rating', 'quickOption', 'content', 'createdAt'],
     include: [
       {
         model: User,
@@ -42,6 +42,7 @@ const findReviewsByUserId = async ({ userId, limit, offset }) => {
       {
         model: User,
         attributes: ['name'],
+        required: false,
       },
     ],
     limit,
