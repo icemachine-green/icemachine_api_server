@@ -55,7 +55,7 @@ export default {
       reservations.push({
         user_id: customer.id,
         business_id: business.id,
-        engineer_id: engineer ? engineer.user_id : null,
+        engineer_id: engineer ? engineer.id : null, // ← 여기만 수정
         ice_machine_id: machine.id,
         service_policy_id: policy.id,
         reserved_date: reservedDate.format("YYYY-MM-DD"),

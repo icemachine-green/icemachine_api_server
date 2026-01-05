@@ -39,6 +39,7 @@ async function kakaoCallback(req, res, next) {
       }),
     });
     const tokenData = await tokenResponse.json();
+    console.log("1. 토큰 응답 확인:", tokenData); // 여기서 error가 찍히는지 확인!
     if (tokenData.error) throw new Error(tokenData.error_description);
 
     const userResponse = await fetch(
@@ -48,6 +49,7 @@ async function kakaoCallback(req, res, next) {
       }
     );
     const userData = await userResponse.json();
+    console.log("2. 유저 데이터 확인:", userData); // 만약 여기서 userData.id가 안 찍힌다면 위 단계에서 토큰이 잘못된 것입니다.
 
     const user = await usersService.processKakaoUser(userData.id);
 

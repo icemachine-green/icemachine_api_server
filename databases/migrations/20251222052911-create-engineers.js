@@ -1,67 +1,70 @@
 /**
- * @file databases/migrations/20251222052911-create-engineers.js
+ * @file databases/migrations/20260101-create-engineers.js
  * @description 'engineers' 테이블 생성 마이그레이션
- * 251222 v1.0.0 Lee-init
+ * 260101 v1.0.0
  */
 import { DataTypes } from "sequelize";
 
 const tableName = "engineers";
 
 const attributes = {
-  user_id: {
-    field: "user_id",
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
     allowNull: false,
-    comment: "Users 테이블의 PK (외래키)",
+    comment: "Engineers 테이블 PK",
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true,
+    comment: "Users 테이블 PK (외래키)",
     references: {
-      model: 'users', // 'users' 테이블을 참조
-      key: 'id',      // 'users' 테이블의 'id' 컬럼을 참조
+      model: "users",
+      key: "id",
     },
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE', // Users에서 기사 계정 삭제 시 기사 프로필도 함께 삭제
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
   },
   skill_level: {
-    field: "skill_level",
-    type: DataTypes.ENUM('JUNIOR', 'SENIOR', 'MASTER'),
+    type: DataTypes.ENUM("JUNIOR", "SENIOR", "MASTER"),
     allowNull: false,
-    defaultValue: 'JUNIOR',
+    defaultValue: "JUNIOR",
     comment: "기사 기술 등급",
   },
   introduction: {
-    field: "introduction",
     type: DataTypes.TEXT,
     allowNull: true,
     comment: "고객에게 노출되는 기사 소개글",
   },
   is_active: {
-    field: "is_active",
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
     comment: "현재 배정 가능한 상태인지 여부",
   },
-  createdAt: {
-    field: "created_at",
+  created_at: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  updatedAt: {
-    field: "updated_at",
+  updated_at: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  deletedAt: {
-    field: "deleted_at",
+  deleted_at: {
     type: DataTypes.DATE,
     allowNull: true,
   },
 };
 
 const options = {
+  tableName,
   charset: "utf8mb4",
   collate: "utf8mb4_unicode_ci",
   engine: "InnoDB",
+  timestamps: true,
+  paranoid: true,
 };
 
 /** @type {import('sequelize-cli').Migration} */

@@ -22,23 +22,23 @@ const attributes = {
     allowNull: false,
     comment: "Users 테이블의 PK (외래키)",
     references: {
-      model: 'users',
-      key: 'id',
+      model: "users",
+      key: "id",
     },
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
   },
   engineer_id: {
     field: "engineer_id",
     type: DataTypes.INTEGER,
     allowNull: true,
-    comment: "Engineers 테이블의 user_id (외래키)",
+    comment: "Engineers 테이블의 PK (외래키)",
     references: {
-      model: 'engineers',
-      key: 'user_id',
+      model: "engineers",
+      key: "id", // PK 기준
     },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL', // 엔지니어 삭제 시 예약 엔지니어 정보 NULL로 설정
+    onUpdate: "CASCADE",
+    onDelete: "SET NULL",
   },
   ice_machine_id: {
     field: "ice_machine_id",
@@ -46,11 +46,11 @@ const attributes = {
     allowNull: false,
     comment: "IceMachines 테이블의 PK (외래키)",
     references: {
-      model: 'ice_machines',
-      key: 'id',
+      model: "ice_machines",
+      key: "id",
     },
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
   },
   service_policy_id: {
     field: "service_policy_id",
@@ -58,11 +58,11 @@ const attributes = {
     allowNull: false,
     comment: "ServicePolicies 테이블의 PK (외래키)",
     references: {
-      model: 'service_policies',
-      key: 'id',
+      model: "service_policies",
+      key: "id",
     },
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
   },
   reserved_date: {
     field: "reserved_date",
@@ -84,9 +84,15 @@ const attributes = {
   },
   status: {
     field: "status",
-    type: DataTypes.ENUM('PENDING', 'CONFIRMED', 'START', 'COMPLETED', 'CANCELED'),
+    type: DataTypes.ENUM(
+      "PENDING",
+      "CONFIRMED",
+      "START",
+      "COMPLETED",
+      "CANCELED"
+    ),
     allowNull: false,
-    defaultValue: 'PENDING',
+    defaultValue: "PENDING",
     comment: "예약 상태",
   },
   createdAt: {

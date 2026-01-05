@@ -99,6 +99,11 @@ function getClaimWithVerifyToken(token) {
   try {
     return jwt.verify(token, process.env.JWT_SECRET); // payload (claim) {} 반환
   } catch (error) {
+    // 구체적인 에러 원인을 파악하기 위해 로그 추가
+    console.error("JWT Verify Error Detail:", {
+      message: error.message,
+      token: token ? `${token.substring(0, 10)}...` : "null/empty",
+    });
     if (error instanceof jwt.TokenExpiredError) {
       throw myError("토큰 만료", EXPIRED_TOKEN_ERROR);
     } else if (error instanceof jwt.JsonWebTokenError) {
