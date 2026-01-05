@@ -34,4 +34,18 @@ router.get(
   reservationsController.getAvailability
 );
 
+// 사용자 ID로 예약 목록 조회 (점주)
+router.get(
+  "/by-user/:userId",
+  authMiddleware,
+  reservationsController.getReservationsForUser
+);
+
+// 예약 취소
+router.patch(
+  "/cancel/:reservationId",
+  authMiddleware,
+  reservationsController.cancelReservation
+);
+
 export default router;

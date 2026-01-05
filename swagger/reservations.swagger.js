@@ -176,3 +176,125 @@
  *       404:
  *         description: 서비스 정책을 찾을 수 없음
  */
+
+/**
+ * @swagger
+ * /api/reservations/by-user/{userId}:
+ *   get:
+ *     summary: 사용자 소유 예약 목록 조회
+ *     tags: [Reservations]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: "예약 목록을 조회할 사용자의 ID"
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [PENDING, CONFIRMED, START, COMPLETED, CANCELED]
+ *         required: false
+ *         description: "필터링할 예약 상태"
+ *     responses:
+ *       200:
+ *         description: 예약 목록 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: string
+ *                   example: "00"
+ *                 msg:
+ *                   type: string
+ *                   example: "정상 처리"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 101
+ *                       businessId:
+ *                         type: integer
+ *                         example: 1
+ *                       iceMachineId:
+ *                         type: integer
+ *                         example: 1
+ *                       servicePolicyId:
+ *                         type: integer
+ *                         example: 1
+ *                       reservedDate:
+ *                         type: string
+ *                         format: date
+ *                         example: "2026-01-20"
+ *                       serviceWindow:
+ *                         type: string
+ *                         example: "14:00 ~ 15:00"
+ *                       status:
+ *                         type: string
+ *                         example: "CONFIRMED"
+ *                       engineerName:
+ *                         type: string
+ *                         example: "김기사"
+ *                       engineerPhone:
+ *                         type: string
+ *                         example: "010-1234-5678"
+ *       401:
+ *         description: 인증 실패
+ *       403:
+ *         description: 접근 권한 없음 (자신의 예약만 조회 가능)
+ */
+
+/**
+ * @swagger
+ * /api/reservations/cancel/{reservationId}:
+ *   patch:
+ *     summary: 예약 취소
+ *     tags: [Reservations]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: reservationId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: "취소할 예약의 ID"
+ *     responses:
+ *       200:
+ *         description: 예약 취소 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: string
+ *                   example: "00"
+ *                 msg:
+ *                   type: string
+ *                   example: "정상 처리"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "예약이 성공적으로 취소되었습니다."
+ *       400:
+ *         description: 잘못된 요청 (이미 취소할 수 없는 상태)
+ *       401:
+ *         description: 인증 실패
+ *       403:
+ *         description: 접근 권한 없음 (자신의 예약만 취소 가능)
+ *       404:
+ *         description: 예약을 찾을 수 없음
+ *       409:
+ *         description: 충돌 (서비스 24시간 전 취소 불가 등 정책 위반)
+ */

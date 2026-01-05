@@ -11,14 +11,16 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter.js";
 import db from "../models/index.js";
 import reservationsRepository from "../repositories/reservations.repository.js";
 import engineersRepository from "../repositories/engineers.repository.js";
+import businessesRepository from "../repositories/businesses.repository.js";
 import myError from "../errors/customs/my.error.js";
 import {
   BAD_REQUEST_ERROR,
   NOT_FOUND_ERROR,
   CONFLICT_ERROR,
+  FORBIDDEN_ERROR,
 } from "../../configs/responseCode.config.js";
 
-const { sequelize, ServicePolicy, Business, IceMachine } = db;
+const { sequelize, ServicePolicy, Business, IceMachine, User, Engineer } = db;
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -237,7 +239,117 @@ async function createAndAssignReservation(userId, reservationDto) {
   }
 }
 
+async function cancelReservation(reservationId, userId) {
+  const t = await sequelize.transaction(); // 트랜잭션 시작
+
+  try {
+    const reservation = await reservationsRepository.findReservationById(
+      reservationId,
+      t
+    );
+
+    if (!reservation) {
+      throw new myError("예약을 찾을 수 없습니다.", NOT_FOUND_ERROR);
+    }
+
+    // 예약 소유자 검증
+    if (reservation.userId !== userId) {
+      throw new myError("해당 예약에 대한 권한이 없습니다.", FORBIDDEN_ERROR);
+    }
+
+    // 취소 가능 상태 확인
+    if (!["PENDING", "CONFIRMED"].includes(reservation.status)) {
+      throw new myError(
+        `현재 예약 상태(${reservation.status})에서는 취소할 수 없습니다.`,
+        BAD_REQUEST_ERROR
+      );
+    }
+
+    // 24시간 정책 확인
+    const serviceStartTime = dayjs(reservation.serviceStartTime);
+    const now = dayjs();
+    const diffHours = serviceStartTime.diff(now, 'hour');
+
+    if (diffHours < 24) {
+      throw new myError(
+        "서비스 시작 24시간 전에는 취소할 수 없습니다. 고객센터에 문의하세요.",
+        CONFLICT_ERROR // Using CONFLICT_ERROR for business logic conflict
+      );
+    }
+
+    // 예약 상태를 CANCELED로 업데이트
+    const isUpdated = await reservationsRepository.updateReservation(
+      reservationId,
+      { status: "CANCELED" },
+      t
+    );
+
+    if (!isUpdated) {
+      throw new myError("예약 취소에 실패했습니다.", CONFLICT_ERROR);
+    }
+
+    await t.commit();
+    return true;
+  } catch (error) {
+    await t.rollback();
+    throw error;
+  }
+}
+
+const getReservationsForUser = async (userId, status = null) => {
+  // 1. Get all businesses owned by the user
+  const businesses = await businessesRepository.findBusinessesByUserId(userId);
+  const businessIds = businesses.map((business) => business.id);
+
+  if (businessIds.length === 0) {
+    return []; // No businesses owned, so no reservations
+  }
+
+  // 2. Get all reservations for these businesses (basic info only)
+  const reservations = await reservationsRepository.findReservationsByBusinessIds(
+    businessIds,
+    status
+  );
+
+  // 3. Transform data, fetching engineer details for each reservation (N+1)
+  const formattedReservations = await Promise.all(
+    reservations.map(async (reservation) => {
+      let engineerName = "배정 중";
+      let engineerPhone = null;
+
+      if (reservation.engineerId) {
+        const engineerRecord = await Engineer.findByPk(reservation.engineerId);
+        if (engineerRecord) {
+          const engineerUser = await User.findByPk(engineerRecord.userId);
+          if (engineerUser) {
+            engineerName = engineerUser.name;
+            engineerPhone = engineerUser.phoneNumber;
+          }
+        }
+      }
+
+      return {
+        id: reservation.id,
+        businessId: reservation.businessId,
+        iceMachineId: reservation.iceMachineId,
+        servicePolicyId: reservation.servicePolicyId,
+        reservedDate: dayjs(reservation.reservedDate).format("YYYY-MM-DD"),
+        serviceWindow: `${dayjs(reservation.serviceStartTime).format(
+          "HH:mm"
+        )} ~ ${dayjs(reservation.serviceEndTime).format("HH:mm")}`,
+        status: reservation.status,
+        engineerName: engineerName,
+        engineerPhone: engineerPhone,
+      };
+    })
+  );
+
+  return formattedReservations;
+};
+
 export default {
   getDisabledSlots,
   createAndAssignReservation,
+  cancelReservation,
+  getReservationsForUser,
 };

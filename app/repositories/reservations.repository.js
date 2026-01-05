@@ -37,9 +37,37 @@ const findReservationsByDateRange = async (startDate, endDate) => {
   });
 };
 
+const findReservationsByBusinessIds = async (businessIds, status = null) => {
+  const whereClause = {
+    businessId: businessIds,
+  };
+
+  if (status) {
+    whereClause.status = status;
+  }
+
+  return await Reservation.findAll({
+    where: whereClause,
+    attributes: [
+      'id',
+      'businessId',
+      'iceMachineId',
+      'servicePolicyId',
+      'reservedDate',
+      'serviceStartTime',
+      'serviceEndTime',
+      'status',
+      'engineerId',
+    ],
+    order: [["reservedDate", "DESC"]],
+    paranoid: false,
+  });
+};
+
 export default {
   createReservation,
   updateReservation,
   findReservationById,
   findReservationsByDateRange,
+  findReservationsByBusinessIds,
 };

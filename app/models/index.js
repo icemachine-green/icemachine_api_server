@@ -30,12 +30,12 @@ const sequelize = new Sequelize(
     dialect: "mysql",
     logging: false, // 로깅이 필요하면 console.log로 변경
     // --- 타임존 설정 추가 시작 ---
-    // timezone: "+09:00", // Sequelize가 쿼리를 작성할 때 한국 시간대 적용
-    // dialectOptions: {
-    //   charset: "utf8mb4",
-    //   dateStrings: true, // DB에서 날짜를 읽어올 때 문자열로 강제 변환 (자동 변환 방지)
-    //   typeCast: true, // DB에서 날짜를 가져올 때 설정한 timezone 적용
-    // },
+    timezone: "+09:00", // Sequelize가 쿼리를 작성할 때 한국 시간대 적용
+    dialectOptions: {
+      charset: "utf8mb4",
+      dateStrings: true, // DB에서 날짜를 읽어올 때 문자열로 강제 변환 (자동 변환 방지)
+      typeCast: true, // DB에서 날짜를 가져올 때 설정한 timezone 적용
+    },
     pool: {
       max: parseInt(process.env.DB_POOL_MAX),
       min: parseInt(process.env.DB_POOL_MIN),
