@@ -30,6 +30,12 @@ const attributes = {
     allowNull: false,
     comment: '해시된 비밀번호',
   },
+  refreshToken: {
+    field: 'refresh_token',
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '리프레시 토큰',
+  },
   name: {
     field: 'name',
     type: DataTypes.STRING,

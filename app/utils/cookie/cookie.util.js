@@ -130,8 +130,43 @@ function clearCookieRefreshToken(res) {
   );
 }
 
+// --- Admin-specific cookie functions ---
+
+/**
+ * 쿠키에 관리자용 리프레시 토큰 설정
+ * @param {import('express').Reponse} res
+ * @param {string} refreshToken
+ */
+function setAdminCookieRefreshToken(res, refreshToken) {
+  setCookie(
+    res,
+    process.env.JWT_REFRESH_TOKEN_COOKIE_NAME, // 쿠키 이름은 동일하게 사용
+    refreshToken,
+    parseInt(process.env.JWT_REFRESH_TOKEN_COOKIE_EXPIRY),
+    true, // httpOnly
+    false, // secureFlg (로컬 테스트를 위해 false로 설정)
+    '/api/admin/reissue' // 관리자용 재발급 경로
+  );
+}
+
+/**
+ * 관리자용 리프레시 토큰 쿠키 제거
+ */
+function clearAdminCookieRefreshToken(res) {
+  clearCookie(
+    res,
+    process.env.JWT_REFRESH_TOKEN_COOKIE_NAME,
+    true,
+    false, // secureFlg (로컬 테스트를 위해 false로 설정)
+    '/api/admin/reissue' // 관리자용 재발급 경로
+  );
+}
+
+
 export default {
   setCookieRefreshToken,
   getCookieRefreshToken,
   clearCookieRefreshToken,
+  setAdminCookieRefreshToken,
+  clearAdminCookieRefreshToken,
 };

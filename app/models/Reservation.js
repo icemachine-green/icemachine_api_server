@@ -123,12 +123,27 @@ const attributes = {
   },
 };
 
+// ... 기존 코드 상단 동일
 const options = {
   tableName: "reservations",
   timestamps: true,
   paranoid: true,
+  hooks: {
+    // status가 'CANCELED'로 업데이트될 때 알림 생성
+    afterUpdate: async (reservation, options) => {
+      if (reservation.changed("status") && reservation.status === "CANCELED") {
+        const { AdminNotification } = reservation.sequelize.models;
+        await AdminNotification.create({
+          type: "RESERVATION_CANCEL",
+          referenceId: reservation.id,
+          message: `예약 번호 ${reservation.id}번이 취소되었습니다.`,
+          isTodo: true, // 취소건은 중요하므로 자동으로 TODO 등록
+        });
+      }
+    },
+  },
 };
-
+// ...
 const Reservation = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
@@ -155,10 +170,9 @@ const Reservation = {
       foreignKey: "service_policy_id",
       targetKey: "id",
     });
-
-    db.Reservation.hasMany(db.Review, {
-      foreignKey: "reservation_id",
-      sourceKey: "id",
+    db.Reservation.hasMany(db.AdminNotification, {
+      foreignKey: 'referenceId',
+      sourceKey: 'id',
     });
   },
 };
