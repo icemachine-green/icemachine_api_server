@@ -91,6 +91,12 @@ const attributes = {
     defaultValue: "PENDING",
     comment: "예약 상태",
   },
+  cancelReason: {
+    field: "cancel_reason",
+    type: DataTypes.TEXT, // STRING 또는 TEXT (사유 길이에 따라 선택)
+    allowNull: true, // TODO: 기사페이지에서만 구현이 된 상태라 기사 프론트에서 취소사유 없을시 클릭 막음. 추후 보완 필요
+    comment: "예약 취소 사유",
+  },
   createdAt: {
     field: "created_at",
     type: DataTypes.DATE,
@@ -156,10 +162,10 @@ const Reservation = {
       targetKey: "id",
     });
 
-    db.Reservation.hasMany(db.Review, {
-      foreignKey: "reservation_id",
-      sourceKey: "id",
-    });
+    // db.Reservation.hasMany(db.Review, {
+    //   foreignKey: "reservation_id",
+    //   sourceKey: "id",
+    // });
   },
 };
 

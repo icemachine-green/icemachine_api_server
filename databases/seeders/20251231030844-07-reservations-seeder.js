@@ -52,6 +52,8 @@ export default {
         ? faker.helpers.arrayElement(engineers)
         : null;
 
+      const isCanceled = Math.random() < 0.1; // 10%만 취소 (임의로 예약건 중 10%는 취소로 만들기)
+
       reservations.push({
         user_id: customer.id,
         business_id: business.id,
@@ -61,7 +63,15 @@ export default {
         reserved_date: reservedDate.format("YYYY-MM-DD"),
         service_start_time: serviceStart.format("YYYY-MM-DD HH:mm:ss"),
         service_end_time: serviceEnd.format("YYYY-MM-DD HH:mm:ss"),
-        status: assignEngineer ? "CONFIRMED" : "PENDING",
+        status: isCanceled ? "CANCELED" : assignEngineer ? "CONFIRMED" : "PENDING",
+        cancel_reason: isCanceled
+          ? faker.helpers.arrayElement([
+              "고객 요청",
+              "기사 일정 불가",
+              "기상 악화",
+              "중복 예약",
+            ])
+          : null,
         created_at: now.format("YYYY-MM-DD HH:mm:ss"),
         updated_at: now.format("YYYY-MM-DD HH:mm:ss"),
         deleted_at: null,
