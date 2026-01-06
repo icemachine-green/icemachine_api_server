@@ -17,6 +17,17 @@ const findActiveEngineersWithShifts = async () => {
   });
 };
 
+const findEngineerByUserId = async (userId) => {
+  return await Engineer.findOne({
+    where: {
+      userId,
+      deletedAt: null,
+    },
+    attributes: ["id", "skillLevel", "isActive", "introduction"],
+  });
+};
+
 export default {
   findActiveEngineersWithShifts,
+  findEngineerByUserId,
 };
