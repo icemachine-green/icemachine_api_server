@@ -5,7 +5,7 @@ const AdminNotification = db.AdminNotification;
 const Reservation = db.Reservation;
 const User = db.User;
 
-const AdminNotificationRepository = {
+const adminNotificationRepository = {
     /**
      * 숨김 처리되지 않은 모든 알림을 페이지네이션으로 조회합니다.
      * @param {number} offset - 페이지 오프셋
@@ -57,4 +57,4 @@ const AdminNotificationRepository = {
     }
 };
 
-export default AdminNotificationRepository;
+export default adminNotificationRepository;

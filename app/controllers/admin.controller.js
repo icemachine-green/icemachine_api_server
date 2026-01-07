@@ -1,11 +1,11 @@
-import AdminService from "../services/AdminService.js";
+import AdminService from "../services/admin.service.js";
 import { createBaseResponse } from "../utils/createBaseResponse.util.js";
 import { SUCCESS, REISSUE_ERROR } from "../../configs/responseCode.config.js";
 import myError from "../errors/customs/my.error.js";
 import jwtUtil from "../utils/jwt/jwt.util.js";
 import cookieUtil from "../utils/cookie/cookie.util.js";
 
-const AdminController = {
+const adminController = {
   /**
    * POST /api/admin/accounts - 새로운 관리자 계정 생성
    */
@@ -61,9 +61,23 @@ const AdminController = {
 
       cookieUtil.setAdminCookieRefreshToken(res, refreshToken);
 
+      const adminPayload = {
+        id: admin.id,
+        username: admin.username,
+        name: admin.name,
+        role: admin.role,
+        lastLoginAt: admin.lastLoginAt,
+      };
+
       return res
         .status(SUCCESS.status)
-        .send(createBaseResponse(SUCCESS, { accessToken }, "로그인 성공"));
+        .send(
+          createBaseResponse(
+            SUCCESS,
+            { accessToken, admin: adminPayload },
+            "로그인 성공"
+          )
+        );
     } catch (error) {
       next(error);
     }
@@ -93,4 +107,4 @@ const AdminController = {
   },
 };
 
-export default AdminController;
+export default adminController;

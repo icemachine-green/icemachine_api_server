@@ -2,7 +2,7 @@ import db from '../models/index.js';
 
 const Admin = db.Admin;
 
-const AdminRepository = {
+const adminRepository = {
     /**
      * 사용자 이름으로 관리자를 조회합니다.
      * @param {string} username - 조회할 사용자 이름
@@ -77,4 +77,4 @@ const AdminRepository = {
     },
 };
 
-export default AdminRepository;
+export default adminRepository;

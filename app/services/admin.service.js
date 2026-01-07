@@ -1,10 +1,10 @@
-import AdminRepository from '../repositories/AdminRepository.js';
+import AdminRepository from '../repositories/admin.repository.js';
 import bcrypt from 'bcrypt';
 import myError from '../errors/customs/my.error.js';
 import jwtUtil from '../utils/jwt/jwt.util.js';
 import { REISSUE_ERROR } from '../../configs/responseCode.config.js';
 
-const AdminService = {
+const adminService = {
     /**
      * 새로운 관리자 계정을 생성합니다. (SUPER_ADMIN만 호출 가능)
      * @param {object} adminData - { username, password, name, role }
@@ -96,5 +96,5 @@ const AdminService = {
     },
 };
 
-export default AdminService;
+export default adminService;
 

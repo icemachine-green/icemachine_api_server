@@ -1,7 +1,7 @@
-import AdminNotificationRepository from '../repositories/AdminNotificationRepository.js';
+import AdminNotificationRepository from '../repositories/admin.notification.repository.js';
 import { buildPaginatedResponse } from '../utils/pagination.util.js'; // 페이지네이션 유틸 (추후 생성 필요)
 
-const AdminNotificationService = {
+const adminNotificationService = {
     /**
      * 페이지네이션을 적용하여 알림 목록을 조회합니다.
      * @param {number} page - 현재 페이지 번호
@@ -79,4 +79,4 @@ const AdminNotificationService = {
 
 
 
-export default AdminNotificationService;
+export default adminNotificationService;

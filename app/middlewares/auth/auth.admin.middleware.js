@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import myError from '../../errors/customs/my.error.js';
-import AdminRepository from '../../repositories/AdminRepository.js';
+import adminRepository from '../../repositories/admin.repository.js';
 
 const authAdminMiddleware = async (req, res, next) => {
     try {
@@ -20,7 +20,7 @@ const authAdminMiddleware = async (req, res, next) => {
         }
 
         // 2. DB에서 관리자 조회
-        const admin = await AdminRepository.findById(adminId);
+        const admin = await adminRepository.findById(adminId);
 
         // 3. 관리자 존재 및 활성 상태 확인
         if (!admin || !admin.isActive) {
