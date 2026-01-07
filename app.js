@@ -23,7 +23,10 @@ const port = process.env.PORT;
 
 // 미들웨어 설정
 app.use(cors({
-  origin: process.env.CLIENT_FRONTEND_URL, // 프론트엔드 주소
+  origin: [
+    process.env.CLIENT_FRONTEND_URL, // 고객 프론트엔드 주소
+    process.env.ENGINEER_FRONTEND_URL // 기사 프론트엔드 주소
+  ],
   credentials: true // 자격 증명(쿠키 등) 허용
 }));
 app.use(cookieParser()); // cookie-parser 미들웨어 등록

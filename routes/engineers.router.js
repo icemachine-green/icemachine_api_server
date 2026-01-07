@@ -9,6 +9,12 @@ import authMiddleware from "../app/middlewares/auth/auth.middleware.js";
 
 const router = express.Router();
 
+// 인증 관련 라우터
+router.get("/kakao/authorize", engineersController.kakaoAuthorize);
+router.get("/kakao/callback", engineersController.kakaoCallback);
+router.post("/social-signup", engineersController.socialSignup);
+router.post("/reissue", engineersController.reissue);
+
 // Engineer 전용 API
 // router.get("/me/dashboard", authMiddleware, engineersController.getDashboard);
 // router.get("/me/reservations", authMiddleware, engineersController.getMyReservations);

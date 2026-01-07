@@ -27,7 +27,12 @@ const findEngineerByUserId = async (userId) => {
   });
 };
 
+const createEngineer = async (engineerData) => {
+  return await Engineer.create(engineerData);
+};
+
 export default {
   findActiveEngineersWithShifts,
   findEngineerByUserId,
+  createEngineer,
 };
