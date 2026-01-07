@@ -2,6 +2,7 @@
  * @file app/controllers/users.controller.js
  * @description 유저 관련 컨트롤러
  * 251216 v1.0.0 Lee init
+ * 260107 v1.1.0 Gemini-Refactor: state 기반 동적 리다이렉트 적용
  */
 import { URL } from "url";
 import usersService from "../services/users.service.js";
@@ -15,7 +16,10 @@ import myError from "../errors/customs/my.error.js";
 
 async function kakaoAuthorize(req, res, next) {
   try {
-    const kakaoAuthorizeUrl = socialKakaoUtil.getAuthorizeUrl();
+    // 프론트에서 넘어온 :client 값을 카카오의 state 파라미터로 전달
+    const kakaoAuthorizeUrl = socialKakaoUtil.getAuthorizeUrl(
+      req.params.client
+    );
     res.redirect(kakaoAuthorizeUrl);
   } catch (err) {
     console.error(err);
@@ -24,7 +28,8 @@ async function kakaoAuthorize(req, res, next) {
 }
 
 async function kakaoCallback(req, res, next) {
-  const { code } = req.query;
+  const { code, state } = req.query; // 프론트에서 넘겼던 client 또는 engineer 값이 들어옴
+
   try {
     const tokenResponse = await fetch(process.env.SOCIAL_KAKAO_API_URL_TOKEN, {
       method: "POST",
@@ -38,8 +43,8 @@ async function kakaoCallback(req, res, next) {
         code,
       }),
     });
+
     const tokenData = await tokenResponse.json();
-    console.log("1. 토큰 응답 확인:", tokenData); // 여기서 error가 찍히는지 확인!
     if (tokenData.error) throw new Error(tokenData.error_description);
 
     const userResponse = await fetch(
@@ -49,28 +54,37 @@ async function kakaoCallback(req, res, next) {
       }
     );
     const userData = await userResponse.json();
-    console.log("2. 유저 데이터 확인:", userData); // 만약 여기서 userData.id가 안 찍힌다면 위 단계에서 토큰이 잘못된 것입니다.
 
     const user = await usersService.processKakaoUser(userData.id);
+
+    // [변경 포인트 1] state 값에 따른 리다이렉트 주소 분기 처리 (env 변수명 적용)
+    // 고객(client)이면 SOCIAL_CLIENT_CALLBACK_URL, 기사(engineer)면 SOCIAL_ENGINEER_CALLBACK_URL 사용
+    const homeUrl =
+      state === "engineer"
+        ? process.env.SOCIAL_ENGINEER_CALLBACK_URL
+        : process.env.SOCIAL_CLIENT_CALLBACK_URL;
 
     if (user) {
       // 기존 사용자 로그인
       const { refreshToken } = await authService.loginUser(user);
       cookieUtil.setCookieRefreshToken(res, refreshToken);
-      const homeUrl = process.env.SOCIAL_CLIENT_CALLBACK_URL;
+
+      // [변경 포인트 2] 결정된 주소로 리다이렉트
       return res.redirect(homeUrl);
     } else {
-      // 신규 사용자, 회원가입 페이지로 리다이렉트
+      // 신규 사용자
       const { id, kakao_account } = userData;
       const query = new URLSearchParams({
         socialId: id,
         provider: "kakao",
         email: kakao_account.email || "",
         name: kakao_account.profile.nickname || "",
+        role: state, // 회원가입 페이지에 누가 가입하려 하는지 정보 전달
       }).toString();
 
-      // 프론트엔드의 회원가입 페이지로 리다이렉트
-      res.redirect(`${process.env.SOCIAL_CLIENT_SIGNUP_URL}?${query}`);
+      // [변경 포인트 3] 회원가입 페이지 리다이렉트 (필요 시 기사용 signup URL env 추가 권장)
+      // 현재 env 기준으로는 SOCIAL_CLIENT_SIGNUP_URL을 기본으로 사용합니다.
+      return res.redirect(`${process.env.SOCIAL_CLIENT_SIGNUP_URL}?${query}`);
     }
   } catch (err) {
     console.error(err);
@@ -80,7 +94,8 @@ async function kakaoCallback(req, res, next) {
 
 async function socialSignup(req, res, next) {
   try {
-    const { socialId, provider, name, phoneNumber, email } = req.body;
+    // [변경 포인트 4] 프론트에서 가입 요청 시 보낸 role(state) 정보 활용
+    const { socialId, provider, name, phoneNumber, email, role } = req.body;
     const { refreshToken } = await authService.createAndLoginSocialUser(
       socialId,
       provider,
@@ -91,7 +106,16 @@ async function socialSignup(req, res, next) {
 
     cookieUtil.setCookieRefreshToken(res, refreshToken);
 
-    return res.redirect(process.env.CLIENT_REGISTER_BUSINESS_URL);
+    // [변경 포인트 5] 가입 완료 후 리다이렉트 주소 분기
+    const completionUrl =
+      role === "engineer"
+        ? process.env.SOCIAL_ENGINEER_CALLBACK_URL
+        : process.env.CLIENT_REGISTER_BUSINESS_URL;
+
+    // POST 요청이므로 URL을 응답 바디에 담아 보내 프론트에서 이동시키도록 처리
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, { redirectUrl: completionUrl }));
   } catch (err) {
     console.error(err);
     if (err.status) {
@@ -102,21 +126,15 @@ async function socialSignup(req, res, next) {
 }
 
 async function reissue(req, res, next) {
-  console.log(req.cookies);
   try {
     const token = cookieUtil.getCookieRefreshToken(req);
-
-    // 토큰 존재 여부 확인
     if (!token) {
       throw myError("리프래시 토큰 없음", REISSUE_ERROR);
     }
 
-    // 토큰 재발급 처리
     const { accessToken, refreshToken, user } = await authService.reissue(
       token
     );
-
-    // 쿠키에 refresh token 설정
     cookieUtil.setCookieRefreshToken(res, refreshToken);
 
     return res
@@ -127,50 +145,31 @@ async function reissue(req, res, next) {
   }
 }
 
-/**
- * 내 정보 조회
- */
 async function getMe(req, res, next) {
   try {
-    // 로그인 전 테스트용
-    const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
-    // const userId = 3; // TODO: 로그인 완성되면 삭제
-
+    const userId = req.user.id;
     const user = await usersService.getMe(userId);
-
-    return res
-      .status(SUCCESS.status)
-      .send(createBaseResponse(SUCCESS, user));
+    return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS, user));
   } catch (error) {
     next(error);
   }
-};
+}
 
-/**
- * 내 정보 수정
- */
 const updateMe = async (req, res, next) => {
   try {
-    // 로그인 전 테스트용
-    const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
-    // const userId = 3; // TODO: 로그인 완성되면 삭제
-
+    const userId = req.user.id;
     const updateDto = {
       name: req.body?.name,
       email: req.body?.email,
       phoneNumber: req.body?.phoneNumber,
     };
-
     const updatedUser = await usersService.updateMe(userId, updateDto);
-
     return res
       .status(SUCCESS.status)
       .send(createBaseResponse(SUCCESS, updatedUser));
-    } catch (error) {
+  } catch (error) {
     if (error.status) {
-      return res
-        .status(error.status)
-        .send(createBaseResponse(error));
+      return res.status(error.status).send(createBaseResponse(error));
     }
     next(error);
   }
@@ -179,12 +178,8 @@ const updateMe = async (req, res, next) => {
 const checkEmailDuplicate = async (req, res, next) => {
   try {
     const { email } = req.query;
-
     const exists = await usersService.checkEmailDuplicate(email);
-
-    return res
-      .status(SUCCESS.status)
-      .send(createBaseResponse(SUCCESS, exists));
+    return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS, exists));
   } catch (error) {
     next(error);
   }
@@ -192,19 +187,11 @@ const checkEmailDuplicate = async (req, res, next) => {
 
 const withdrawMe = async (req, res) => {
   try {
-    // 로그인 전 테스트용
-    const userId = req.user.id; // TODO: 로그인 완성되면 이코드로 변경
-    // const userId = 3; // TODO: 로그인 완성되면 삭제
-
+    const userId = req.user.id;
     await usersService.withdrawUser(userId);
-
-    return res.status(200).json({
-      message: "회원 탈퇴가 완료되었습니다.",
-    });
+    return res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message,
-    });
+    return res.status(400).json({ message: error.message });
   }
 };
 

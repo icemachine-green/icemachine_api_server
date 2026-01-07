@@ -10,7 +10,7 @@ import validationHandler from "../app/middlewares/validations/validation.handler
 
 const router = express.Router();
 
-router.get("/kakao/authorize", usersController.kakaoAuthorize);
+router.get("/kakao/authorize/:client", usersController.kakaoAuthorize);
 router.get("/kakao/callback", usersController.kakaoCallback);
 router.post(
   "/social-signup",
