@@ -7,6 +7,7 @@ import express from "express";
 import usersController from "../app/controllers/users.controller.js";
 import socialSignupValidator from "../app/middlewares/validations/validators/user.social-signup.validator.js";
 import validationHandler from "../app/middlewares/validations/validation.handler.js";
+import engineersController from "../app/controllers/engineers.controller.js";
 
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.post(
   validationHandler,
   usersController.socialSignup
 );
+router.post('/social-signup/engineer', engineersController.socialSignup);
 router.post("/reissue", usersController.reissue);
 
 export default router;

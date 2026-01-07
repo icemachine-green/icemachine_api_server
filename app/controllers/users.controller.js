@@ -59,7 +59,7 @@ async function kakaoCallback(req, res, next) {
 
     // [변경 포인트 1] state 값에 따른 리다이렉트 주소 분기 처리 (env 변수명 적용)
     // 고객(client)이면 SOCIAL_CLIENT_CALLBACK_URL, 기사(engineer)면 SOCIAL_ENGINEER_CALLBACK_URL 사용
-    const homeUrl =
+    const domain =
       state === "engineer"
         ? process.env.SOCIAL_ENGINEER_CALLBACK_URL
         : process.env.SOCIAL_CLIENT_CALLBACK_URL;
@@ -70,7 +70,7 @@ async function kakaoCallback(req, res, next) {
       cookieUtil.setCookieRefreshToken(res, refreshToken);
 
       // [변경 포인트 2] 결정된 주소로 리다이렉트
-      return res.redirect(homeUrl);
+      return res.redirect(`${domain}${process.env.SOCIAL_CLIENT_CALLBACK_URL}`);
     } else {
       // 신규 사용자
       const { id, kakao_account } = userData;
@@ -84,7 +84,7 @@ async function kakaoCallback(req, res, next) {
 
       // [변경 포인트 3] 회원가입 페이지 리다이렉트 (필요 시 기사용 signup URL env 추가 권장)
       // 현재 env 기준으로는 SOCIAL_CLIENT_SIGNUP_URL을 기본으로 사용합니다.
-      return res.redirect(`${process.env.SOCIAL_CLIENT_SIGNUP_URL}?${query}`);
+      return res.redirect(`${domain}${process.env.SOCIAL_CLIENT_SIGNUP_URL}?${query}`);
     }
   } catch (err) {
     console.error(err);

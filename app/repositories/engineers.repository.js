@@ -27,8 +27,8 @@ const findEngineerByUserId = async (userId) => {
   });
 };
 
-const createEngineer = async (engineerData) => {
-  return await Engineer.create(engineerData);
+const createEngineer = async (t = null, engineerData) => {
+  return await Engineer.create(engineerData, { transaction: t });
 };
 
 export default {

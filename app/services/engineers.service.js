@@ -1,48 +1,9 @@
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
+import jwtUtil from "../utils/jwt/jwt.util.js";
 import usersRepository from "../repositories/users.repository.js";
 import engineersRepository from "../repositories/engineers.repository.js";
 import reservationsRepository from "../repositories/reservations.repository.js";
-
-/**
-* @description 카카오 로그인 페이지 URL 생성
-*/
-const getKakaoAuthorizeUrl = () => {
-  const { SOCIAL_KAKAO_API_URL_AUTHORIZE, SOCIAL_KAKAO_REST_API_KEY, ENGINEER_KAKAO_REDIRECT_URI } = process.env;
-  if (!SOCIAL_KAKAO_API_URL_AUTHORIZE || !SOCIAL_KAKAO_REST_API_KEY || !ENGINEER_KAKAO_REDIRECT_URI) {
-    throw new Error("KAKAO_ENV_NOT_SET");
-  }
-  const params = new URLSearchParams({
-    response_type: 'code',
-    client_id: SOCIAL_KAKAO_REST_API_KEY,
-    redirect_uri: ENGINEER_KAKAO_REDIRECT_URI
-  }).toString();
-
-  return `${SOCIAL_KAKAO_API_URL_AUTHORIZE}?${params}`;
-};
-
-/**
-* @description DB에 엔지니어가 있는지 확인
-*/
-const processKakaoEngineer = async (socialId) => {
-  const user = await usersRepository.findUserBySocialId(socialId);
-  if (user && user.role !== 'engineer') throw new Error("다른 역할로 가입된 계정입니다.");
-  return user;
-};
-
-/**
-* @description 기존 엔지니어 로그인 처리
-*/
-const loginEngineer = async (user) => {
-  const { JWT_SECRET, JWT_ACCESS_TOKEN_EXPIRY, JWT_REFRESH_TOKEN_EXPIRY } = process.env;
-  const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_ACCESS_TOKEN_EXPIRY });
-  const refreshToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_REFRESH_TOKEN_EXPIRY });
-
-  user.refreshToken = refreshToken;
-  await usersRepository.save(user);
-
-  return { accessToken, refreshToken };
-};
+import db from '../models/index.js';
 
 /**
 * @description 신규 엔지니어 생성 및 로그인 처리
@@ -53,51 +14,28 @@ const createAndLoginEngineer = async (socialId, provider, name, phoneNumber, ema
     throw new Error("이미 존재하는 이메일입니다.");
   }
 
-  const newUser = await usersRepository.createUser({
-    socialId,
-    provider,
-    name,
-    phoneNumber,
-    email,
-    role: "engineer", // role을 engineer로 지정
+  return await db.sequelize.transaction(async t => {
+    const newUser = await usersRepository.createUser(t, {
+      socialId, provider, name, phoneNumber, email, role: "engineer",
+    });
+  
+    await engineersRepository.createEngineer(t, { userId: newUser.id });
+  
+    // Token 생성
+    const accessToken = jwtUtil.generateAccessToken(newUser);
+    const refreshToken = jwtUtil.generateRefreshToken(newUser);
+  
+    // RefreshToken 저장
+    newUser.refreshToken = refreshToken;
+    await usersRepository.save(newUser, t);
+  
+    return {
+      user: newUser,
+      accessToken,
+      refreshToken,
+    }; // user, accessToken, refreshToken 반환
   });
-
-  await engineersRepository.createEngineer({ userId: newUser.id });
-
-  return await loginEngineer(newUser); // 로그인 처리 재사용
 };
-
-/**
-* @description 토큰 재발급
-*/
-const reissueToken = async (token) => {
-  const { JWT_SECRET, JWT_ACCESS_TOKEN_EXPIRY, JWT_REFRESH_TOKEN_EXPIRY } = process.env;
-  if (!token || !token.startsWith('Bearer ')) {
-    throw new Error('INVALID_REFRESH_TOKEN');
-  }
-  const tokenValue = token.split(' ')[1];
-
-  // 1. Refresh Token 유효성 검증
-  const decoded = jwt.verify(tokenValue, JWT_SECRET);
-  const user = await usersRepository.findUserById(decoded.userId);
-  if (!user || user.refreshToken !== tokenValue) {
-    throw new Error('INVALID_REFRESH_TOKEN');
-  }
-
-  // 2. 새로운 Access Token 발급
-  const newAccessToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_ACCESS_TOKEN_EXPIRY });
-
-  // 3. Refresh Token 만료가 7일 이내로 남으면 새로 발급
-  let newRefreshToken;
-  const expiresIn = (decoded.exp * 1000 - Date.now()) / (1000 * 60 * 60 * 24); // 남은 만료일
-  if (expiresIn < 7) {
-    newRefreshToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_REFRESH_TOKEN_EXPIRY });
-    user.refreshToken = newRefreshToken;
-    await usersRepository.save(user);
-  }
-
-  return { newAccessToken, newRefreshToken };
-}
 
 const getDashboard = async (userId) => {
   // 1. 유저 확인
@@ -368,11 +306,7 @@ const getMonthlyCalendar = async (userId, year, month) => {
 
 
 export default {
-  getKakaoAuthorizeUrl,
-  processKakaoEngineer,
-  loginEngineer,
   createAndLoginEngineer,
-  reissueToken,
   getDashboard,
   getDailyReservations,
   getReservationDetail,
