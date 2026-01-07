@@ -8,13 +8,14 @@
  * 카카오 인가 코드 발급 URL 생성
  * @return {string} URL
  */
-function getAuthorizeUrl() {
+function getAuthorizeUrl(client) {
   const params = {
     client_id: process.env.SOCIAL_KAKAO_REST_API_KEY,
     redirect_uri: `${process.env.APP_URL}${process.env.SOCIAL_KAKAO_CALLBACK_URL}`,
     response_type: "code", // code로 고정
     // TODO: 나중에 다시 살리자 up || 귀찮으면 다시 죽이자 down.
     prompt: "login", // 지울 시 매 로그인 필요 X
+    state: client,
   };
 
   const queryParams = new URLSearchParams(params).toString(); // 객체를 query parameter URL형태로 변경
