@@ -31,8 +31,26 @@ const createEngineer = async (t = null, engineerData) => {
   return await Engineer.create(engineerData, { transaction: t });
 };
 
+// 신규 기사 가입 시 기본 근무시간 자동 생성
+// 월~금 09:00~18:00
+const createDefaultShifts = async (t, engineerId) => {
+  const shifts = [];
+
+  for (let day = 1; day <= 5; day++) {
+    shifts.push({
+      engineerId,
+      availableDate: day,
+      shiftStart: '09:00:00',
+      shiftEnd: '18:00:00',
+    });
+  }
+
+  return await EngineerShift.bulkCreate(shifts, { transaction: t });
+};
+
 export default {
   findActiveEngineersWithShifts,
   findEngineerByUserId,
   createEngineer,
+  createDefaultShifts,
 };

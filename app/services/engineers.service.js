@@ -15,11 +15,16 @@ const createAndLoginEngineer = async (socialId, provider, name, phoneNumber, ema
   }
 
   return await db.sequelize.transaction(async t => {
+    // 1. User 생성
     const newUser = await usersRepository.createUser(t, {
       socialId, provider, name, phoneNumber, email, role: "engineer",
     });
-  
-    await engineersRepository.createEngineer(t, { userId: newUser.id });
+
+    // 2. Engineer 생성
+    const engineer = await engineersRepository.createEngineer(t, { userId: newUser.id });
+
+    // 3. 기본 근무시간 생성 (여기!)
+    await engineersRepository.createDefaultShifts(t, engineer.id);
   
     // Token 생성
     const accessToken = jwtUtil.generateAccessToken(newUser);
