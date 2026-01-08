@@ -1,9 +1,10 @@
-import axios from 'axios';
 import jwtUtil from "../utils/jwt/jwt.util.js";
 import usersRepository from "../repositories/users.repository.js";
 import engineersRepository from "../repositories/engineers.repository.js";
 import reservationsRepository from "../repositories/reservations.repository.js";
 import db from '../models/index.js';
+import myError from "../errors/customs/my.error.js";
+import { DATA_ABNORMALITY_ERROR } from "../../configs/responseCode.config.js";
 
 /**
 * @description 신규 엔지니어 생성 및 로그인 처리
@@ -98,39 +99,18 @@ const getDashboard = async (userId) => {
   };
 };
 
-const getDailyReservations = async (userId, date) => {
+const getDailyReservations = async ({userId, date, limit, offset}) => {
   const engineer = await engineersRepository.findEngineerByUserId(userId);
 
   if (!engineer) {
-    throw new Error("ENGINEER_NOT_FOUND");
+    throw myError("ENGINEER_NOT_FOUND", DATA_ABNORMALITY_ERROR);
   }
 
   if (!engineer.isActive) {
-    throw new Error("ENGINEER_INACTIVE");
+    throw myError("ENGINEER_INACTIVE", DATA_ABNORMALITY_ERROR);
   }
 
-  const reservations =
-    await reservationsRepository.findByEngineerAndDate(
-      engineer.id,
-      date
-    );
-
-  return reservations.map((r) => ({
-    reservationId: r.id,
-    time: `${r.serviceStartTime}~${r.serviceEndTime}`,
-
-    // Business 기준
-    managerName: r.Business?.managerName ?? null,
-    businessName: r.Business?.name ?? null,
-    businessAddress: r.Business
-      ? `${r.Business.mainAddress} ${r.Business.detailedAddress ?? ""}`
-      : null,
-
-    // ServicePolicy 기준
-    serviceType: r.ServicePolicy?.serviceType ?? null,
-
-    status: r.status,
-  }));
+  return await reservationsRepository.findByEngineerAndDate({engineerId: engineer.id, date, limit, offset});
 };
 
 const getReservationDetail = async (userId, reservationId) => {

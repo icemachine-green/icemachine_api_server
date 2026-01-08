@@ -94,8 +94,8 @@ const countByEngineerPkAndMonth = async (engineerPk, start, end) => {
   });
 };
 
-const findByEngineerAndDate = async (engineerId, date) => {
-  return Reservation.findAll({
+const findByEngineerAndDate = async ({engineerId, date, limit, offset}) => {
+  return Reservation.findAndCountAll({
     where: {
       engineerId,
       reservedDate: date,
@@ -103,6 +103,8 @@ const findByEngineerAndDate = async (engineerId, date) => {
         [Op.in]: ['CONFIRMED', 'START', 'COMPLETED', 'CANCELED'],
       },
     },
+    limit,
+    offset,
     include: [
       {
         model: Business,

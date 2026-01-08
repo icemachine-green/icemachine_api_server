@@ -46,24 +46,32 @@ async function getDashboard(req, res, next) {
 async function getMyReservations(req, res, next) {
   try {
     const userId = req.user.id;
-    const { date } = req.query;
+    const date = req.query.date;
+    const page = req.query.page ? Number(req.query.page) : 1;
+    const limit = req.query.limit ? Number(req.query.limit) : 3;
+    const offset = (page - 1) * limit;
 
-    if (!date) {
-      throw new Error("DATE_REQUIRED");
-    }
+    const { count, rows } = await engineersService.getDailyReservations({userId, date, limit, offset});
 
-    const reservations =
-      await engineersService.getDailyReservations(
-        userId,
-        date
-      );
+    const reservations = rows.map((r) => ({
+      reservationId: r.id,
+      time: `${r.serviceStartTime}~${r.serviceEndTime}`,
 
-    res.status(200).json({
-      date,
-      reservations,
-    });
+      // Business 기준
+      managerName: r.Business?.managerName ?? null,
+      businessName: r.Business?.name ?? null,
+      businessAddress: r.Business
+        ? `${r.Business.mainAddress} ${r.Business.detailedAddress ?? ""}`
+        : null,
+
+      // ServicePolicy 기준
+      serviceType: r.ServicePolicy?.serviceType ?? null,
+
+      status: r.status,
+    }));
+
+    res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, {date, limit, total: count, page, reservations }));
   } catch (err) {
-    console.error(err);
     next(err);
   }
 };
