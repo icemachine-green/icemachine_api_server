@@ -148,6 +148,18 @@ const BAD_FILE_ERROR = {
 Object.freeze(BAD_FILE_ERROR);
 
 /**
+ * 파라미터 에러 코드 설정
+ * @type {ResponseCodeConfig}
+ */
+const DATA_ABNORMALITY_ERROR = {
+  code: "E22",
+  msg: "Data Abnomality Error",
+  info: "요청 데이터 이상",
+  status: 400,
+};
+Object.freeze(DATA_ABNORMALITY_ERROR);
+
+/**
  * DB 에러 응답 코드 설정
  * @type {ResponseCodeConfig}
  */
@@ -183,6 +195,7 @@ export {
   REISSUE_ERROR,
   NOT_FOUND_ERROR,
   BAD_REQUEST_ERROR,
+  DATA_ABNORMALITY_ERROR,
   BAD_FILE_ERROR,
   DB_ERROR,
   SYSTEM_ERROR,

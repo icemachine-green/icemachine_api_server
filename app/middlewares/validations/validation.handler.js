@@ -16,11 +16,12 @@ import { BAD_REQUEST_ERROR } from "../../../configs/responseCode.config.js";
 const validationHandler = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    // 에러 메시지를 하나로 합치거나, 첫 번째 에러만 사용
-    const errorMessage = errors.array()[0].msg;
-    const errorResponse = { ...BAD_REQUEST_ERROR, info: errorMessage };
-    
-    return res.status(errorResponse.status).send(createBaseResponse(errorResponse));
+    // express validation error custom
+    const customErrors = errors.formatWith(error => `${error.path}: ${error.msg}`);
+
+    // 에러 응답
+    return res.status(BAD_REQUEST_ERROR.status)
+      .send(createBaseResponse(BAD_REQUEST_ERROR, customErrors.array()));
   }
   next();
 };
