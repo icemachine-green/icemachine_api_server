@@ -55,7 +55,8 @@ async function getMyReservations(req, res, next) {
 
     const reservations = rows.map((r) => ({
       reservationId: r.id,
-      time: `${r.serviceStartTime}~${r.serviceEndTime}`,
+      startAt: r.serviceStartTime,
+      endAt: r.serviceEndTime,
 
       // Business 기준
       managerName: r.Business?.managerName ?? null,

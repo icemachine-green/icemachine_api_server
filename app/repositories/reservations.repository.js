@@ -116,14 +116,17 @@ const findByEngineerAndDate = async ({engineerId, date, limit, offset}) => {
           "detailedAddress",
           "managerName",
         ],
+        required: false,
       },
       {
         model: ServicePolicy,
         attributes: ["serviceType"],
+        required: false,
       },
       {
         model: IceMachine,
         attributes: ["modelName", "sizeType"],
+        required: false,
       },
     ],
     order: [
