@@ -11,6 +11,37 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: '얼음 제빙기 서비스의 API 명세서입니다.',
   },
+  // 태그 순서 정의
+  tags: [
+    {
+      name: 'Auth',
+      description: '인증 (로그인/회원가입, 토큰) 관련 API',
+    },
+    {
+      name: 'Admin',
+      description: '관리자 전용 API (계정, 알림 관리)',
+    },
+    {
+      name: 'Admin-Reservations',
+      description: '관리자용 예약 관리 API',
+    },
+    {
+      name: 'Businesses',
+      description: '매장(업체) 관련 API',
+    },
+    {
+      name: 'IceMachines',
+      description: '제빙기 관련 API (사업장에 속한 제빙기 관리)',
+    },
+    {
+      name: 'Reservations',
+      description: '예약 관련 API',
+    },
+    {
+      name: 'Reviews',
+      description: '리뷰 관련 API',
+    },
+  ],
   servers: [
     {
       url: 'http://localhost:3000',

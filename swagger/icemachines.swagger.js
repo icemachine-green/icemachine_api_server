@@ -6,13 +6,6 @@
 
 /**
  * @swagger
- * tags:
- *   name: IceMachines
- *   description: 제빙기 관련 API (사업장에 속한 제빙기 관리)
- */
-
-/**
- * @swagger
  * /api/icemachines:
  *   get:
  *     summary: 특정 사업장의 제빙기 목록 조회

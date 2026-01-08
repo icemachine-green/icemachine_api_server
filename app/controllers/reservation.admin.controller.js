@@ -1,7 +1,6 @@
 import reservationAdminService from "../services/reservation.admin.service.js";
 import { createBaseResponse } from "../utils/createBaseResponse.util.js";
 import { SUCCESS } from "../../configs/responseCode.config.js";
-import myError from "../errors/customs/my.error.js";
 
 const reservationAdminController = {
   /**
@@ -9,7 +8,10 @@ const reservationAdminController = {
    */
   getDashboardStats: async (req, res, next) => {
     try {
-      const stats = await reservationAdminService.getDashboardStats();
+      // 쿼리 스트링에서 startDate 추출 (없으면 null)
+      const { startDate } = req.query;
+
+      const stats = await reservationAdminService.getDashboardStats(startDate);
       return res
         .status(SUCCESS.status)
         .send(createBaseResponse(SUCCESS, stats));
@@ -17,17 +19,32 @@ const reservationAdminController = {
       next(error);
     }
   },
-
-  /**
-   * GET /api/admin/reservations - 관리자용 예약 목록 조회
-   */
+  // getReservations 함수 내부 수정
   getReservations: async (req, res, next) => {
     try {
       const page = parseInt(req.query.page || 1, 10);
       const limit = parseInt(req.query.limit || 10, 10);
-      const { status, userName, engineerName } = req.query;
 
-      const filters = { status, userName, engineerName };
+      // [수정] startDate 추출 추가
+      const {
+        status,
+        userName,
+        engineerName,
+        orderBy,
+        sortBy,
+        reservationId,
+        startDate,
+      } = req.query;
+
+      const filters = {
+        status,
+        userName,
+        engineerName,
+        orderBy,
+        sortBy,
+        reservationId: reservationId || null,
+        startDate: startDate || null, // [추가]
+      };
 
       const result = await reservationAdminService.getReservations(
         page,

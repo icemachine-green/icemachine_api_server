@@ -49,17 +49,21 @@ const findReservationsByBusinessIds = async (businessIds, status = null) => {
   return await Reservation.findAll({
     where: whereClause,
     attributes: [
-      'id',
-      'businessId',
-      'iceMachineId',
-      'servicePolicyId',
-      'reservedDate',
-      'serviceStartTime',
-      'serviceEndTime',
-      'status',
-      'engineerId',
+      "id",
+      "businessId",
+      "iceMachineId",
+      "servicePolicyId",
+      "reservedDate",
+      "serviceStartTime",
+      "serviceEndTime",
+      "status",
+      "engineerId",
     ],
-    order: [["reservedDate", "DESC"]],
+    // [수정 핵심] 날짜를 1순위로, 시작 시간을 2순위로 오름차순 정렬
+    order: [
+      ["reservedDate", "ASC"], // 1. 가까운 날짜부터
+      ["serviceStartTime", "ASC"], // 2. 같은 날짜라면 빠른 시간부터
+    ],
     paranoid: false,
   });
 };

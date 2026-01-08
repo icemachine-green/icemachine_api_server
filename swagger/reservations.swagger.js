@@ -6,13 +6,6 @@
 
 /**
  * @swagger
- * tags:
- *   name: Reservations
- *   description: 예약 관련 API
- */
-
-/**
- * @swagger
  * /api/reservations:
  *   post:
  *     summary: 예약 생성 및 기사 자동 배정

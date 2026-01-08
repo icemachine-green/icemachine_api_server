@@ -6,13 +6,6 @@
 
 /**
  * @swagger
- * tags:
- *   name: Businesses
- *   description: 매장(업체) 관련 API
- */
-
-/**
- * @swagger
  * /api/businesses:
  *   post:
  *     summary: 새 매장 및 제빙기 등록

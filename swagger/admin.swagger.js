@@ -1,9 +1,4 @@
-/**
- * @swagger
- * tags:
- *   name: Admin
- *   description: 관리자 전용 API (계정, 알림 관리)
- */
+
 
 /**
  * @swagger

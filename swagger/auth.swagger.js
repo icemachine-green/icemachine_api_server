@@ -6,13 +6,6 @@
 
 /**
  * @swagger
- * tags:
- *   name: Auth
- *   description: 인증 (로그인/회원가입, 토큰) 관련 API
- */
-
-/**
- * @swagger
  * /api/auth/social-signup:
  *   post:
  *     summary: 소셜 회원가입 (추가 정보 입력)

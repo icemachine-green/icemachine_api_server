@@ -25,21 +25,17 @@ function setCookie(
   cookieValue,
   ttl,
   httpOnlyFlg = true,
-  secureFlg = false,
-  path = null
+  secureFlg = false, // 호출부에서 결정
+  path = "/"
 ) {
   const options = {
     expires: dayjs().add(ttl, "second").toDate(),
     httpOnly: httpOnlyFlg,
     secure: secureFlg,
-    sameSite: "none", // domain 검증 실행 여부
+    // secure가 true일 때만 "none" 사용, 아니면 "lax"
+    sameSite: secureFlg ? "none" : "lax",
+    path: path || "/",
   };
-
-  if (path) {
-    options.path = path;
-  }
-
-  console.log("Setting cookie with options:", options); // DEBUGGING
 
   res.cookie(cookieName, cookieValue, options);
 }
@@ -145,7 +141,7 @@ function setAdminCookieRefreshToken(res, refreshToken) {
     parseInt(process.env.JWT_REFRESH_TOKEN_COOKIE_EXPIRY),
     true, // httpOnly
     false, // secureFlg (로컬 테스트를 위해 false로 설정)
-    '/api/admin/reissue' // 관리자용 재발급 경로
+    "/" // 관리자용 재발급 경로
   );
 }
 
@@ -158,10 +154,9 @@ function clearAdminCookieRefreshToken(res) {
     process.env.JWT_REFRESH_TOKEN_COOKIE_NAME,
     true,
     false, // secureFlg (로컬 테스트를 위해 false로 설정)
-    '/api/admin/reissue' // 관리자용 재발급 경로
+    "/" // 관리자용 재발급 경로
   );
 }
-
 
 export default {
   setCookieRefreshToken,

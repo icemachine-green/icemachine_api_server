@@ -88,19 +88,26 @@ const adminController = {
    */
   reissue: async (req, res, next) => {
     try {
+      // 1. 쿠키에서 관리자용 토큰 획득
       const token = cookieUtil.getCookieRefreshToken(req);
       if (!token) {
         throw myError("리프레시 토큰이 없습니다.", REISSUE_ERROR);
       }
 
-      const { user, accessToken, refreshToken } =
+      // 2. 서비스 로직 실행 (admin 데이터 반환)
+      const { admin, accessToken, refreshToken } =
         await AdminService.reissueAdminToken(token);
 
+      // 3. 관리자 전용 쿠키 설정 (path: "/" 설정 적용)
       cookieUtil.setAdminCookieRefreshToken(res, refreshToken);
 
-      return res
-        .status(SUCCESS.status)
-        .send(createBaseResponse(SUCCESS, { accessToken, user }));
+      // 4. 프론트엔드 Redux(authSlice) 구조에 맞춰 응답
+      return res.status(SUCCESS.status).send(
+        createBaseResponse(SUCCESS, {
+          accessToken,
+          admin, // 프론트엔드에서 state.admin으로 바로 저장됨
+        })
+      );
     } catch (error) {
       next(error);
     }

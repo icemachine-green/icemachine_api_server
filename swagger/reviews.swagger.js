@@ -6,13 +6,6 @@
 
 /**
  * @swagger
- * tags:
- *   name: Reviews
- *   description: 리뷰 관련 API
- */
-
-/**
- * @swagger
  * /api/reviews:
  *   post:
  *     summary: 새 리뷰 작성

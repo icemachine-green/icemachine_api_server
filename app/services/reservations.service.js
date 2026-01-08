@@ -74,12 +74,25 @@ async function getDisabledSlots(startDate, endDate, servicePolicyId) {
   let currentDate = dayjs(startDate);
   const lastDate = dayjs(endDate);
 
+  // [추가] 현재 시간 기준점
+  const now = dayjs();
+
   while (currentDate.isSameOrBefore(lastDate)) {
     const dayOfWeek = currentDate.day();
 
     for (const time of timeSlots) {
       const slotStart = dayjs(`${currentDate.format("YYYY-MM-DD")} ${time}`);
       const slotEnd = slotStart.add(serviceDuration, "minute");
+
+      // [핵심 추가] 오늘 날짜인데 현재 시간보다 이전(또는 3시간 이내)인 슬롯 블락
+      if (slotStart.isBefore(now.add(3, "hour"))) {
+        disabledSlots.push({
+          date: currentDate.format("YYYY-MM-DD"),
+          time,
+          reason: "TOO_CLOSE_OR_PAST",
+        });
+        continue;
+      }
 
       // 실제 예약 가능한 기사 존재 여부 체크
       const availableEngineers = engineersWithShifts.filter((eng) =>
@@ -122,7 +135,6 @@ async function getDisabledSlots(startDate, endDate, servicePolicyId) {
         });
       }
     }
-
     currentDate = currentDate.add(1, "day");
   }
 
@@ -136,10 +148,25 @@ async function getDisabledSlots(startDate, endDate, servicePolicyId) {
    예약 생성 + 기사 자동 배정
 ================================ */
 async function createAndAssignReservation(userId, reservationDto) {
-  const { businessId, iceMachineId, servicePolicyId } = reservationDto;
+  const {
+    businessId,
+    iceMachineId,
+    servicePolicyId,
+    reservedDate,
+    serviceStartTime,
+    serviceEndTime,
+  } = reservationDto;
 
   if (!businessId || !iceMachineId || !servicePolicyId) {
     throw new myError("필수 예약 정보가 누락되었습니다.", BAD_REQUEST_ERROR);
+  }
+
+  // [추가] 생성 시점에도 현재 시간 기준 3시간 버퍼 검증
+  const now = dayjs();
+  if (
+    dayjs(`${reservedDate} ${serviceStartTime}`).isBefore(now.add(3, "hour"))
+  ) {
+    throw new myError("최소 3시간 전 예약만 가능합니다.", BAD_REQUEST_ERROR);
   }
 
   // 1️⃣ business 소유 검증
@@ -174,13 +201,11 @@ async function createAndAssignReservation(userId, reservationDto) {
       t
     );
 
-    // 🔹 1: pendingReservation 확인
-    console.log("Pending Reservation:", pendingReservation);
-
+    // [개선] 배정 쿼리: 해당 시간대에 이미 확정된 예약이 있는 기사 제외 로직 추가
     const engineers = await sequelize.query(
       `
       SELECT
-        e.id AS engineer_id  -- 이제 PK 기준
+        e.id AS engineer_id
       FROM
         engineers AS e
       JOIN
@@ -190,24 +215,27 @@ async function createAndAssignReservation(userId, reservationDto) {
         AND es.available_date = (DAYOFWEEK(:reservedDate) - 1)
         AND es.shift_start <= TIME(:serviceStartTime)
         AND es.shift_end >= TIME(:serviceEndTime)
+        AND NOT EXISTS (
+          SELECT 1 FROM reservations AS r
+          WHERE r.engineer_id = e.id
+            AND r.status IN ('CONFIRMED', 'START')
+            AND r.service_start_time < :serviceEndTime
+            AND r.service_end_time > :serviceStartTime
+        )
       ORDER BY
         RAND()
       LIMIT 1;
       `,
       {
         replacements: {
-          reservedDate: reservationDto.reservedDate,
-          serviceStartTime: reservationDto.serviceStartTime,
-          serviceEndTime: reservationDto.serviceEndTime,
+          reservedDate,
+          serviceStartTime,
+          serviceEndTime,
         },
-        transaction: t, // createReservation과 동일 트랜잭션 사용
+        transaction: t,
         type: sequelize.QueryTypes.SELECT,
       }
     );
-
-    // 🔹 2: 배정 가능한 기사 확인
-    console.log("배정 가능한 기사: ", engineers);
-    console.log("Type of engineer_id:", typeof engineers[0]?.engineer_id);
 
     if (!engineers.length) {
       throw new myError("배정 가능한 기사가 없습니다.", CONFLICT_ERROR);
@@ -216,31 +244,27 @@ async function createAndAssignReservation(userId, reservationDto) {
     await reservationsRepository.updateReservation(
       pendingReservation.id,
       {
-        engineerId: Number(engineers[0].engineer_id), // 🔹 3: 숫자로 강제 변환
+        engineerId: Number(engineers[0].engineer_id),
         status: "CONFIRMED",
       },
       t
     );
 
-    // 🔹 4: 업데이트 후 확인
     const updatedReservation = await reservationsRepository.findReservationById(
       pendingReservation.id,
       t
     );
-    console.log("Updated Reservation:", updatedReservation);
 
     await t.commit();
-
     return updatedReservation;
   } catch (error) {
     await t.rollback();
-    console.error("예약 생성 에러:", error); // 🔹 5: 에러 확인
     throw error;
   }
 }
 
 async function cancelReservation(reservationId, userId) {
-  const t = await sequelize.transaction(); // 트랜잭션 시작
+  const t = await sequelize.transaction();
 
   try {
     const reservation = await reservationsRepository.findReservationById(
@@ -252,12 +276,10 @@ async function cancelReservation(reservationId, userId) {
       throw new myError("예약을 찾을 수 없습니다.", NOT_FOUND_ERROR);
     }
 
-    // 예약 소유자 검증
     if (reservation.userId !== userId) {
       throw new myError("해당 예약에 대한 권한이 없습니다.", FORBIDDEN_ERROR);
     }
 
-    // 취소 가능 상태 확인
     if (!["PENDING", "CONFIRMED"].includes(reservation.status)) {
       throw new myError(
         `현재 예약 상태(${reservation.status})에서는 취소할 수 없습니다.`,
@@ -265,19 +287,17 @@ async function cancelReservation(reservationId, userId) {
       );
     }
 
-    // 24시간 정책 확인
     const serviceStartTime = dayjs(reservation.serviceStartTime);
     const now = dayjs();
-    const diffHours = serviceStartTime.diff(now, 'hour');
+    const diffHours = serviceStartTime.diff(now, "hour");
 
     if (diffHours < 24) {
       throw new myError(
         "서비스 시작 24시간 전에는 취소할 수 없습니다. 고객센터에 문의하세요.",
-        CONFLICT_ERROR // Using CONFLICT_ERROR for business logic conflict
+        CONFLICT_ERROR
       );
     }
 
-    // 예약 상태를 CANCELED로 업데이트
     const isUpdated = await reservationsRepository.updateReservation(
       reservationId,
       { status: "CANCELED" },
@@ -297,21 +317,19 @@ async function cancelReservation(reservationId, userId) {
 }
 
 const getReservationsForUser = async (userId, status = null) => {
-  // 1. Get all businesses owned by the user
   const businesses = await businessesRepository.findBusinessesByUserId(userId);
   const businessIds = businesses.map((business) => business.id);
 
   if (businessIds.length === 0) {
-    return []; // No businesses owned, so no reservations
+    return [];
   }
 
-  // 2. Get all reservations for these businesses (basic info only)
-  const reservations = await reservationsRepository.findReservationsByBusinessIds(
-    businessIds,
-    status
-  );
+  const reservations =
+    await reservationsRepository.findReservationsByBusinessIds(
+      businessIds,
+      status
+    );
 
-  // 3. Transform data, fetching engineer details for each reservation (N+1)
   const formattedReservations = await Promise.all(
     reservations.map(async (reservation) => {
       let engineerName = "배정 중";

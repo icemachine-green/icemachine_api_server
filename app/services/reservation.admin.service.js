@@ -51,8 +51,12 @@ const _toReservationListDTO = (reservation) => ({
 });
 
 const reservationAdminService = {
-  getDashboardStats: async () => {
-    const stats = await reservationAdminRepository.getReservationStats();
+  getDashboardStats: async (startDate) => {
+    // startDate를 리포지토리에 전달
+    const stats = await reservationAdminRepository.getReservationStats(
+      startDate
+    );
+
     const initialStats = {
       PENDING: 0,
       CONFIRMED: 0,
@@ -60,19 +64,24 @@ const reservationAdminService = {
       COMPLETED: 0,
       CANCELED: 0,
     };
+
     stats.forEach((stat) => {
-      initialStats[stat.status] = stat.count;
+      if (initialStats.hasOwnProperty(stat.status)) {
+        initialStats[stat.status] = parseInt(stat.count, 10);
+      }
     });
     return initialStats;
   },
 
   getReservations: async (page, limit, filters) => {
     const offset = (page - 1) * limit;
+
+    // filters 객체 안에는 프론트에서 보낸 { orderBy, sortBy, status... } 등이 포함되어 있습니다.
     const { count, rows } =
       await reservationAdminRepository.findAllReservations({
         offset,
         limit,
-        ...filters,
+        ...filters, // 이 전개 연산자가 orderBy와 sortBy를 Repository로 넘겨줍니다.
       });
 
     const processedRows = rows.map(_toReservationListDTO);
