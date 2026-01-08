@@ -67,6 +67,9 @@ async function getMyReservations(req, res, next) {
       // ServicePolicy 기준
       serviceType: r.ServicePolicy?.serviceType ?? null,
 
+      modelName: r.IceMachine?.modelName ?? null,
+      sizeType: r.IceMachine?.sizeType ?? null,
+
       status: r.status,
     }));
 
@@ -88,7 +91,7 @@ async function getReservationDetail(req, res, next) {
         reservationId
       );
 
-    res.status(200).json(reservation);
+    res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, {reservation}));
   } catch (err) {
     next(err);
   }
@@ -101,7 +104,7 @@ async function startWork(req, res, next) {
 
     await engineersService.startWork(userId, reservationId);
 
-    res.status(200).json({ message: "WORK_STARTED" });
+    res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, {message: "WORK_STARTED"}));
   } catch (err) {
     next(err);
   }
@@ -114,7 +117,7 @@ async function completeWork(req, res, next) {
 
     await engineersService.completeWork(userId, reservationId);
 
-    res.status(200).json({ message: "WORK_COMPLETED" });
+    res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, {message: "WORK_COMPLETED" }));
   } catch (err) {
     next(err);
   }
@@ -136,7 +139,7 @@ async function cancelWork(req, res, next) {
       reason
     );
 
-    res.status(200).json({ message: "WORK_CANCELED" });
+    res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, {message: "WORK_CANCELED"}));
   } catch (err) {
     next(err);
   }
@@ -158,11 +161,23 @@ async function getMonthlyCalendar(req, res, next) {
         Number(month)
       );
 
-    res.status(200).json(data);
+    res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, data));
   } catch (err) {
     next(err);
   }
 }
+
+async function getMyPage(req, res, next) {
+  try {
+    const userId = req.user.id;
+
+    const data = await engineersService.getEngineerMyPage(userId);
+
+    res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, data));
+  } catch (err) {
+    next(err);
+  }
+};
 
 export default {
   socialSignup,
@@ -173,4 +188,5 @@ export default {
   completeWork,
   cancelWork,
   getMonthlyCalendar,
+  getMyPage,
 };

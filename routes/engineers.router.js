@@ -16,6 +16,7 @@ router.get("/me/dashboard", authMiddleware, engineersController.getDashboard); /
 router.get("/me/reservations", authMiddleware, engineersValidator.reservationValidator, validationHandler, engineersController.getMyReservations); // 예약 목록 조회
 router.get("/me/reservations/:reservationId", authMiddleware, engineersController.getReservationDetail); // 예약(작업) 상세 조회
 router.get("/me/calendar", authMiddleware, engineersController.getMonthlyCalendar); // 달력으로 예약건수 표시
+router.get("/me/mypage", authMiddleware, engineersController.getMyPage); // 마이페이지
 router.post("/me/reservations/:reservationId/start", authMiddleware, engineersController.startWork); // 작업 시작
 router.post("/me/reservations/:reservationId/complete", authMiddleware, engineersController.completeWork); // 작업 완료
 router.post("/me/reservations/:reservationId/cancel", authMiddleware, engineersController.cancelWork); // 작업 취소

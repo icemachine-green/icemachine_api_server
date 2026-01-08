@@ -1,5 +1,6 @@
 import db from "../models/index.js";
 import { Op, literal } from "sequelize";
+import dayjs from "dayjs";
 
 const { Reservation, Business, ServicePolicy, IceMachine } = db;
 
@@ -120,6 +121,10 @@ const findByEngineerAndDate = async ({engineerId, date, limit, offset}) => {
         model: ServicePolicy,
         attributes: ["serviceType"],
       },
+      {
+        model: IceMachine,
+        attributes: ["modelName", "sizeType"],
+      },
     ],
     order: [
       [
@@ -202,6 +207,57 @@ const findDetailByIdAndEngineer = async (
   });
 };
 
+const countTodayWorksByEngineerId = async (engineerId) => {
+  const today = dayjs().format("YYYY-MM-DD");
+
+  return await Reservation.count({
+    where: {
+      engineerId,
+      reservedDate: today,
+      status: {
+        [Op.in]: [
+          "CONFIRMED",
+          "START",
+          "COMPLETED",
+        ],
+      },
+    },
+  });
+};
+
+const countTotalWorksByEngineerId = async (engineerId) => {
+  return await Reservation.count({
+    where: {
+      engineerId,
+      status: {
+        [Op.in]: [
+          "CONFIRMED",
+          "START",
+          "COMPLETED",
+        ],
+      },
+    },
+  });
+};
+
+const findCompletedWorksByEngineerId = async (engineerId) => {
+  return await Reservation.findAll({
+    where: {
+      engineerId,
+      status: "COMPLETED",
+    },
+    attributes: ["id", "reservedDate"],
+    include: [
+      {
+        model: Business,
+        attributes: ["managerName"],
+      },
+    ],
+    order: [["reservedDate", "DESC"]],
+    limit: 20,
+  });
+};
+
 export default {
   createReservation,
   updateReservation,
@@ -213,4 +269,7 @@ export default {
   findByEngineerAndDate,
   findByEngineerAndMonth,
   findDetailByIdAndEngineer,
+  countTodayWorksByEngineerId,
+  countTotalWorksByEngineerId,
+  findCompletedWorksByEngineerId,
 };

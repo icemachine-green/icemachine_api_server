@@ -5,7 +5,7 @@
  */
 import db from '../models/index.js';
 
-const { Engineer, EngineerShift } = db;
+const { Engineer, EngineerShift, User } = db;
 
 const findActiveEngineersWithShifts = async () => {
   return await Engineer.findAll({
@@ -48,9 +48,23 @@ const createDefaultShifts = async (t, engineerId) => {
   return await EngineerShift.bulkCreate(shifts, { transaction: t });
 };
 
+const findEngineerWithUserByUserId = async (userId) => {
+  return await Engineer.findOne({
+    where: { userId },
+    attributes: ["id", "skillLevel"],
+    include: [
+      {
+        model: User,
+        attributes: ["name", "email", "phoneNumber"],
+      },
+    ],
+  });
+};
+
 export default {
   findActiveEngineersWithShifts,
   findEngineerByUserId,
   createEngineer,
   createDefaultShifts,
+  findEngineerWithUserByUserId,
 };

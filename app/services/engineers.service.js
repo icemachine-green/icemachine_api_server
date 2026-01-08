@@ -277,6 +277,8 @@ const getMonthlyCalendar = async (userId, year, month) => {
   // 4. 날짜별 집계
   const days = {};
 
+  const totalCount = reservations.length;
+
   reservations.forEach((r) => {
     const date = r.reservedDate;
     days[date] = (days[date] || 0) + 1;
@@ -285,10 +287,51 @@ const getMonthlyCalendar = async (userId, year, month) => {
   return {
     year,
     month,
+    totalCount,
     days,
   };
 };
 
+const getEngineerMyPage = async (userId) => {
+  // 1. engineer + user
+  const engineer =
+    await engineersRepository.findEngineerWithUserByUserId(userId);
+
+  if (!engineer) {
+    throw new Error("ENGINEER_NOT_FOUND");
+  }
+
+  const engineerId = engineer.id;
+
+  // 2. counts
+  const todayCount =
+    await reservationsRepository.countTodayWorksByEngineerId(engineerId);
+
+  const totalCount =
+    await reservationsRepository.countTotalWorksByEngineerId(engineerId);
+
+  // 3. completed works
+  const completedReservations =
+    await reservationsRepository.findCompletedWorksByEngineerId(engineerId);
+
+  return {
+    engineer: {
+      name: engineer.User.name,
+      email: engineer.User.email,
+      phoneNumber: engineer.User.phoneNumber,
+      skillLevel: engineer.skillLevel,
+    },
+    workSummary: {
+      todayCount,
+      totalCount,
+    },
+    completedWorks: completedReservations.map((r) => ({
+      reservationId: r.id,
+      reservedDate: r.reservedDate,
+      businessManagerName: r.Business?.managerName ?? null,
+    })),
+  };
+};
 
 export default {
   createAndLoginEngineer,
@@ -300,4 +343,5 @@ export default {
   completeWork,
   cancelWork,
   getMonthlyCalendar,
+  getEngineerMyPage,
 };
