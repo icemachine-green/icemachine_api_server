@@ -189,11 +189,23 @@ const withdrawMe = async (req, res) => {
   try {
     const userId = req.user.id;
     await usersService.withdrawUser(userId);
-    return res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
+    return res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, { message: "회원 탈퇴가 완료되었습니다." }));
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return next(error);
   }
 };
+
+const logout = async(req, res, nex) => {
+  try {
+    await usersService.logout(req.user.id);
+
+    cookieUtil.clearCookieRefreshToken(res);
+
+    return res.status(SUCCESS.status).json(createBaseResponse(SUCCESS));
+  } catch (error) {
+    return next(error);
+  }
+}
 
 export default {
   socialSignup,
@@ -204,4 +216,5 @@ export default {
   updateMe,
   checkEmailDuplicate,
   withdrawMe,
+  logout,
 };

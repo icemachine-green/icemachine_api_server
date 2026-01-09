@@ -3,6 +3,8 @@
  * @description 유저 관련 서비스
  * 251216 v1.0.0 Lee init
  */
+import { DATA_ABNORMALITY_ERROR } from "../../configs/responseCode.config.js";
+import myError from "../errors/customs/my.error.js";
 import usersRepository from "../repositories/users.repository.js";
 
 const processKakaoUser = async (socialId) => {
@@ -96,4 +98,16 @@ const withdrawUser = async (userId) => {
   return true;
 };
 
-export default { processKakaoUser, getMe, updateMe, checkEmailDuplicate, withdrawUser };
+const logout = async (userId) => {
+  const user = await usersRepository.findUserById(userId);
+
+  if (!user) {
+    throw myError('존재하지 않는 유저', DATA_ABNORMALITY_ERROR);
+  }
+
+  // soft delete (deletedAt 자동 세팅)
+  user.refreshToken = null;
+  return await usersRepository.save(user);
+};
+
+export default { processKakaoUser, getMe, updateMe, checkEmailDuplicate, withdrawUser, logout };
