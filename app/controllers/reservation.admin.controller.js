@@ -19,17 +19,17 @@ const reservationAdminController = {
       next(error);
     }
   },
-  // getReservations 함수 내부 수정
   getReservations: async (req, res, next) => {
     try {
       const page = parseInt(req.query.page || 1, 10);
       const limit = parseInt(req.query.limit || 10, 10);
 
-      // [수정] startDate 추출 추가
       const {
         status,
         userName,
         engineerName,
+        businessName, // [추가]
+        totalSearch, // [추가] 통합 검색용
         orderBy,
         sortBy,
         reservationId,
@@ -40,10 +40,12 @@ const reservationAdminController = {
         status,
         userName,
         engineerName,
+        businessName, // [추가]
+        totalSearch, // [추가]
         orderBy,
         sortBy,
         reservationId: reservationId || null,
-        startDate: startDate || null, // [추가]
+        startDate: startDate || null,
       };
 
       const result = await reservationAdminService.getReservations(
