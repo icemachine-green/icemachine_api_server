@@ -57,6 +57,7 @@ async function getMyReservations(req, res, next) {
       reservationId: r.id,
       startAt: r.serviceStartTime,
       endAt: r.serviceEndTime,
+      canStart: r.canStart,
 
       // Business 기준
       managerName: r.Business?.managerName ?? null,

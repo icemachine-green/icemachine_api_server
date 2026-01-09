@@ -99,7 +99,7 @@ const getDashboard = async (userId) => {
   };
 };
 
-const getDailyReservations = async ({userId, date, limit, offset}) => {
+const getDailyReservations = async ({ userId, date, limit, offset }) => {
   const engineer = await engineersRepository.findEngineerByUserId(userId);
 
   if (!engineer) {
@@ -110,8 +110,36 @@ const getDailyReservations = async ({userId, date, limit, offset}) => {
     throw myError("ENGINEER_INACTIVE", DATA_ABNORMALITY_ERROR);
   }
 
-  return await reservationsRepository.findByEngineerAndDate({engineerId: engineer.id, date, limit, offset});
+  const result =
+    await reservationsRepository.findByEngineerAndDate({
+      engineerId: engineer.id,
+      date,
+      limit,
+      offset,
+    });
+
+  const rowsWithCanStart = await Promise.all(
+    result.rows.map(async (r) => {
+      const hasPrevUnfinished =
+        await reservationsRepository.existsPreviousUnfinishedReservation({
+          engineerId: engineer.id,
+          reservedDate: r.reservedDate,
+          serviceStartTime: r.serviceStartTime,
+        });
+
+      return {
+        ...r.toJSON(),
+        canStart: !hasPrevUnfinished,
+      };
+    })
+  );
+
+  return {
+    count: result.count,
+    rows: rowsWithCanStart,
+  };
 };
+
 
 const getReservationDetail = async (userId, reservationId) => {
   // 1. Engineer 확인
@@ -133,7 +161,15 @@ const getReservationDetail = async (userId, reservationId) => {
     throw new Error("RESERVATION_NOT_FOUND");
   }
 
-  // 3. 응답 매핑
+  // 3. 앞타임 예약 중 종료(완료|취소)되지 않은 건이 있는지 확인
+  const hasPrevUnfinished =
+    await reservationsRepository.existsPreviousUnfinishedReservation({
+      engineerId: engineer.id,
+      reservedDate: reservation.reservedDate,
+      serviceStartTime: reservation.serviceStartTime,
+    });
+
+  // 4. 응답 매핑
   return {
     reservationId: reservation.id,
     date: reservation.reservedDate,
@@ -142,6 +178,7 @@ const getReservationDetail = async (userId, reservationId) => {
       end: reservation.serviceEndTime,
     },
     status: reservation.status,
+    canStart: !hasPrevUnfinished,
     business: {
       name: reservation.Business.name,
       managerName: reservation.Business.managerName,
@@ -202,6 +239,17 @@ const startWork = async (userId, reservationId) => {
 
   if (reservation.status !== "CONFIRMED") {
     throw new Error("INVALID_STATUS");
+  }
+
+  const hasPrevUnfinished =
+    await reservationsRepository.existsPreviousUnfinishedReservation({
+      engineerId: reservation.engineerId,
+      reservedDate: reservation.reservedDate,
+      serviceStartTime: reservation.serviceStartTime,
+    });
+
+  if (hasPrevUnfinished) {
+    throw new Error("PREVIOUS_WORK_NOT_COMPLETED");
   }
 
   await reservationsRepository.updateReservation(

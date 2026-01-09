@@ -261,6 +261,31 @@ const findCompletedWorksByEngineerId = async (engineerId) => {
   });
 };
 
+/**
+ * 현재 예약보다 앞선 예약 중
+ * COMPLETED, CANCELED 가 아닌 예약 존재 여부
+ */
+const existsPreviousUnfinishedReservation = async ({
+  engineerId,
+  reservedDate,
+  serviceStartTime,
+}) => {
+  const count = await Reservation.count({
+    where: {
+      engineerId,
+      reservedDate,
+      serviceStartTime: {
+        [Op.lt]: serviceStartTime,
+      },
+      status: {
+        [Op.notIn]: ["COMPLETED", "CANCELED"],
+      },
+    },
+  });
+
+  return count > 0;
+};
+
 export default {
   createReservation,
   updateReservation,
@@ -275,4 +300,5 @@ export default {
   countTodayWorksByEngineerId,
   countTotalWorksByEngineerId,
   findCompletedWorksByEngineerId,
+  existsPreviousUnfinishedReservation,
 };
