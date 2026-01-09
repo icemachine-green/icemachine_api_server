@@ -101,7 +101,7 @@ const findByEngineerAndDate = async ({engineerId, date, limit, offset}) => {
       engineerId,
       reservedDate: date,
       status: {
-        [Op.in]: ['CONFIRMED', 'START', 'COMPLETED', 'CANCELED'],
+        [Op.in]: ['CONFIRMED', 'START', 'COMPLETED'],
       },
     },
     limit,

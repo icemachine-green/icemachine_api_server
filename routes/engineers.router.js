@@ -13,7 +13,7 @@ const router = express.Router();
 
 // Engineer 전용 API
 router.get("/me/dashboard", authMiddleware, engineersController.getDashboard); // dashboard(메인페이지) 출력
-router.get("/me/reservations", authMiddleware, engineersValidator.reservationValidator, validationHandler, engineersController.getMyReservations); // 예약 목록 조회
+router.get("/me/reservations", authMiddleware, engineersValidator.reservationValidator, validationHandler, engineersController.getMyReservations); // 예약 목록 조회(날짜별)
 router.get("/me/reservations/:reservationId", authMiddleware, engineersController.getReservationDetail); // 예약(작업) 상세 조회
 router.get("/me/calendar", authMiddleware, engineersController.getMonthlyCalendar); // 달력으로 예약건수 표시
 router.get("/me/mypage", authMiddleware, engineersController.getMyPage); // 마이페이지
