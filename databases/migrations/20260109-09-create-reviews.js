@@ -1,7 +1,7 @@
 /**
  * @file databases/migrations/20251222053250-create-reviews.js
- * @description 'reviews' 테이블 생성 마이그레이션
- * 251222 v1.0.0 Lee-init
+ * @description 'reviews' 테이블 생성 (모델 Review.js와 일치화)
+ * 251222 v1.0.1 Lee-update
  */
 import { DataTypes } from "sequelize";
 
@@ -9,7 +9,6 @@ const tableName = "reviews";
 
 const attributes = {
   id: {
-    field: "id",
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -17,53 +16,45 @@ const attributes = {
     comment: "리뷰 PK",
   },
   user_id: {
-    field: "user_id",
     type: DataTypes.INTEGER,
     allowNull: false,
-    comment: "Users 테이블의 PK (외래키)",
     references: {
-      model: 'users',
-      key: 'id',
+      model: "users",
+      key: "id",
     },
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+    comment: "작성자 (users.id)",
   },
   rating: {
-    field: "rating",
     type: DataTypes.TINYINT,
     allowNull: false,
     comment: "별점 (1~5)",
   },
   quick_option: {
-    field: "quick_option",
     type: DataTypes.STRING,
     allowNull: true,
     comment: "빠른 선택지 (예: 친절해요)",
   },
   content: {
-    field: "content",
     type: DataTypes.TEXT,
     allowNull: true,
     comment: "리뷰 내용",
   },
   image_url: {
-    field: "image_url",
     type: DataTypes.STRING,
     allowNull: true,
-    comment: "리뷰 사진 URL",
+    comment: "리뷰 사진 파일명",
   },
-  createdAt: {
-    field: "created_at",
+  created_at: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  updatedAt: {
-    field: "updated_at",
+  updated_at: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  deletedAt: {
-    field: "deleted_at",
+  deleted_at: {
     type: DataTypes.DATE,
     allowNull: true,
   },

@@ -1,18 +1,16 @@
 /**
- * @file databases/seeders/[timestamp]-01-users-seeder.js
+ * @file databases/seeders/20251231-02-users-seeder.js
  * @description users 테이블 초기 데이터 시드 (한국어 성함 및 휴대폰 포맷 적용)
  */
 import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 
-// 휴대폰 번호 생성 (010-####-#### 포맷)
 const generatePhoneNumber = () => {
   const middle = Math.floor(1000 + Math.random() * 9000);
   const last = Math.floor(1000 + Math.random() * 9000);
   return `010-${middle}-${last}`;
 };
 
-// 한국 이름 생성 로직
 const LAST_NAMES = [
   "김",
   "이",
@@ -71,35 +69,43 @@ export default {
     const ENGINEER_COUNT = 48;
     const now = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
-    // 고객 (1000명)
+    // 이메일 중복 방지를 위한 Set
+    const emailSet = new Set();
+
+    const generateUniqueEmail = () => {
+      let email = faker.internet.email().toLowerCase();
+      while (emailSet.has(email)) {
+        email = faker.internet.email().toLowerCase();
+      }
+      emailSet.add(email);
+      return email;
+    };
+
+    // 1. 고객 생성 (1000명)
     for (let i = 0; i < CUSTOMER_COUNT; i++) {
       users.push({
         social_id: `kakao_customer_${faker.string.uuid()}`,
-        email: faker.internet.email().toLowerCase(),
+        email: generateUniqueEmail(),
         provider: "kakao",
         name: generateKoreanName(),
         phone_number: generatePhoneNumber(),
-        refresh_token: null,
         role: "customer",
         created_at: now,
         updated_at: now,
-        deleted_at: null,
       });
     }
 
-    // 기사 (48명)
+    // 2. 기사 생성 (48명)
     for (let i = 0; i < ENGINEER_COUNT; i++) {
       users.push({
         social_id: `kakao_engineer_${faker.string.uuid()}`,
-        email: faker.internet.email().toLowerCase(),
+        email: generateUniqueEmail(),
         provider: "kakao",
         name: generateKoreanName(),
         phone_number: generatePhoneNumber(),
-        refresh_token: null,
         role: "engineer",
         created_at: now,
         updated_at: now,
-        deleted_at: null,
       });
     }
 

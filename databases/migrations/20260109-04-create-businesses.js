@@ -1,11 +1,11 @@
 /**
- * @file databases/migrations/20260101-create-engineers.js
- * @description 'engineers' 테이블 생성 마이그레이션
- * 260101 v1.0.0
+ * @file databases/migrations/20251222041000-create-businesses.js
+ * @description 'businesses' 테이블 생성 (모델 Business.js와 일치화)
+ * 251224 v1.0.1 Taeho-update
  */
 import { DataTypes } from "sequelize";
 
-const tableName = "engineers";
+const tableName = "businesses";
 
 const attributes = {
   id: {
@@ -13,36 +13,43 @@ const attributes = {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    comment: "Engineers 테이블 PK",
+    comment: "업체 PK",
   },
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true,
-    comment: "Users 테이블 PK (외래키)",
     references: {
       model: "users",
       key: "id",
     },
     onUpdate: "CASCADE",
     onDelete: "CASCADE",
+    comment: "소유주 (users.id)",
   },
-  skill_level: {
-    type: DataTypes.ENUM("JUNIOR", "SENIOR", "MASTER"),
+  name: {
+    type: DataTypes.STRING(100),
     allowNull: false,
-    defaultValue: "JUNIOR",
-    comment: "기사 기술 등급",
+    comment: "업체명",
   },
-  introduction: {
-    type: DataTypes.TEXT,
+  main_address: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    comment: "기본 주소",
+  },
+  detailed_address: {
+    type: DataTypes.STRING(255),
     allowNull: true,
-    comment: "고객에게 노출되는 기사 소개글",
+    comment: "상세 주소",
   },
-  is_active: {
-    type: DataTypes.BOOLEAN,
+  manager_name: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+    comment: "담당자 이름",
+  },
+  phone_number: {
+    type: DataTypes.STRING(20),
     allowNull: false,
-    defaultValue: true,
-    comment: "현재 배정 가능한 상태인지 여부",
+    comment: "업체 연락처",
   },
   created_at: {
     type: DataTypes.DATE,
@@ -59,12 +66,9 @@ const attributes = {
 };
 
 const options = {
-  tableName,
   charset: "utf8mb4",
   collate: "utf8mb4_unicode_ci",
   engine: "InnoDB",
-  timestamps: true,
-  paranoid: true,
 };
 
 /** @type {import('sequelize-cli').Migration} */
