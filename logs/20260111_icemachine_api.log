@@ -1,0 +1,234 @@
+[2026-01-11 00:09:10] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:09:13] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:10:13] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:11:14] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:11:17] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:11:28] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:12:28] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:13:29] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:14:00] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:14:09] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:14:09] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:15:09] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:16:09] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:18:02] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:19:02] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:20:02] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:21:02] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:22:02] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:22:18] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:23:18] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:24:18] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:25:18] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:26:18] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:27:18] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:27:28] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:28:28] error - ReferenceError: logger is not defined
+ReferenceError: logger is not defined
+    at Object.logging (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/models/index.js:32:30)
+    at Sequelize.log (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:552:15)
+    at Query._logQuery (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query.js:268:22)
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:47:27)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Admin.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Admin.findOne (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1240:12)
+    at async Admin.findByPk (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1221:12)
+[2026-01-11 00:28:28] error - ReferenceError: logger is not defined
+ReferenceError: logger is not defined
+    at Object.logging (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/models/index.js:32:30)
+    at Sequelize.log (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:552:15)
+    at Query._logQuery (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query.js:268:22)
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:47:27)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Admin.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Admin.findOne (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1240:12)
+    at async Admin.findByPk (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1221:12)
+[2026-01-11 00:28:44] error - ReferenceError: logger is not defined
+ReferenceError: logger is not defined
+    at Object.logging (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/models/index.js:32:30)
+    at Sequelize.log (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:552:15)
+    at Query._logQuery (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query.js:268:22)
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:47:27)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Admin.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Admin.findOne (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1240:12)
+    at async Object.findByRefreshToken (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/admin.repository.js:65:16)
+[2026-01-11 00:32:51] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:33:51] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:34:52] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:35:52] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:36:52] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:37:52] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:38:52] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:40:50] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20

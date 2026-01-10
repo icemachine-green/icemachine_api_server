@@ -10,7 +10,7 @@ import {
 } from "../../configs/responseCode.config.js";
 import { buildPaginatedResponse } from "../utils/pagination.util.js";
 
-// 기존 DTO 가공 로직 유지
+// DTO 가공 로직 수정
 const _toReservationListDTO = (reservation) => ({
   id: reservation.id,
   reservedDate: reservation.reservedDate,
@@ -36,8 +36,8 @@ const _toReservationListDTO = (reservation) => ({
     : null,
   iceMachine: reservation.IceMachine
     ? {
+        brandName: reservation.IceMachine.brandName, // 🚩 modelType 대신 brandName으로 교체
         modelName: reservation.IceMachine.modelName,
-        modelType: reservation.IceMachine.modelType,
         sizeType: reservation.IceMachine.sizeType,
       }
     : null,

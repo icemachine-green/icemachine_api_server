@@ -29,7 +29,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST,
     dialect: "mysql",
-    logging: process.env.APP_MODE === "development" && console.log, // 로깅이 필요하면 console.log로 변경
+    logging: console.log, // 로깅이 필요없으면 process.env.APP_MODE === "development" &&로 변경
     // --- 타임존 설정 추가 시작 ---
     timezone: "+09:00", // Sequelize가 쿼리를 작성할 때 한국 시간대 적용
     dialectOptions: {

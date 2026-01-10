@@ -6,177 +6,80 @@ import { Op } from "sequelize";
 
 const { Reservation, User, Business, Engineer, IceMachine, ServicePolicy } = db;
 
-const makeNoSpaceCondition = (columnPath, value) => {
-  return db.sequelize.where(
-    db.sequelize.fn("REPLACE", db.sequelize.col(columnPath), " ", ""),
-    { [Op.like]: `%${value.replace(/\s+/g, "")}%` }
-  );
-};
+const findAllReservations = async ({
+  offset,
+  limit,
+  startDate,
+  status,
+  totalSearch,
+}) => {
+  const whereClause = {};
 
-const reservationAdminRepository = {
-  getReservationStats: async (startDate) => {
-    const whereClause = {};
-    if (startDate) {
-      whereClause.reservedDate = startDate;
-    } else {
-      const today = new Date().toISOString().split("T")[0];
-      whereClause.reservedDate = { [Op.gte]: today };
-    }
+  if (startDate) {
+    whereClause.reservedDate = { [Op.gte]: startDate };
+  }
 
-    return await Reservation.findAll({
-      where: whereClause,
-      attributes: [
-        "status",
-        [db.sequelize.fn("COUNT", db.sequelize.col("status")), "count"],
+  if (status && status !== "ALL") {
+    whereClause.status = status;
+  }
+
+  if (totalSearch) {
+    whereClause[Op.or] = [
+      { "$User.name$": { [Op.like]: `%${totalSearch}%` } },
+      { "$Business.name$": { [Op.like]: `%${totalSearch}%` } },
+    ];
+  }
+
+  const includeClause = [
+    { model: User, as: "User", attributes: ["name", "phoneNumber"] },
+    {
+      model: Business,
+      as: "Business",
+      attributes: ["name", "mainAddress", "detailedAddress", "phoneNumber"],
+    },
+    {
+      model: Engineer,
+      as: "Engineer",
+      include: [
+        { model: User, as: "User", attributes: ["name", "phoneNumber"] },
       ],
-      group: ["status"],
-      raw: true,
-    });
-  },
+    },
+    {
+      model: IceMachine,
+      as: "IceMachine",
+      // 🚩 수정: modelType 제거하고 brandName 추가
+      attributes: ["brandName", "modelName", "sizeType"],
+    },
+    { model: ServicePolicy, as: "ServicePolicy", attributes: ["serviceType"] },
+  ];
 
-  findAllReservations: async ({
+  return await Reservation.findAndCountAll({
+    where: whereClause,
+    include: includeClause,
     offset,
     limit,
-    status,
-    userName,
-    engineerName,
-    businessName,
-    totalSearch,
-    orderBy,
-    sortBy,
-    reservationId,
-    startDate,
-  }) => {
-    const whereClause = {};
-    const hasSearch = !!(
-      totalSearch ||
-      reservationId ||
-      userName ||
-      businessName ||
-      engineerName
-    );
-
-    if (status) whereClause.status = status;
-    if (startDate && !hasSearch)
-      whereClause.reservedDate = { [Op.gte]: startDate };
-
-    if (totalSearch) {
-      const cleanSearch = totalSearch.replace(/\s+/g, "");
-      const isNumeric = /^\d+$/.test(cleanSearch);
-      whereClause[Op.or] = [
-        ...(isNumeric ? [{ id: cleanSearch }] : []),
-        makeNoSpaceCondition("User.name", cleanSearch),
-        makeNoSpaceCondition("Business.name", cleanSearch),
-        makeNoSpaceCondition("Engineer->User.name", cleanSearch),
-      ];
-    } else {
-      if (reservationId) whereClause.id = reservationId;
-      if (userName)
-        whereClause[Op.and] = [makeNoSpaceCondition("User.name", userName)];
-      if (businessName)
-        whereClause[Op.and] = [
-          makeNoSpaceCondition("Business.name", businessName),
-        ];
-      if (engineerName)
-        whereClause[Op.and] = [
-          makeNoSpaceCondition("Engineer->User.name", engineerName),
-        ];
-    }
-
-    const sortMap = {
-      reservedDate: "reserved_date",
-      createdAt: "created_at",
-      status: "status",
-      id: "id",
-    };
-    const dbOrderBy = sortMap[orderBy] || "reserved_date";
-
-    return await Reservation.findAndCountAll({
-      where: whereClause,
-      include: [
-        {
-          model: User,
-          as: "User",
-          attributes: ["name", "phoneNumber"],
-          required: !!(
-            userName ||
-            (totalSearch && !/^\d+$/.test(totalSearch.replace(/\s+/g, "")))
-          ),
-        },
-        {
-          model: Business,
-          attributes: ["name", "mainAddress", "detailedAddress", "phoneNumber"],
-          required: !!(businessName || totalSearch),
-        },
-        {
-          model: Engineer,
-          required: !!(engineerName || totalSearch),
-          include: [
-            { model: User, as: "User", attributes: ["name", "phoneNumber"] },
-          ],
-        },
-        {
-          model: IceMachine,
-          attributes: ["modelName", "modelType", "sizeType"],
-        },
-        { model: ServicePolicy, attributes: ["serviceType"] },
-      ],
-      offset,
-      limit,
-      order: [[dbOrderBy, sortBy?.toUpperCase() === "DESC" ? "DESC" : "ASC"]],
-      distinct: true,
-    });
-  },
-
-  findReservationDetail: async (id) => {
-    return await Reservation.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: "User",
-          attributes: ["name", "phoneNumber", "email"],
-        },
-        {
-          model: Business,
-          attributes: [
-            "name",
-            "mainAddress",
-            "detailedAddress",
-            "phoneNumber",
-            "managerName",
-          ],
-        },
-        {
-          model: Engineer,
-          include: [
-            { model: User, as: "User", attributes: ["name", "phoneNumber"] },
-          ],
-        },
-        {
-          model: IceMachine,
-          attributes: ["modelName", "modelType", "sizeType", "modelPic"],
-        },
-        {
-          model: ServicePolicy,
-          attributes: [
-            "serviceType",
-            "sizeType",
-            "standardDuration",
-            "description",
-          ],
-        },
-      ],
-      paranoid: false,
-    });
-  },
-
-  updateReservationStatus: async (id, status) => {
-    const [updatedRows] = await Reservation.update(
-      { status },
-      { where: { id } }
-    );
-    return updatedRows > 0;
-  },
+    subQuery: false,
+    distinct: true,
+    order: [
+      [db.sequelize.col("Reservation.reserved_date"), "ASC"],
+      [db.sequelize.col("Reservation.service_start_time"), "ASC"],
+    ],
+  });
 };
 
-export default reservationAdminRepository;
+const getReservationStats = async (startDate) => {
+  return await Reservation.findAll({
+    attributes: [
+      "status",
+      [db.sequelize.fn("COUNT", db.sequelize.col("id")), "count"],
+    ],
+    where: startDate ? { reservedDate: { [Op.gte]: startDate } } : {},
+    group: ["status"],
+    raw: true,
+  });
+};
+
+export default {
+  findAllReservations,
+  getReservationStats,
+};
