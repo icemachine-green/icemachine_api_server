@@ -74,7 +74,7 @@ const countByEngineerPkAndDate = async (engineerPk, date) => {
         [Op.eq]: date,
       },
       status: {
-        [Op.in]: ["PENDING", "CONFIRMED", "START", "COMPLETED"], // 취소된 예약 제외
+        [Op.in]: ["CONFIRMED", "START", "COMPLETED"], // 배정전, 취소된 예약 제외
       },
     },
   });
@@ -89,7 +89,7 @@ const countByEngineerPkAndMonth = async (engineerPk, start, end) => {
         [Op.between]: [start, end],
       },
       status: {
-        [Op.in]: ["PENDING", "CONFIRMED", "START", "COMPLETED"], // 취소된 예약 제외
+        [Op.in]: ["CONFIRMED", "START", "COMPLETED"], // 배정전, 취소된 예약 제외
       },
     },
   });
