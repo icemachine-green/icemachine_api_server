@@ -1,0 +1,10 @@
+[2026-01-10 03:08:34] error - TypeError: Invalid status code: undefined. Status code must be an integer.
+TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\express\lib\response.js:67:11)
+    at getAvailability (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservations.controller.js:15:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2026-01-10 03:08:37] error - TypeError: Invalid status code: undefined. Status code must be an integer.
+TypeError: Invalid status code: undefined. Status code must be an integer.
+    at ServerResponse.status (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\express\lib\response.js:67:11)
+    at createAndAssignReservation (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservations.controller.js:30:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

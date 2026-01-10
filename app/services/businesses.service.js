@@ -11,7 +11,7 @@ import {
   NOT_FOUND_ERROR,
   FORBIDDEN_ERROR,
   UNMATCHING_USER_ERROR,
-} from "../../configs/responseCode.config.js"; // NOT_FOUND_ERROR, FORBIDDEN_ERROR, UNMATCHING_USER_ERROR import
+} from "../../configs/responseCode.config.js";
 
 const registerBusinessWithIceMachines = async (
   userId,
@@ -36,10 +36,17 @@ const registerBusinessWithIceMachines = async (
 
     // 2. 제빙기(IceMachine) 정보 생성
     const iceMachines = [];
-    for (const iceMachineDto of iceMachinesDto) {
+    // 🚩 프론트에서 넘어온 데이터를 백엔드 모델 규격(brandName 등)으로 확실히 매핑해서 전달
+    for (const dto of iceMachinesDto) {
+      const mappedMachineData = {
+        brandName: dto.brandName || dto.brand,
+        modelName: dto.modelName || dto.model,
+        sizeType: dto.sizeType || dto.size,
+      };
+
       const newIceMachine = await icemachinesService.addIceMachineToBusiness(
         newBusiness.id,
-        iceMachineDto,
+        mappedMachineData, // 보정된 데이터를 두 번째 인자로 전달
         t
       );
       iceMachines.push(newIceMachine);
@@ -58,83 +65,63 @@ const getBusinessesByUserId = async (userId) => {
 };
 
 const getBusinessById = async (businessId, userFromReq) => {
-  // userFromReq는 authMiddleware가 주입한 사용자 객체
   const business = await businessesRepository.findBusinessById(businessId);
-
   if (!business) {
     throw myError("해당 매장을 찾을 수 없습니다.", NOT_FOUND_ERROR);
   }
-
-  // 역할 기반 접근 제어
-  // 관리자(admin)나 엔지니어(engineer)는 모든 매장을 조회할 수 있습니다.
   if (userFromReq.role === "admin" || userFromReq.role === "engineer") {
     return business;
   }
-
-  // 일반 사용자(customer)의 경우, 소유권 확인을 수행합니다.
   if (business.userId !== userFromReq.id) {
     throw myError("해당 매장에 대한 접근 권한이 없습니다.", FORBIDDEN_ERROR);
   }
-
   return business;
 };
 
 const updateBusiness = async (businessId, userFromReq, updateDto) => {
   const business = await businessesRepository.findBusinessById(businessId);
-
   if (!business) {
     throw myError("해당 매장을 찾을 수 없습니다.", NOT_FOUND_ERROR);
   }
-
-  // 매장 정보 업데이트는 소유주만 가능하도록 강제 (관리자/엔지니어는 수정하지 않음)
   if (business.userId !== userFromReq.id) {
     throw myError(
       "해당 매장에 대한 수정 권한이 없습니다.",
       UNMATCHING_USER_ERROR
     );
   }
-
   const isUpdated = await businessesRepository.updateBusiness(
     businessId,
     userFromReq.id,
     updateDto
   );
-
   if (!isUpdated) {
     throw myError(
       "매장 정보 업데이트에 실패했습니다. 변경사항이 없거나 일치하는 매장이 없습니다.",
       NOT_FOUND_ERROR
     );
   }
-
-  return await businessesRepository.findBusinessById(businessId); // 업데이트된 매장 정보를 반환
+  return await businessesRepository.findBusinessById(businessId);
 };
 
 const deleteBusiness = async (businessId, userFromReq) => {
   const business = await businessesRepository.findBusinessById(businessId);
-
   if (!business) {
     throw myError("해당 매장을 찾을 수 없습니다.", NOT_FOUND_ERROR);
   }
-
-  // 매장 삭제는 소유주만 가능하도록 강제
   if (business.userId !== userFromReq.id) {
     throw myError(
       "해당 매장에 대한 삭제 권한이 없습니다.",
       UNMATCHING_USER_ERROR
     );
   }
-
   const isDeleted = await businessesRepository.deleteBusiness(
     businessId,
     userFromReq.id
   );
-
   if (!isDeleted) {
-    throw myError("매장 삭제에 실패했습니다.", NOT_FOUND_ERROR); // 이 경우는 이미 소유권 확인되었으므로 발생하지 않아야 함
+    throw myError("매장 삭제에 실패했습니다.", NOT_FOUND_ERROR);
   }
-
-  return true; // 삭제 성공
+  return true;
 };
 
 export default {

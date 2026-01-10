@@ -1,0 +1,14 @@
+[2026-01-10 02:07:00] error - Error: [DB_INSERT_FAIL] Data truncated for column 'size_type' at row 1
+Error: [DB_INSERT_FAIL] Data truncated for column 'size_type' at row 1
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at addIceMachineToBusiness (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/icemachines.service.js:52:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.addStandaloneIceMachine (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/icemachines.service.js:70:10)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/icemachines.controller.js:36:25
+[2026-01-10 02:07:39] error - Error: [DB_INSERT_FAIL] Data truncated for column 'size_type' at row 1
+Error: [DB_INSERT_FAIL] Data truncated for column 'size_type' at row 1
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at addIceMachineToBusiness (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/icemachines.service.js:52:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.addStandaloneIceMachine (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/icemachines.service.js:70:10)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/icemachines.controller.js:36:25
