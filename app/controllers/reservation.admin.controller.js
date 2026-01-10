@@ -7,19 +7,12 @@ import { SUCCESS } from "../../configs/responseCode.config.js";
 import { asyncHandler } from "../utils/asyncHandler.util.js";
 
 const reservationAdminController = {
-  /**
-   * GET /api/admin/dashboard/stats - 예약 상태별 통계 조회
-   */
   getDashboardStats: asyncHandler(async (req, res) => {
-    const stats = await reservationAdminService.getDashboardStats(
-      req.query.startDate
-    );
+    // 🚩 프론트에서 넘어온 ?mode=today&startDate=... 전체를 서비스로 전달
+    const stats = await reservationAdminService.getDashboardStats(req.query);
     return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS, stats));
   }),
 
-  /**
-   * GET /api/admin/reservations - 예약 목록 조회
-   */
   getReservations: asyncHandler(async (req, res) => {
     const { page, limit, ...filters } = req.query;
     const result = await reservationAdminService.getReservations(
@@ -30,9 +23,6 @@ const reservationAdminController = {
     return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS, result));
   }),
 
-  /**
-   * GET /api/admin/reservations/:id - 특정 예약 상세 정보 조회
-   */
   getReservationDetail: asyncHandler(async (req, res) => {
     const reservation = await reservationAdminService.getReservationDetail(
       req.params.id
@@ -42,13 +32,9 @@ const reservationAdminController = {
       .send(createBaseResponse(SUCCESS, reservation));
   }),
 
-  /**
-   * PATCH /api/admin/reservations/:id/status - 예약 상태 강제 업데이트
-   */
   updateReservationStatus: asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
-
     await reservationAdminService.updateReservationStatus(id, status);
     return res
       .status(SUCCESS.status)

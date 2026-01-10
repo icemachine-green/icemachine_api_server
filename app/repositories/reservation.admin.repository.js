@@ -1,12 +1,9 @@
-/**
- * @file app/repositories/reservation.admin.repository.js
- */
 import db from "../models/index.js";
 import { Op } from "sequelize";
+import dayjs from "dayjs";
 
 const { Reservation, User, Business, Engineer, IceMachine, ServicePolicy } = db;
 
-// 조인 구조 공통화 (목록/상세 동일하게 사용)
 const commonInclude = [
   { model: User, as: "User", attributes: ["name", "phoneNumber"] },
   {
@@ -27,27 +24,77 @@ const commonInclude = [
   { model: ServicePolicy, as: "ServicePolicy", attributes: ["serviceType"] },
 ];
 
+const getWhereClauseByMode = (mode, startDate) => {
+  const where = {};
+  if (!startDate) return where;
+  const start = dayjs(startDate).format("YYYY-MM-DD");
+
+  switch (mode) {
+    case "today":
+      where.reservedDate = start;
+      break;
+    case "weekly":
+      where.reservedDate = {
+        [Op.between]: [
+          start,
+          dayjs(startDate).add(7, "day").format("YYYY-MM-DD"),
+        ],
+      };
+      break;
+    case "monthly":
+      where.reservedDate = {
+        [Op.between]: [
+          start,
+          dayjs(startDate).add(30, "day").format("YYYY-MM-DD"),
+        ],
+      };
+      break;
+    case "future":
+    default:
+      where.reservedDate = { [Op.gte]: start };
+      break;
+  }
+  return where;
+};
+
 const findAllReservations = async ({
   offset,
   limit,
   startDate,
+  mode,
   status,
   totalSearch,
+  reservationId,
+  userName, // 🚩 추가: 고객명 정밀 검색
+  businessName, // 🚩 추가: 매장명 정밀 검색
+  engineerName, // 🚩 추가: 기사명 정밀 검색
 }) => {
-  const whereClause = {};
-
-  if (startDate) {
-    whereClause.reservedDate = { [Op.gte]: startDate };
-  }
+  const whereClause = getWhereClauseByMode(mode, startDate);
 
   if (status && status !== "ALL") {
     whereClause.status = status;
   }
 
-  if (totalSearch) {
+  // 🚩 검색 로직 정교화 (우선순위: ID > 개별필터 > 통합검색)
+  if (reservationId) {
+    whereClause.id = reservationId;
+  } else if (userName || businessName || engineerName) {
+    // 특정 필터가 들어온 경우 해당 필드만 검색
+    if (userName) {
+      whereClause["$User.name$"] = { [Op.like]: `%${userName}%` };
+    }
+    if (businessName) {
+      whereClause["$Business.name$"] = { [Op.like]: `%${businessName}%` };
+    }
+    if (engineerName) {
+      whereClause["$Engineer.User.name$"] = { [Op.like]: `%${engineerName}%` };
+    }
+  } else if (totalSearch) {
+    // 기존 통합 검색 유지 (하위 호환성)
     whereClause[Op.or] = [
       { "$User.name$": { [Op.like]: `%${totalSearch}%` } },
       { "$Business.name$": { [Op.like]: `%${totalSearch}%` } },
+      { "$Engineer.User.name$": { [Op.like]: `%${totalSearch}%` } },
     ];
   }
 
@@ -65,29 +112,15 @@ const findAllReservations = async ({
   });
 };
 
-// 🚩 상세 정보 조회를 위한 함수 추가
-const findReservationDetail = async (id) => {
-  return await Reservation.findByPk(id, {
-    include: commonInclude,
-  });
-};
-
-// 🚩 상태 업데이트를 위한 함수 추가
-const updateReservationStatus = async (id, status) => {
-  const [affectedCount] = await Reservation.update(
-    { status },
-    { where: { id } }
-  );
-  return affectedCount > 0;
-};
-
-const getReservationStats = async (startDate) => {
+const getReservationStats = async (filters = {}) => {
+  const { startDate, mode } = filters;
+  const whereClause = getWhereClauseByMode(mode, startDate);
   return await Reservation.findAll({
     attributes: [
       "status",
       [db.sequelize.fn("COUNT", db.sequelize.col("id")), "count"],
     ],
-    where: startDate ? { reservedDate: { [Op.gte]: startDate } } : {},
+    where: whereClause,
     group: ["status"],
     raw: true,
   });
@@ -95,7 +128,14 @@ const getReservationStats = async (startDate) => {
 
 export default {
   findAllReservations,
-  findReservationDetail,
+  findReservationDetail: async (id) =>
+    await Reservation.findByPk(id, { include: commonInclude }),
   getReservationStats,
-  updateReservationStatus,
+  updateReservationStatus: async (id, status) => {
+    const [affectedCount] = await Reservation.update(
+      { status },
+      { where: { id } }
+    );
+    return affectedCount > 0;
+  },
 };
