@@ -1,12 +1,11 @@
+/**
+ * @file app/repositories/reservation.admin.repository.js
+ */
 import db from "../models/index.js";
 import { Op } from "sequelize";
 
 const { Reservation, User, Business, Engineer, IceMachine, ServicePolicy } = db;
 
-/**
- * 공백 무시 검색을 위한 헬퍼 함수
- * DB 컬럼의 공백을 제거(REPLACE)하고, 입력값의 공백도 제거하여 비교합니다.
- */
 const makeNoSpaceCondition = (columnPath, value) => {
   return db.sequelize.where(
     db.sequelize.fn("REPLACE", db.sequelize.col(columnPath), " ", ""),
@@ -35,9 +34,6 @@ const reservationAdminRepository = {
     });
   },
 
-  /**
-   * 예약 목록 조회 (공백 무시 검색 및 기사 이름 조인 포함)
-   */
   findAllReservations: async ({
     offset,
     limit,
@@ -60,18 +56,13 @@ const reservationAdminRepository = {
       engineerName
     );
 
-    // 1. 날짜 및 상태 필터
     if (status) whereClause.status = status;
-    if (startDate && !hasSearch) {
+    if (startDate && !hasSearch)
       whereClause.reservedDate = { [Op.gte]: startDate };
-    }
 
-    // 2. 공백 무시 검색 로직 적용
-    // Engineer 테이블은 User와 조인되어 있으므로 'Engineer->User.name' 경로를 사용합니다.
     if (totalSearch) {
       const cleanSearch = totalSearch.replace(/\s+/g, "");
       const isNumeric = /^\d+$/.test(cleanSearch);
-
       whereClause[Op.or] = [
         ...(isNumeric ? [{ id: cleanSearch }] : []),
         makeNoSpaceCondition("User.name", cleanSearch),
@@ -92,12 +83,13 @@ const reservationAdminRepository = {
         ];
     }
 
-    let orderClause = [];
-    if (orderBy && sortBy) {
-      orderClause.push([orderBy, sortBy.toUpperCase()]);
-    } else {
-      orderClause.push(["reservedDate", "ASC"], ["serviceStartTime", "ASC"]);
-    }
+    const sortMap = {
+      reservedDate: "reserved_date",
+      createdAt: "created_at",
+      status: "status",
+      id: "id",
+    };
+    const dbOrderBy = sortMap[orderBy] || "reserved_date";
 
     return await Reservation.findAndCountAll({
       where: whereClause,
@@ -106,7 +98,6 @@ const reservationAdminRepository = {
           model: User,
           as: "User",
           attributes: ["name", "phoneNumber"],
-          // 검색 시 필수 포함(Inner Join), 평시에는 전체 노출(Left Join)
           required: !!(
             userName ||
             (totalSearch && !/^\d+$/.test(totalSearch.replace(/\s+/g, "")))
@@ -121,11 +112,7 @@ const reservationAdminRepository = {
           model: Engineer,
           required: !!(engineerName || totalSearch),
           include: [
-            {
-              model: User,
-              as: "User",
-              attributes: ["name", "phoneNumber"],
-            },
+            { model: User, as: "User", attributes: ["name", "phoneNumber"] },
           ],
         },
         {
@@ -136,7 +123,7 @@ const reservationAdminRepository = {
       ],
       offset,
       limit,
-      order: orderClause,
+      order: [[dbOrderBy, sortBy?.toUpperCase() === "DESC" ? "DESC" : "ASC"]],
       distinct: true,
     });
   },

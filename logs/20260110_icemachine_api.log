@@ -8,3 +8,266 @@ TypeError: Invalid status code: undefined. Status code must be an integer.
     at ServerResponse.status (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\express\lib\response.js:67:11)
     at createAndAssignReservation (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservations.controller.js:30:8)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2026-01-10 23:13:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:17:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:18:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:19:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:20:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:21:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:22:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:23:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:24:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:25:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:26:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:81:7)
+    at async getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:51:22)
+[2026-01-10 23:27:01] error - SequelizeDatabaseError: Unknown column 'IceMachine.modelType' in 'field list'
+Error
+    at Query.run (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\mysql\query.js:52:25)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySQLQueryInterface.select (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Reservation.findAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Promise.all (index 1)
+    at async Reservation.findAndCountAll (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\sequelize\lib\model.js:1322:27)
+    at async Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:102:12)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:79:7)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:26:20
+[2026-01-10 23:28:01] error - Error: 목록 조회 중 DB 에러 발생
+Error: 목록 조회 중 DB 에러 발생
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:143:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:79:7)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:26:20
+[2026-01-10 23:29:01] error - Error: 목록 조회 중 DB 에러 발생
+Error: 목록 조회 중 DB 에러 발생
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:143:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:79:7)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:26:20
+[2026-01-10 23:30:01] error - Error: 목록 조회 중 DB 에러 발생
+Error: 목록 조회 중 DB 에러 발생
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:143:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:79:7)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:26:20
+[2026-01-10 23:31:01] error - Error: 목록 조회 중 DB 에러 발생
+Error: 목록 조회 중 DB 에러 발생
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:143:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:79:7)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:26:20
+[2026-01-10 23:32:01] error - Error: 목록 조회 중 DB 에러 발생
+Error: 목록 조회 중 DB 에러 발생
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.findAllReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/repositories/reservation.admin.repository.js:143:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:79:7)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:26:20
+[2026-01-10 23:33:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:34:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:35:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:36:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:37:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:38:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:39:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:40:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:41:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:42:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:43:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:89:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:44:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:47:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-10 23:48:01] error - Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20

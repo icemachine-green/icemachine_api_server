@@ -1,9 +1,7 @@
 /**
  * @file app/repositories/businesses.repository.js
- * @description 업체 관련 레포지토리
- * 251229 v1.0.0 Lee init
  */
-import db from '../models/index.js';
+import db from "../models/index.js";
 
 const { Business, IceMachine } = db;
 
@@ -29,14 +27,14 @@ const updateBusiness = async (businessId, userId, updateData) => {
   const [updatedRows] = await Business.update(updateData, {
     where: { id: businessId, userId: userId },
   });
-  return updatedRows > 0; // Return true if at least one row was updated
+  return updatedRows > 0;
 };
 
 const deleteBusiness = async (businessId, userId) => {
   const deletedRows = await Business.destroy({
     where: { id: businessId, userId: userId },
   });
-  return deletedRows > 0; // Return true if at least one row was deleted
+  return deletedRows > 0;
 };
 
 export default {

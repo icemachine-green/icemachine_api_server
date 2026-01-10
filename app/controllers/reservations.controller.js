@@ -1,7 +1,5 @@
 /**
- * @file controllers/reservations.controller.js
- * @description 예약 관련 요청을 처리하는 컨트롤러 (asyncHandler 적용)
- * 260110 v1.0.2 Taeho Lee update
+ * @file app/controllers/reservations.controller.js
  */
 import reservationsService from "../services/reservations.service.js";
 import { createBaseResponse } from "../utils/createBaseResponse.util.js";
@@ -45,7 +43,7 @@ const getReservationsForUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   const { status } = req.query;
 
-  // 본인 확인 로직
+  // 본인 확인 로직 유지
   if (parseInt(userId, 10) !== req.user.id) {
     throw myError("자신의 예약 정보만 조회할 수 있습니다.", FORBIDDEN_ERROR);
   }

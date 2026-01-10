@@ -1,3 +1,6 @@
+/**
+ * @file app/repositories/reservations.repository.js
+ */
 import db from "../models/index.js";
 import { Op } from "sequelize";
 
@@ -12,7 +15,6 @@ const updateReservation = async (reservationId, updateData, transaction) => {
     where: { id: reservationId },
     transaction,
   });
-
   return updatedRows > 0;
 };
 
@@ -21,30 +23,24 @@ const findReservationById = async (reservationId, transaction) => {
 };
 
 /**
- * 특정 기간 내 예약 목록 조회
+ * 특정 기간 내 예약 목록 조회 (기존 쿼리 로직 유지)
  */
 const findReservationsByDateRange = async (startDate, endDate) => {
   return await Reservation.findAll({
     where: {
-      reservedDate: {
-        [Op.between]: [startDate, endDate],
-      },
-      status: {
-        [Op.in]: ["PENDING", "CONFIRMED", "START"],
-      },
+      reservedDate: { [Op.between]: [startDate, endDate] },
+      status: { [Op.in]: ["PENDING", "CONFIRMED", "START"] },
     },
     raw: true,
   });
 };
 
+/**
+ * 점주용 비즈니스 ID 기반 예약 목록 조회 (정렬 로직 유지)
+ */
 const findReservationsByBusinessIds = async (businessIds, status = null) => {
-  const whereClause = {
-    businessId: businessIds,
-  };
-
-  if (status) {
-    whereClause.status = status;
-  }
+  const whereClause = { businessId: businessIds };
+  if (status) whereClause.status = status;
 
   return await Reservation.findAll({
     where: whereClause,
@@ -59,10 +55,9 @@ const findReservationsByBusinessIds = async (businessIds, status = null) => {
       "status",
       "engineerId",
     ],
-    // [수정 핵심] 날짜를 1순위로, 시작 시간을 2순위로 오름차순 정렬
     order: [
-      ["reservedDate", "ASC"], // 1. 가까운 날짜부터
-      ["serviceStartTime", "ASC"], // 2. 같은 날짜라면 빠른 시간부터
+      ["reservedDate", "ASC"],
+      ["serviceStartTime", "ASC"],
     ],
     paranoid: false,
   });
