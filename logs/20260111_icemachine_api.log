@@ -232,3 +232,87 @@ Error: 예약 목록을 가져오는 중 데이터베이스 오류가 발생했�
     at Object.getReservations (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:90:13)
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
     at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:25:20
+[2026-01-11 00:53:57] error - Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservationDetail (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:112:13)
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:37:55
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/utils/asyncHandler.util.js:6:19
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15
+[2026-01-11 00:53:58] error - Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservationDetail (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:112:13)
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:37:55
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/utils/asyncHandler.util.js:6:19
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15
+[2026-01-11 00:53:58] error - Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservationDetail (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:112:13)
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:37:55
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/utils/asyncHandler.util.js:6:19
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15
+[2026-01-11 00:56:31] error - Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservationDetail (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:112:13)
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:37:55
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/utils/asyncHandler.util.js:6:19
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15
+[2026-01-11 00:56:48] error - Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservationDetail (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:112:13)
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:37:55
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/utils/asyncHandler.util.js:6:19
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15
+[2026-01-11 01:00:09] error - Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservationDetail (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:112:13)
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:37:55
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/utils/asyncHandler.util.js:6:19
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15
+[2026-01-11 01:01:52] error - Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getReservationDetail (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:112:13)
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:37:55
+    at file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/utils/asyncHandler.util.js:6:19
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15

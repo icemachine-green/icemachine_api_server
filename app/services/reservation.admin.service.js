@@ -10,41 +10,50 @@ import {
 } from "../../configs/responseCode.config.js";
 import { buildPaginatedResponse } from "../utils/pagination.util.js";
 
-// DTO 가공 로직 수정
-const _toReservationListDTO = (reservation) => ({
-  id: reservation.id,
-  reservedDate: reservation.reservedDate,
-  serviceStartTime: reservation.serviceStartTime,
-  serviceEndTime: reservation.serviceEndTime,
-  status: reservation.status,
-  createdAt: reservation.createdAt,
-  user: reservation.User
-    ? { name: reservation.User.name, phoneNumber: reservation.User.phoneNumber }
-    : null,
-  business: reservation.Business
-    ? {
-        name: reservation.Business.name,
-        address: `${reservation.Business.mainAddress} ${reservation.Business.detailedAddress}`,
-        phoneNumber: reservation.Business.phoneNumber,
-      }
-    : null,
-  engineer: reservation.Engineer?.User
-    ? {
-        name: reservation.Engineer.User.name,
-        phoneNumber: reservation.Engineer.User.phoneNumber,
-      }
-    : null,
-  iceMachine: reservation.IceMachine
-    ? {
-        brandName: reservation.IceMachine.brandName, // 🚩 modelType 대신 brandName으로 교체
-        modelName: reservation.IceMachine.modelName,
-        sizeType: reservation.IceMachine.sizeType,
-      }
-    : null,
-  servicePolicy: reservation.ServicePolicy
-    ? { serviceType: reservation.ServicePolicy.serviceType }
-    : null,
-});
+// DTO 가공 로직 (안전한 참조를 위해 데이터 존재 여부 체크 보강)
+const _toReservationListDTO = (reservation) => {
+  if (!reservation) return null;
+
+  // Sequelize 인스턴스일 경우를 대비해 toJSON 처리 (혹은 일반 객체)
+  const res = reservation.toJSON ? reservation.toJSON() : reservation;
+
+  return {
+    id: res.id,
+    reservedDate: res.reservedDate,
+    serviceStartTime: res.serviceStartTime,
+    serviceEndTime: res.serviceEndTime,
+    status: res.status,
+    createdAt: res.createdAt,
+    user: res.User
+      ? { name: res.User.name, phoneNumber: res.User.phoneNumber }
+      : null,
+    business: res.Business
+      ? {
+          name: res.Business.name,
+          address: `${res.Business.mainAddress || ""} ${
+            res.Business.detailedAddress || ""
+          }`.trim(),
+          phoneNumber: res.Business.phoneNumber,
+        }
+      : null,
+    engineer: res.Engineer?.User
+      ? {
+          name: res.Engineer.User.name,
+          phoneNumber: res.Engineer.User.phoneNumber,
+        }
+      : null,
+    iceMachine: res.IceMachine
+      ? {
+          brandName: res.IceMachine.brandName,
+          modelName: res.IceMachine.modelName,
+          sizeType: res.IceMachine.sizeType,
+        }
+      : null,
+    servicePolicy: res.ServicePolicy
+      ? { serviceType: res.ServicePolicy.serviceType }
+      : null,
+  };
+};
 
 const reservationAdminService = {
   getDashboardStats: async (startDate) => {
@@ -98,15 +107,19 @@ const reservationAdminService = {
     if (!id) throw myError("예약 ID가 필요합니다.", BAD_REQUEST_ERROR);
 
     try {
+      // 🚩 Repository에 추가된 findReservationDetail 호출
       const reservation =
         await reservationAdminRepository.findReservationDetail(id);
+
       if (!reservation) {
         throw myError(
           "요청하신 예약 정보를 찾을 수 없습니다.",
           NOT_FOUND_ERROR
         );
       }
-      return reservation;
+
+      // 🚩 핵심: 상세 정보도 프론트가 인식할 수 있게 DTO 가공 로직을 태워야 함
+      return _toReservationListDTO(reservation);
     } catch (error) {
       if (error.status) throw error;
       throw myError("상세 정보 조회 중 서버 오류가 발생했습니다.", DB_ERROR);

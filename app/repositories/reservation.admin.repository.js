@@ -6,6 +6,27 @@ import { Op } from "sequelize";
 
 const { Reservation, User, Business, Engineer, IceMachine, ServicePolicy } = db;
 
+// 조인 구조 공통화 (목록/상세 동일하게 사용)
+const commonInclude = [
+  { model: User, as: "User", attributes: ["name", "phoneNumber"] },
+  {
+    model: Business,
+    as: "Business",
+    attributes: ["name", "mainAddress", "detailedAddress", "phoneNumber"],
+  },
+  {
+    model: Engineer,
+    as: "Engineer",
+    include: [{ model: User, as: "User", attributes: ["name", "phoneNumber"] }],
+  },
+  {
+    model: IceMachine,
+    as: "IceMachine",
+    attributes: ["brandName", "modelName", "sizeType"],
+  },
+  { model: ServicePolicy, as: "ServicePolicy", attributes: ["serviceType"] },
+];
+
 const findAllReservations = async ({
   offset,
   limit,
@@ -30,32 +51,9 @@ const findAllReservations = async ({
     ];
   }
 
-  const includeClause = [
-    { model: User, as: "User", attributes: ["name", "phoneNumber"] },
-    {
-      model: Business,
-      as: "Business",
-      attributes: ["name", "mainAddress", "detailedAddress", "phoneNumber"],
-    },
-    {
-      model: Engineer,
-      as: "Engineer",
-      include: [
-        { model: User, as: "User", attributes: ["name", "phoneNumber"] },
-      ],
-    },
-    {
-      model: IceMachine,
-      as: "IceMachine",
-      // 🚩 수정: modelType 제거하고 brandName 추가
-      attributes: ["brandName", "modelName", "sizeType"],
-    },
-    { model: ServicePolicy, as: "ServicePolicy", attributes: ["serviceType"] },
-  ];
-
   return await Reservation.findAndCountAll({
     where: whereClause,
-    include: includeClause,
+    include: commonInclude,
     offset,
     limit,
     subQuery: false,
@@ -65,6 +63,22 @@ const findAllReservations = async ({
       [db.sequelize.col("Reservation.service_start_time"), "ASC"],
     ],
   });
+};
+
+// 🚩 상세 정보 조회를 위한 함수 추가
+const findReservationDetail = async (id) => {
+  return await Reservation.findByPk(id, {
+    include: commonInclude,
+  });
+};
+
+// 🚩 상태 업데이트를 위한 함수 추가
+const updateReservationStatus = async (id, status) => {
+  const [affectedCount] = await Reservation.update(
+    { status },
+    { where: { id } }
+  );
+  return affectedCount > 0;
 };
 
 const getReservationStats = async (startDate) => {
@@ -81,5 +95,7 @@ const getReservationStats = async (startDate) => {
 
 export default {
   findAllReservations,
+  findReservationDetail,
   getReservationStats,
+  updateReservationStatus,
 };
