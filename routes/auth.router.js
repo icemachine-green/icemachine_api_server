@@ -8,6 +8,7 @@ import usersController from "../app/controllers/users.controller.js";
 import socialSignupValidator from "../app/middlewares/validations/validators/user.social-signup.validator.js";
 import validationHandler from "../app/middlewares/validations/validation.handler.js";
 import engineersController from "../app/controllers/engineers.controller.js";
+import authMiddleware from "../app/middlewares/auth/auth.middleware.js";
 
 const router = express.Router();
 
@@ -21,5 +22,6 @@ router.post(
 );
 router.post('/social-signup/engineer', engineersController.socialSignup);
 router.post("/reissue", usersController.reissue);
+router.post('/logout', authMiddleware, usersController.logout);
 
 export default router;
