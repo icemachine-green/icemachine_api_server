@@ -16,6 +16,7 @@ import ServicePolicy from "./ServicePolicy.js";
 import Reservation from "./Reservation.js";
 import Review from "./Review.js";
 import SchedulePhoto from "./SchedulePhoto.js";
+import Subscription from './Subscription.js';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ const modelsToInit = [
   Reservation,
   Review,
   SchedulePhoto,
+  Subscription,
 ];
 
 // Sequelize 인스턴스 주입

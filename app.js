@@ -18,6 +18,8 @@ import icemachinesRouter from "./routes/icemachines.router.js"; // 제빙기 라
 import reservationsRouter from "./routes/reservations.router.js"; // 예약 라우터 import
 import engineersRouter from "./routes/engineers.router.js";
 import errorHandler from "./app/errors/errorHandler.js";
+import { subscriptionRouter } from "./routes/subscription.router.js";
+import { pushRouter } from "./routes/push.router.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -51,9 +53,9 @@ const specs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // 간단한 기본 라우트
-app.get("/", (req, res) => {
-  res.send("Server is running!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Server is running!");
+// });
 
 // API 라우터 등록
 app.use("/api/users", usersRouter);
@@ -63,6 +65,15 @@ app.use("/api/reviews", reviewsRouter); // 리뷰 라우터 등록
 app.use("/api/businesses", businessesRouter); // 업체 라우터 등록
 app.use("/api/icemachines", icemachinesRouter); // 제빙기 라우터 등록
 app.use("/api/reservations", reservationsRouter); // 예약 라우터 등록
+
+app.use("/api/subscriptions", subscriptionRouter);
+app.use("/api/push", pushRouter);
+
+// -------------------------------
+// 뷰 반환  처리
+// -------------------------------
+// 퍼블릭한 정적파일 제공 활성화
+app.use('/', express.static(process.env.APP_DIST_PATH));
 
 // 에러 핸들러
 app.use(errorHandler);
