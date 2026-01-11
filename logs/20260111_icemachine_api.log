@@ -316,3 +316,9 @@ Error: 상세 정보 조회 중 서버 오류가 발생했습니다.
     at handle (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:435:11)
     at Layer.handleRequest (C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\lib\layer.js:152:17)
     at C:\Users\futae\OneDrive\Desktop\project\icemachine-green\icemachine_api_server\node_modules\router\index.js:295:15
+[2026-01-11 22:07:19] error - Error: 추천 기사 리스트 조회 중 오류가 발생했습니다.
+Error: 추천 기사 리스트 조회 중 오류가 발생했습니다.
+    at myError (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/errors/customs/my.error.js:16:15)
+    at Object.getRecommendedEngineers (file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/services/reservation.admin.service.js:299:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/futae/OneDrive/Desktop/project/icemachine-green/icemachine_api_server/app/controllers/reservation.admin.controller.js:56:23

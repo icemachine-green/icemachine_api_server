@@ -1,3 +1,4 @@
+import dayjs from "dayjs"; // 🚩 이거 없어서 에러 났던 겁니다!
 import reservationAdminRepository from "../repositories/reservation.admin.repository.js";
 import myError from "../errors/customs/my.error.js";
 import {
@@ -24,7 +25,7 @@ const _calculateDistance = (lat1, lon1, lat2, lon2) => {
 };
 
 /**
- * 데이터 변환 DTO (에러 방어 로직 추가)
+ * 데이터 변환 DTO
  */
 const _toReservationListDTO = (reservation) => {
   if (!reservation) return null;
@@ -109,10 +110,9 @@ const reservationAdminService = {
   },
 
   /**
-   * 예약 목록 검색 (정밀 필터링 포함)
+   * 예약 목록 검색
    */
   getReservations: async (page, limit, filters) => {
-    // 1. 파라미터 유효성 검사
     const safePage = Math.max(1, parseInt(page, 10) || 1);
     const safeLimit = Math.max(1, parseInt(limit, 10) || 10);
     const offset = (safePage - 1) * safeLimit;
@@ -122,7 +122,6 @@ const reservationAdminService = {
     }
 
     try {
-      // 2. 리포지토리 호출
       const result = await reservationAdminRepository.findAllReservations({
         offset,
         limit: safeLimit,
@@ -131,16 +130,12 @@ const reservationAdminService = {
 
       const count = result?.count || 0;
       const rows = result?.rows || [];
-
-      // 3. 데이터 가공 (DTO 변환 중 에러 발생 시 전체가 터지지 않게 관리)
       const processedRows = rows.map(_toReservationListDTO);
 
       return buildPaginatedResponse(safePage, safeLimit, count, processedRows);
     } catch (error) {
       console.error("[Service getReservations Error]:", error);
-      // 이미 커스텀 에러(myError)인 경우 그대로 던짐
       if (error.status) throw error;
-      // DB 에러나 일반 런타임 에러는 DB_ERROR 코드로 래핑
       throw myError(
         "예약 목록 검색 중 데이터베이스 오류가 발생했습니다.",
         DB_ERROR
@@ -175,7 +170,6 @@ const reservationAdminService = {
   updateReservationStatus: async (id, status) => {
     if (!id || !status)
       throw myError("ID와 상태값은 필수입니다.", BAD_REQUEST_ERROR);
-
     const validStatuses = [
       "PENDING",
       "CONFIRMED",
@@ -192,7 +186,6 @@ const reservationAdminService = {
         await reservationAdminRepository.updateReservationStatus(id, status);
       if (!isUpdated)
         throw myError("업데이트할 예약이 존재하지 않습니다.", NOT_FOUND_ERROR);
-
       return true;
     } catch (error) {
       console.error("[Service updateStatus Error]:", error);
@@ -208,75 +201,55 @@ const reservationAdminService = {
     if (!id) throw myError("예약 ID가 누락되었습니다.", BAD_REQUEST_ERROR);
 
     try {
-      // 1. 기준 예약 상세 정보 조회 (좌표 및 정책 포함)
       const targetRes = await reservationAdminRepository.findReservationDetail(
         id
       );
       if (!targetRes)
         throw myError("해당 예약을 찾을 수 없습니다.", NOT_FOUND_ERROR);
 
-      const {
-        reservedDate,
-        serviceStartTime,
-        Business: targetBiz,
-        ServicePolicy: targetPolicy,
-      } = targetRes;
+      // 모델에서 get()으로 이미 포맷팅된 문자열이 올 수 있으므로 dayjs로 감쌈
+      const targetStart = dayjs(targetRes.serviceStartTime);
+      const targetEnd = dayjs(targetRes.serviceEndTime);
 
-      // 예약 시작/종료 시간 계산 (정책의 standardDuration 기준)
-      const targetStart = dayjs(`${reservedDate} ${serviceStartTime}`);
-      const duration = targetPolicy?.standardDuration || 60;
-      const targetEnd = targetStart.add(duration, "minute");
-
-      // 2. 해당 날짜 모든 기사 및 일정 조회
       const engineers =
         await reservationAdminRepository.findEngineersWithScheduleForRecommendation(
-          reservedDate
+          targetRes.reservedDate
         );
 
-      // 3. 기사별 데이터 가공
       const recommendedList = engineers.map((eng) => {
         const todayJobs = eng.Reservations || [];
 
-        // [여유 시간 계산] 8시간(480분) - (실제 작업시간 + 건당 1시간 버퍼)
-        const actualWorkMin = todayJobs.reduce(
-          (acc, job) => acc + (job.ServicePolicy?.standardDuration || 60),
-          0
-        );
-        const totalBufferMin = todayJobs.length * 60;
-        const totalRestTime = 480 - (actualWorkMin + totalBufferMin);
+        // 여유 시간 계산
+        const actualWorkMin = todayJobs.reduce((acc, job) => {
+          const start = dayjs(job.serviceStartTime);
+          const end = dayjs(job.serviceEndTime);
+          return acc + end.diff(start, "minute");
+        }, 0);
+        const totalRestTime = 480 - (actualWorkMin + todayJobs.length * 60);
 
-        // [가용성 체크] 타겟 시간 전후 1시간 버퍼 확보 여부
-        // 검사 범위: (내 작업 시작 1시간 전) ~ (내 작업 종료 1시간 후)
+        // 가용성 체크 (전후 1시간 버퍼)
         const checkStart = targetStart.subtract(60, "minute");
         const checkEnd = targetEnd.add(60, "minute");
 
         const isAvailable = !todayJobs.some((job) => {
-          const jobStart = dayjs(`${reservedDate} ${job.serviceStartTime}`);
-          const jobEnd = jobStart.add(
-            job.ServicePolicy?.standardDuration || 60,
-            "minute"
-          );
-          // 시간이 겹치면 불가
+          const jobStart = dayjs(job.serviceStartTime);
+          const jobEnd = dayjs(job.serviceEndTime);
           return jobStart.isBefore(checkEnd) && jobEnd.isAfter(checkStart);
         });
 
-        // [거리 계산] 직전 작업 매장 좌표 기준
+        // 거리 계산 (직전 작업지 기준)
         const prevJob = todayJobs
-          .filter((j) =>
-            dayjs(`${reservedDate} ${j.serviceStartTime}`).isBefore(targetStart)
-          )
+          .filter((j) => dayjs(j.serviceStartTime).isBefore(targetStart))
           .sort((a, b) =>
-            dayjs(`${reservedDate} ${b.serviceStartTime}`).diff(
-              dayjs(`${reservedDate} ${a.serviceStartTime}`)
-            )
+            dayjs(b.serviceStartTime).diff(dayjs(a.serviceStartTime))
           )[0];
 
         const distanceKm = prevJob
           ? _calculateDistance(
               prevJob.Business?.latitude,
               prevJob.Business?.longitude,
-              targetBiz?.latitude,
-              targetBiz?.longitude
+              targetRes.Business?.latitude,
+              targetRes.Business?.longitude
             )
           : null;
 
@@ -284,14 +257,13 @@ const reservationAdminService = {
           engineerId: eng.id,
           name: eng.User?.name,
           phoneNumber: eng.User?.phoneNumber,
-          totalRestTime, // 널널한 순서 정렬 기준
+          totalRestTime: parseInt(totalRestTime, 10),
           distanceKm: distanceKm ? Number(distanceKm.toFixed(1)) : null,
           isAvailable,
           todayJobCount: todayJobs.length,
         };
       });
 
-      // 4. 정렬: 여유 시간 많은 순(DESC)
       return recommendedList.sort((a, b) => b.totalRestTime - a.totalRestTime);
     } catch (error) {
       console.error("[Service getRecommendedEngineers Error]:", error);

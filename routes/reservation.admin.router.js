@@ -26,4 +26,12 @@ router.patch(
   reservationAdminController.updateReservationStatus
 );
 
+/**
+ *  추천 기사 리스트 조회 라우트 추가
+ * GET /api/admin/reservations/:id/recommend-engineers
+ */
+router.get(
+  "/:id/recommend-engineers",
+  reservationAdminController.getRecommendedEngineers
+);
 export default router;
