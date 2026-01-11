@@ -46,6 +46,19 @@ const reservationAdminController = {
         )
       );
   }),
+
+  /**
+   * 재배정 추천 기사 리스트 조회
+   * 260111 v1.0.0 Taeho-update
+   */
+  getRecommendedEngineers: asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const engineers = await reservationAdminService.getRecommendedEngineers(id);
+
+    return res
+      .status(SUCCESS.status)
+      .send(createBaseResponse(SUCCESS, engineers));
+  }),
 };
 
 export default reservationAdminController;

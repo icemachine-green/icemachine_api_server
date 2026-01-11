@@ -96,6 +96,10 @@ const Engineer = {
       foreignKey: "engineer_id",
       sourceKey: "id", // userId가 아닌 새 PK 기준
     });
+    db.Engineer.hasMany(db.Reservation, {
+      foreignKey: "engineer_id",
+      sourceKey: "id",
+    });
   },
 };
 

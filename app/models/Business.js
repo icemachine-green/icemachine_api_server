@@ -41,6 +41,16 @@ const attributes = {
     allowNull: true,
     comment: "상세 주소",
   },
+  latitude: {
+    field: "latitude",
+    type: DataTypes.DECIMAL(10, 8),
+    allowNull: true,
+  },
+  longitude: {
+    field: "longitude",
+    type: DataTypes.DECIMAL(11, 8),
+    allowNull: true,
+  },
   managerName: {
     field: "manager_name",
     type: DataTypes.STRING(100),

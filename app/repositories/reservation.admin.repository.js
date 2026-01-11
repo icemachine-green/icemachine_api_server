@@ -126,8 +126,42 @@ const getReservationStats = async (filters = {}) => {
   });
 };
 
+/**
+ * 추천 기사 조회를 위한 기사별 오늘 일정 및 좌표 데이터 확보
+ */
+const findEngineersWithScheduleForRecommendation = async (date) => {
+  return await Engineer.findAll({
+    where: { isActive: true },
+    include: [
+      { model: User, as: "User", attributes: ["name", "phoneNumber"] },
+      {
+        model: Reservation,
+        as: "Reservations",
+        where: {
+          reservedDate: date,
+          status: { [Op.in]: ["CONFIRMED", "START", "COMPLETED"] },
+        },
+        required: false,
+        include: [
+          {
+            model: Business,
+            as: "Business",
+            attributes: ["latitude", "longitude"],
+          },
+          {
+            model: ServicePolicy,
+            as: "ServicePolicy",
+            attributes: ["standardDuration"],
+          },
+        ],
+      },
+    ],
+  });
+};
+
 export default {
   findAllReservations,
+  findEngineersWithScheduleForRecommendation,
   findReservationDetail: async (id) =>
     await Reservation.findByPk(id, { include: commonInclude }),
   getReservationStats,
