@@ -195,6 +195,33 @@ const reservationAdminService = {
   },
 
   /**
+   * 기사 배정 확정 및 reservations.status CONFIRM 처리
+   */
+  assignEngineer: async (reservationId, engineerId) => {
+    try {
+      // 리포지토리의 새 함수명과 매칭
+      const isUpdated =
+        await reservationAdminRepository.updateEngineerAssignment(
+          reservationId,
+          engineerId
+        );
+
+      if (!isUpdated) {
+        throw myError(
+          "배정 처리 중 오류가 발생했거나 해당 예약을 찾을 수 없습니다.",
+          NOT_FOUND_ERROR
+        );
+      }
+
+      return true;
+    } catch (error) {
+      console.error("[Service assignEngineer Error]:", error);
+      if (error.status) throw error;
+      throw myError("기사 배정 처리 중 서버 오류가 발생했습니다.", DB_ERROR);
+    }
+  },
+
+  /**
    * 재배정 추천 기사 리스트 조회
    */
   getRecommendedEngineers: async (id) => {

@@ -34,4 +34,13 @@ router.get(
   "/:id/recommend-engineers",
   reservationAdminController.getRecommendedEngineers
 );
+
+/**
+ * 🚩 신규: 기사 배정 확정
+ * Full Path: PATCH /api/admin/reservations/:id/assign
+ */
+router.patch(
+  "/reservations/:id/assign",
+  reservationAdminController.assignEngineer
+);
 export default router;

@@ -59,6 +59,31 @@ const reservationAdminController = {
       .status(SUCCESS.status)
       .send(createBaseResponse(SUCCESS, engineers));
   }),
+
+  /**
+   * 기사 배정 확정
+   * 260111 v1.1.0 Taeho-update (Assign logic 추가)
+   */
+  assignEngineer: asyncHandler(async (req, res) => {
+    const { id } = req.params; // 예약 ID
+    const { engineerId } = req.body; // 배정할 기사 ID
+
+    if (!engineerId) {
+      throw myError("배정할 기사 ID가 누락되었습니다.", BAD_REQUEST_ERROR);
+    }
+
+    await reservationAdminService.assignEngineer(id, engineerId);
+
+    return res
+      .status(SUCCESS.status)
+      .send(
+        createBaseResponse(
+          SUCCESS,
+          null,
+          "기사 배정이 성공적으로 완료되었습니다."
+        )
+      );
+  }),
 };
 
 export default reservationAdminController;

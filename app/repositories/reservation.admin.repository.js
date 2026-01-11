@@ -127,6 +127,21 @@ const getReservationStats = async (filters = {}) => {
 };
 
 /**
+ * 기사 배정 및 상태 업데이트
+ * 260111 v1.1.0 Taeho-update (Assign logic)
+ */
+const updateEngineerAssignment = async (id, engineerId) => {
+  const [affectedCount] = await Reservation.update(
+    {
+      engineer_id: engineerId,
+      status: "CONFIRMED",
+    },
+    { where: { id } }
+  );
+  return affectedCount > 0;
+};
+
+/**
  * 추천 기사 조회를 위한 기사별 오늘 일정 및 좌표 데이터 확보
  */
 const findEngineersWithScheduleForRecommendation = async (date) => {
@@ -162,6 +177,7 @@ const findEngineersWithScheduleForRecommendation = async (date) => {
 export default {
   findAllReservations,
   findEngineersWithScheduleForRecommendation,
+  updateEngineerAssignment,
   findReservationDetail: async (id) =>
     await Reservation.findByPk(id, { include: commonInclude }),
   getReservationStats,
