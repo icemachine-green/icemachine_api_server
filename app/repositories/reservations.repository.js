@@ -243,8 +243,8 @@ const countTotalWorksByEngineerId = async (engineerId) => {
   });
 };
 
-const findCompletedWorksByEngineerId = async (engineerId) => {
-  return await Reservation.findAll({
+const findCompletedWorksByEngineerId = async (engineerId, { limit, offset }) => {
+  return await Reservation.findAndCountAll({
     where: {
       engineerId,
       status: "COMPLETED",
@@ -257,7 +257,8 @@ const findCompletedWorksByEngineerId = async (engineerId) => {
       },
     ],
     order: [["reservedDate", "DESC"]],
-    limit: 20,
+    limit,
+    offset,
   });
 };
 

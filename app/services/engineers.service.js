@@ -340,7 +340,7 @@ const getMonthlyCalendar = async (userId, year, month) => {
   };
 };
 
-const getEngineerMyPage = async (userId) => {
+const getEngineerMyPage = async (userId, { page = 1, limit = 5 }) => {
   // 1. engineer + user
   const engineer =
     await engineersRepository.findEngineerWithUserByUserId(userId);
@@ -359,8 +359,10 @@ const getEngineerMyPage = async (userId) => {
     await reservationsRepository.countTotalWorksByEngineerId(engineerId);
 
   // 3. completed works
-  const completedReservations =
-    await reservationsRepository.findCompletedWorksByEngineerId(engineerId);
+  const offset = (page - 1) * limit;
+
+  const { count, rows: completedReservations } =
+    await reservationsRepository.findCompletedWorksByEngineerId(engineerId, {limit, offset });
 
   return {
     engineer: {
@@ -378,6 +380,11 @@ const getEngineerMyPage = async (userId) => {
       reservedDate: r.reservedDate,
       businessManagerName: r.Business?.managerName ?? null,
     })),
+    pagination: {
+      totalItems: count,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    }
   };
 };
 

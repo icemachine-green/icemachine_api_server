@@ -172,8 +172,10 @@ async function getMonthlyCalendar(req, res, next) {
 async function getMyPage(req, res, next) {
   try {
     const userId = req.user.id;
+    const page = req.query.page ? parseInt(req.query.page, 10) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 5;
 
-    const data = await engineersService.getEngineerMyPage(userId);
+    const data = await engineersService.getEngineerMyPage(userId, { page, limit });
 
     res.status(SUCCESS.status).json(createBaseResponse(SUCCESS, data));
   } catch (err) {
