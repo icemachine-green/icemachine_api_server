@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerOptions from "./configs/swagger.config.js";
+import adminSubscriptionRouter from "./routes/admin.subscription.router.js";
 
 // 라우터 임포트
 import usersRouter from "./routes/users.router.js";
@@ -33,7 +34,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // 미들웨어 설정
-app.use(corsMiddleware);
+// app.use(corsMiddleware);
 app.use(cookieParser()); // cookie-parser 미들웨어 등록
 app.use(express.json()); // JSON 형태의 요청 body를 파싱하기 위함
 app.use(express.urlencoded({ extended: false })); // form-urlencoded 형태의 요청 body를 파싱하기 위함
@@ -72,7 +73,8 @@ app.use("/api/admin/users", userAdminRouter);
 app.use("/api/service-policies", servicePoliciesRouter);
 app.use("/api/admin/engineers", engineerAdminRouter);
 app.use("/api/subscriptions", subscriptionRouter);
-// 🚩 [핵심] 에러 핸들러는 반드시 모든 라우터 설정 뒤에 위치해야 합니다.
+app.use("/api/admin/subscriptions", adminSubscriptionRouter);
+// 에러 핸들러는 반드시 모든 라우터 설정 뒤에 위치해야 합니다.
 // 컨트롤러에서 next(err)가 호출되면 최종적으로 여기서 응답을 처리합니다.
 app.use(errorHandler);
 
