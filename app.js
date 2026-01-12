@@ -20,8 +20,9 @@ import icemachinesRouter from "./routes/icemachines.router.js";
 import reservationsRouter from "./routes/reservations.router.js";
 import adminRouter from "./routes/admin.router.js";
 import servicePoliciesRouter from "./routes/servicePolicies.route.js";
+import userAdminRouter from "./routes/user.admin.router.js";
 
-// 에러 핸들러 임포트 (사장님 컨벤션 파일)
+// 에러 핸들러 임포트
 import errorHandler from "./app/errors/errorHandler.js";
 
 const app = express();
@@ -67,6 +68,7 @@ app.use("/api/businesses", businessesRouter);
 app.use("/api/icemachines", icemachinesRouter);
 app.use("/api/reservations", reservationsRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/admin/users", userAdminRouter);
 app.use("/api/service-policies", servicePoliciesRouter);
 
 // 🚩 [핵심] 에러 핸들러는 반드시 모든 라우터 설정 뒤에 위치해야 합니다.

@@ -107,6 +107,7 @@ const User = {
 
   associate: (db) => {
     db.User.hasMany(db.Business, { foreignKey: "user_id", sourceKey: "id" });
+    db.User.hasMany(db.Reservation, { foreignKey: "user_id", sourceKey: "id" });
   },
 };
 
