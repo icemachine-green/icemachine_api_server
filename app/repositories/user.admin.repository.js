@@ -25,7 +25,6 @@ const userAdminRepository = {
     const where = {};
     const businessWhere = {};
 
-    // 1. 조건 설정
     if (userName) where.name = { [Op.like]: `%${userName}%` };
     if (startDate && endDate) {
       where.createdAt = {
@@ -41,7 +40,18 @@ const userAdminRepository = {
       ];
     }
 
-    // 2. 전체 카운트 조회 (필터가 적용된 유저 수)
+    // 1. 정렬 기준 설정 (오래된순 제외, 나머지는 유지)
+    let order;
+    if (sort === "reservation") {
+      order = [[sequelize.literal("reservationCount"), "DESC"]];
+    } else if (sort === "business") {
+      order = [[sequelize.literal("businessCount"), "DESC"]];
+    } else {
+      // 기본값 및 최신순
+      order = [["createdAt", "DESC"]];
+    }
+
+    // 2. 전체 카운트
     const countResult = await User.count({
       where,
       distinct: true,
@@ -57,15 +67,24 @@ const userAdminRepository = {
           : [],
     });
 
-    // 3. 조건에 맞는 유저 ID들만 먼저 추출 (Pagination 적용)
-    let order = [["createdAt", "DESC"]];
-    if (sort === "reservation") {
-      order = [[sequelize.literal("reservationCount"), "DESC"]];
-    }
-
+    // 3. 1단계: ID 추출 (정렬 적용)
     const usersWithIds = await User.findAll({
       where,
-      attributes: ["id"], // ID만 가져옴
+      attributes: [
+        "id",
+        [
+          sequelize.literal(
+            `(SELECT COUNT(*) FROM businesses WHERE businesses.user_id = User.id)`
+          ),
+          "businessCount",
+        ],
+        [
+          sequelize.literal(
+            `(SELECT COUNT(*) FROM reservations WHERE reservations.user_id = User.id)`
+          ),
+          "reservationCount",
+        ],
+      ],
       include:
         Object.keys(businessWhere).length > 0
           ? [
@@ -80,16 +99,13 @@ const userAdminRepository = {
       offset: Number(offset) || 0,
       limit: Number(limit) || 8,
       order,
-      subQuery: false, // ID만 가져올때는 subQuery가 필요 없음
+      subQuery: false,
     });
 
     const userIds = usersWithIds.map((u) => u.id);
+    if (userIds.length === 0) return { count: 0, rows: [] };
 
-    // 4. 추출된 ID들에 해당하는 전체 데이터 조회
-    if (userIds.length === 0) {
-      return { count: 0, rows: [] };
-    }
-
+    // 4. 2단계: 최종 데이터 조회
     const rows = await User.findAll({
       where: { id: { [Op.in]: userIds } },
       attributes: {
@@ -108,12 +124,7 @@ const userAdminRepository = {
           ],
         ],
       },
-      include: [
-        {
-          model: Business,
-          required: false, // 이미 위에서 필터링된 ID들이므로 여기선 전체 매장 노출
-        },
-      ],
+      include: [{ model: Business, required: false }],
       order,
     });
 
