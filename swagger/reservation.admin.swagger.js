@@ -148,3 +148,62 @@
  *       404:
  *         description: 해당 ID의 예약을 찾을 수 없을 경우.
  */
+
+/**
+ * @swagger
+ * /api/admin/reservations/{id}/recommend-engineers:
+ *   get:
+ *     summary: 추천 기사 리스트 조회
+ *     tags: [Admin-Reservations]
+ *     security:
+ *       - bearerAuth: []
+ *     description: 특정 예약에 대해 추천 기사 리스트를 조회합니다.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 예약의 고유 ID
+ *     responses:
+ *       200:
+ *         description: 추천 기사 리스트 조회 성공.
+ *       404:
+ *         description: 해당 ID의 예약을 찾을 수 없을 경우.
+ */
+
+/**
+ * @swagger
+ * /api/admin/reservations/{id}/assign:
+ *   patch:
+ *     summary: 기사 배정 확정
+ *     tags: [Admin-Reservations]
+ *     security:
+ *       - bearerAuth: []
+ *     description: 특정 예약에 기사를 배정합니다.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 예약의 고유 ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [engineerId]
+ *             properties:
+ *               engineerId:
+ *                 type: integer
+ *                 example: 1
+ *     responses:
+ *       200:
+ *         description: 기사 배정 성공.
+ *       400:
+ *         description: 잘못된 요청 값.
+ *       404:
+ *         description: 해당 ID의 예약 또는 기사를 찾을 수 없을 경우.
+ */

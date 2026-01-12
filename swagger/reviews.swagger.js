@@ -6,6 +6,51 @@
 
 /**
  * @swagger
+ * /api/reviews/me:
+ *   get:
+ *     summary: 내 리뷰 목록 조회
+ *     tags: [Reviews]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 내 리뷰 목록 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isSuccess:
+ *                   type: boolean
+ *                   example: true
+ *                 code:
+ *                   type: string
+ *                   example: "00"
+ *                 payload:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       imageUrl:
+ *                         type: string
+ *                         nullable: true
+ *                         example: "https://example.com/review.jpg"
+ *                       rating:
+ *                         type: integer
+ *                         example: 5
+ *                       content:
+ *                         type: string
+ *                         example: "아주 만족합니다!"
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2025-12-29 10:00:00"
+ *       401:
+ *         description: 인증 실패 (토큰 누락, 유효하지 않은 토큰 등)
+ */
+
+/**
+ * @swagger
  * /api/reviews:
  *   post:
  *     summary: 새 리뷰 작성
