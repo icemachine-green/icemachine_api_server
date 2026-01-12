@@ -9,7 +9,14 @@ const commonInclude = [
   {
     model: Business,
     as: "Business",
-    attributes: ["name", "mainAddress", "detailedAddress", "phoneNumber"],
+    attributes: [
+      "name",
+      "mainAddress",
+      "detailedAddress",
+      "phoneNumber",
+      "latitude",
+      "longitude",
+    ],
   },
   {
     model: Engineer,

@@ -1,4 +1,4 @@
-import dayjs from "dayjs"; // 🚩 이거 없어서 에러 났던 겁니다!
+import dayjs from "dayjs";
 import reservationAdminRepository from "../repositories/reservation.admin.repository.js";
 import myError from "../errors/customs/my.error.js";
 import {
@@ -13,13 +13,22 @@ import { buildPaginatedResponse } from "../utils/pagination.util.js";
  */
 const _calculateDistance = (lat1, lon1, lat2, lon2) => {
   if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+
+  // 숫자로 확실하게 형변환
+  const nLat1 = parseFloat(lat1);
+  const nLon1 = parseFloat(lon1);
+  const nLat2 = parseFloat(lat2);
+  const nLon2 = parseFloat(lon2);
+
+  if (isNaN(nLat1) || isNaN(nLon1) || isNaN(nLat2) || isNaN(nLon2)) return null;
+
   const R = 6371;
-  const dLat = (lat2 - lat1) * (Math.PI / 180);
-  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const dLat = (nLat2 - nLat1) * (Math.PI / 180);
+  const dLon = (nLon2 - nLon1) * (Math.PI / 180);
   const a =
     Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
+    Math.cos(nLat1 * (Math.PI / 180)) *
+      Math.cos(nLat2 * (Math.PI / 180)) *
       Math.sin(dLon / 2) ** 2;
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 };
@@ -30,7 +39,9 @@ const _calculateDistance = (lat1, lon1, lat2, lon2) => {
 const _toReservationListDTO = (reservation) => {
   if (!reservation) return null;
   try {
-    const res = reservation.toJSON ? reservation.toJSON() : reservation;
+    const res = reservation.get
+      ? reservation.get({ plain: true })
+      : reservation;
 
     return {
       id: res.id,
@@ -75,9 +86,6 @@ const _toReservationListDTO = (reservation) => {
 };
 
 const reservationAdminService = {
-  /**
-   * 대시보드 통계 조회
-   */
   getDashboardStats: async (params) => {
     try {
       const stats = await reservationAdminRepository.getReservationStats(
@@ -90,7 +98,6 @@ const reservationAdminService = {
         COMPLETED: 0,
         CANCELED: 0,
       };
-
       if (stats && Array.isArray(stats)) {
         stats.forEach((stat) => {
           if (Object.prototype.hasOwnProperty.call(initialStats, stat.status)) {
@@ -101,7 +108,6 @@ const reservationAdminService = {
       return initialStats;
     } catch (error) {
       console.error("[Service getDashboardStats Error]:", error);
-      if (error.status) throw error;
       throw myError(
         "대시보드 통계 조회 중 서버 오류가 발생했습니다.",
         DB_ERROR
@@ -109,33 +115,25 @@ const reservationAdminService = {
     }
   },
 
-  /**
-   * 예약 목록 검색
-   */
   getReservations: async (page, limit, filters) => {
     const safePage = Math.max(1, parseInt(page, 10) || 1);
     const safeLimit = Math.max(1, parseInt(limit, 10) || 10);
     const offset = (safePage - 1) * safeLimit;
-
-    if (filters.reservationId && isNaN(filters.reservationId)) {
-      throw myError("예약 ID는 숫자 형식이어야 합니다.", BAD_REQUEST_ERROR);
-    }
-
     try {
       const result = await reservationAdminRepository.findAllReservations({
         offset,
         limit: safeLimit,
         ...filters,
       });
-
-      const count = result?.count || 0;
-      const rows = result?.rows || [];
-      const processedRows = rows.map(_toReservationListDTO);
-
-      return buildPaginatedResponse(safePage, safeLimit, count, processedRows);
+      const processedRows = (result?.rows || []).map(_toReservationListDTO);
+      return buildPaginatedResponse(
+        safePage,
+        safeLimit,
+        result?.count || 0,
+        processedRows
+      );
     } catch (error) {
       console.error("[Service getReservations Error]:", error);
-      if (error.status) throw error;
       throw myError(
         "예약 목록 검색 중 데이터베이스 오류가 발생했습니다.",
         DB_ERROR
@@ -143,44 +141,22 @@ const reservationAdminService = {
     }
   },
 
-  /**
-   * 상세 조회
-   */
   getReservationDetail: async (id) => {
     if (!id)
       throw myError("조회할 예약 ID가 누락되었습니다.", BAD_REQUEST_ERROR);
-
     try {
       const reservation =
         await reservationAdminRepository.findReservationDetail(id);
       if (!reservation)
         throw myError("해당 예약을 찾을 수 없습니다.", NOT_FOUND_ERROR);
-
       return _toReservationListDTO(reservation);
     } catch (error) {
       console.error("[Service getReservationDetail Error]:", error);
-      if (error.status) throw error;
       throw myError("상세 정보 조회 중 서버 오류가 발생했습니다.", DB_ERROR);
     }
   },
 
-  /**
-   * 상태 업데이트
-   */
   updateReservationStatus: async (id, status) => {
-    if (!id || !status)
-      throw myError("ID와 상태값은 필수입니다.", BAD_REQUEST_ERROR);
-    const validStatuses = [
-      "PENDING",
-      "CONFIRMED",
-      "START",
-      "COMPLETED",
-      "CANCELED",
-    ];
-    if (!validStatuses.includes(status)) {
-      throw myError("올바르지 않은 상태값입니다.", BAD_REQUEST_ERROR);
-    }
-
     try {
       const isUpdated =
         await reservationAdminRepository.updateReservationStatus(id, status);
@@ -189,96 +165,96 @@ const reservationAdminService = {
       return true;
     } catch (error) {
       console.error("[Service updateStatus Error]:", error);
-      if (error.status) throw error;
       throw myError("상태 업데이트 중 서버 오류가 발생했습니다.", DB_ERROR);
     }
   },
 
-  /**
-   * 기사 배정 확정 및 reservations.status CONFIRM 처리
-   */
   assignEngineer: async (reservationId, engineerId) => {
     try {
-      // 리포지토리의 새 함수명과 매칭
       const isUpdated =
         await reservationAdminRepository.updateEngineerAssignment(
           reservationId,
           engineerId
         );
-
-      if (!isUpdated) {
-        throw myError(
-          "배정 처리 중 오류가 발생했거나 해당 예약을 찾을 수 없습니다.",
-          NOT_FOUND_ERROR
-        );
-      }
-
+      if (!isUpdated)
+        throw myError("배정 처리 중 오류가 발생했습니다.", NOT_FOUND_ERROR);
       return true;
     } catch (error) {
       console.error("[Service assignEngineer Error]:", error);
-      if (error.status) throw error;
       throw myError("기사 배정 처리 중 서버 오류가 발생했습니다.", DB_ERROR);
     }
   },
 
   /**
-   * 재배정 추천 기사 리스트 조회
+   * 재배정 추천 기사 리스트 조회 (v1.2.4)
+   * 수정 사항: get({ plain: true })로 Getter 무력화 및 소수점 위경도 강제 형변환
    */
   getRecommendedEngineers: async (id) => {
     if (!id) throw myError("예약 ID가 누락되었습니다.", BAD_REQUEST_ERROR);
 
     try {
-      const targetRes = await reservationAdminRepository.findReservationDetail(
-        id
-      );
-      if (!targetRes)
+      const targetResRaw =
+        await reservationAdminRepository.findReservationDetail(id);
+      if (!targetResRaw)
         throw myError("해당 예약을 찾을 수 없습니다.", NOT_FOUND_ERROR);
 
-      // 모델에서 get()으로 이미 포맷팅된 문자열이 올 수 있으므로 dayjs로 감쌈
+      // plain 객체 변환 (중요: 인스턴스의 Getter 영향 없이 순수 데이터 접근)
+      const targetRes = targetResRaw.get
+        ? targetResRaw.get({ plain: true })
+        : targetResRaw;
       const targetStart = dayjs(targetRes.serviceStartTime);
       const targetEnd = dayjs(targetRes.serviceEndTime);
+
+      const tLat = targetRes.Business?.latitude;
+      const tLon = targetRes.Business?.longitude;
 
       const engineers =
         await reservationAdminRepository.findEngineersWithScheduleForRecommendation(
           targetRes.reservedDate
         );
 
-      const recommendedList = engineers.map((eng) => {
+      const recommendedList = engineers.map((engInstance) => {
+        const eng = engInstance.get
+          ? engInstance.get({ plain: true })
+          : engInstance;
         const todayJobs = eng.Reservations || [];
 
-        // 여유 시간 계산
-        const actualWorkMin = todayJobs.reduce((acc, job) => {
-          const start = dayjs(job.serviceStartTime);
-          const end = dayjs(job.serviceEndTime);
-          return acc + end.diff(start, "minute");
-        }, 0);
-        const totalRestTime = 480 - (actualWorkMin + todayJobs.length * 60);
-
-        // 가용성 체크 (전후 1시간 버퍼)
+        // 1. 가용성 체크
         const checkStart = targetStart.subtract(60, "minute");
         const checkEnd = targetEnd.add(60, "minute");
 
         const isAvailable = !todayJobs.some((job) => {
+          if (Number(job.id) === Number(id)) return false;
           const jobStart = dayjs(job.serviceStartTime);
           const jobEnd = dayjs(job.serviceEndTime);
           return jobStart.isBefore(checkEnd) && jobEnd.isAfter(checkStart);
         });
 
-        // 거리 계산 (직전 작업지 기준)
+        // 2. 여유 시간 계산
+        const totalRestTime = 480 - todayJobs.length * 60;
+
+        // 3. 거리 계산 (현재 수정 건 제외하고 직전 업무 찾기)
         const prevJob = todayJobs
-          .filter((j) => dayjs(j.serviceStartTime).isBefore(targetStart))
+          .filter((j) => {
+            if (Number(j.id) === Number(id)) return false;
+            const jobEndTime = dayjs(j.serviceEndTime);
+            return (
+              jobEndTime.isBefore(targetStart) || jobEndTime.isSame(targetStart)
+            );
+          })
           .sort((a, b) =>
-            dayjs(b.serviceStartTime).diff(dayjs(a.serviceStartTime))
+            dayjs(b.serviceEndTime).diff(dayjs(a.serviceEndTime))
           )[0];
 
-        const distanceKm = prevJob
-          ? _calculateDistance(
-              prevJob.Business?.latitude,
-              prevJob.Business?.longitude,
-              targetRes.Business?.latitude,
-              targetRes.Business?.longitude
-            )
-          : null;
+        const distanceKm =
+          prevJob?.Business && tLat && tLon
+            ? _calculateDistance(
+                prevJob.Business.latitude,
+                prevJob.Business.longitude,
+                tLat,
+                tLon
+              )
+            : null;
 
         return {
           engineerId: eng.id,
@@ -291,11 +267,18 @@ const reservationAdminService = {
         };
       });
 
-      return recommendedList.sort((a, b) => b.totalRestTime - a.totalRestTime);
+      // 거리 순, 여유 시간 순 정렬
+      return recommendedList.sort((a, b) => {
+        if (a.distanceKm !== null && b.distanceKm !== null)
+          return a.distanceKm - b.distanceKm;
+        return b.totalRestTime - a.totalRestTime;
+      });
     } catch (error) {
       console.error("[Service getRecommendedEngineers Error]:", error);
-      if (error.status) throw error;
-      throw myError("추천 기사 리스트 조회 중 오류가 발생했습니다.", DB_ERROR);
+      throw myError(
+        "추천 기사 리스트 조회 중 서버 오류가 발생했습니다.",
+        DB_ERROR
+      );
     }
   },
 };
