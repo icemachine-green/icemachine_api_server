@@ -62,7 +62,7 @@ const createAndLoginSocialUser = async (
   }
 
   // 리프레시 토큰 없이 사용자 우선 생성
-  const newUser = await usersRepository.createUser({
+  const newUser = await usersRepository.createUser(null, {
     socialId,
     provider,
     name,

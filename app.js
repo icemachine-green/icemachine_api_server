@@ -24,21 +24,26 @@ import userAdminRouter from "./routes/user.admin.router.js";
 import engineerAdminRouter from "./routes/engineer.admin.router.js";
 
 // 에러 핸들러 임포트
+import engineersRouter from "./routes/engineers.router.js";
 import errorHandler from "./app/errors/errorHandler.js";
+import subscriptionRouter from "./routes/subscription.router.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// --- 공통 미들웨어 설정 ---
+// 미들웨어 설정
 app.use(
   cors({
-    origin: process.env.CLIENT_FRONTEND_URL,
-    credentials: true,
+    origin: [
+      process.env.CLIENT_FRONTEND_URL, // 고객 프론트엔드 주소
+      process.env.ENGINEER_FRONTEND_URL, // 기사 프론트엔드 주소
+    ],
+    credentials: true, // 자격 증명(쿠키 등) 허용
   })
 );
-app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser()); // cookie-parser 미들웨어 등록
+app.use(express.json()); // JSON 형태의 요청 body를 파싱하기 위함
+app.use(express.urlencoded({ extended: false })); // form-urlencoded 형태의 요청 body를 파싱하기 위함
 
 // 요청 로거 (개발 단계용)
 app.use((req, res, next) => {
@@ -56,13 +61,14 @@ app.use(
 const specs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-// 기본 라우트
-app.get("/", (req, res) => {
-  res.send("Server is running!");
-});
+// 간단한 기본 라우트
+// app.get("/", (req, res) => {
+//   res.send("Server is running!");
+// });
 
 // --- API 라우터 등록 ---
 app.use("/api/users", usersRouter);
+app.use("/api/engineers", engineersRouter); // 기사 라우터 등록
 app.use("/api/auth", authRouter);
 app.use("/api/reviews", reviewsRouter);
 app.use("/api/businesses", businessesRouter);
@@ -72,7 +78,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/admin/users", userAdminRouter);
 app.use("/api/service-policies", servicePoliciesRouter);
 app.use("/api/admin/engineers", engineerAdminRouter);
-
+app.use("/api/subscriptions", subscriptionRouter);
 // 🚩 [핵심] 에러 핸들러는 반드시 모든 라우터 설정 뒤에 위치해야 합니다.
 // 컨트롤러에서 next(err)가 호출되면 최종적으로 여기서 응답을 처리합니다.
 app.use(errorHandler);

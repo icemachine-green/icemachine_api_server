@@ -59,10 +59,10 @@ async function kakaoCallback(req, res, next) {
 
     // [변경 포인트 1] state 값에 따른 리다이렉트 주소 분기 처리 (env 변수명 적용)
     // 고객(client)이면 SOCIAL_CLIENT_CALLBACK_URL, 기사(engineer)면 SOCIAL_ENGINEER_CALLBACK_URL 사용
-    const homeUrl =
+    const domain =
       state === "engineer"
-        ? process.env.SOCIAL_ENGINEER_CALLBACK_URL
-        : process.env.SOCIAL_CLIENT_CALLBACK_URL;
+        ? process.env.SOCIAL_ENGINEER_URL
+        : process.env.SOCIAL_CLIENT_URL;
 
     if (user) {
       // 기존 사용자 로그인
@@ -70,7 +70,7 @@ async function kakaoCallback(req, res, next) {
       cookieUtil.setCookieRefreshToken(res, refreshToken);
 
       // [변경 포인트 2] 결정된 주소로 리다이렉트
-      return res.redirect(homeUrl);
+      return res.redirect(`${domain}${process.env.SOCIAL_LOGIN_CALLBACK_URL}`);
     } else {
       // 신규 사용자
       const { id, kakao_account } = userData;
@@ -84,7 +84,7 @@ async function kakaoCallback(req, res, next) {
 
       // [변경 포인트 3] 회원가입 페이지 리다이렉트 (필요 시 기사용 signup URL env 추가 권장)
       // 현재 env 기준으로는 SOCIAL_CLIENT_SIGNUP_URL을 기본으로 사용합니다.
-      return res.redirect(`${process.env.SOCIAL_CLIENT_SIGNUP_URL}?${query}`);
+      return res.redirect(`${domain}${process.env.SOCIAL_SIGNUP_URL}?${query}`);
     }
   } catch (err) {
     console.error(err);
@@ -189,9 +189,25 @@ const withdrawMe = async (req, res) => {
   try {
     const userId = req.user.id;
     await usersService.withdrawUser(userId);
-    return res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
+    return res
+      .status(SUCCESS.status)
+      .json(
+        createBaseResponse(SUCCESS, { message: "회원 탈퇴가 완료되었습니다." })
+      );
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return next(error);
+  }
+};
+
+const logout = async (req, res, nex) => {
+  try {
+    await usersService.logout(req.user.id);
+
+    cookieUtil.clearCookieRefreshToken(res);
+
+    return res.status(SUCCESS.status).json(createBaseResponse(SUCCESS));
+  } catch (error) {
+    return next(error);
   }
 };
 
@@ -204,4 +220,5 @@ export default {
   updateMe,
   checkEmailDuplicate,
   withdrawMe,
+  logout,
 };

@@ -14,8 +14,8 @@ const findUserByEmail = async (email) => {
   });
 };
 
-const createUser = async (userData) => {
-  return await User.create(userData);
+const createUser = async (t = null, userData) => {
+  return await User.create(userData, { transaction: t });
 };
 
 const findUserBySocialId = async (socialId) => {
@@ -34,8 +34,8 @@ const findUserByRefreshToken = async (token) => {
   });
 };
 
-const save = async (user) => {
-  return await user.save();
+const save = async (user, t = null) => {
+  return await user.save({ transaction: t });
 };
 
 export default {
