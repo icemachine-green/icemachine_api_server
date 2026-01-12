@@ -186,8 +186,8 @@ const reservationAdminService = {
   },
 
   /**
-   * 재배정 추천 기사 리스트 조회 (v1.2.4)
-   * 수정 사항: get({ plain: true })로 Getter 무력화 및 소수점 위경도 강제 형변환
+   * 재배정 추천 기사 리스트 조회 (v1.2.5)
+   * 수정 사항: 거리순(1순위) 및 여유시간(2순위) 정렬 로직 고도화 (null 처리 포함)
    */
   getRecommendedEngineers: async (id) => {
     if (!id) throw myError("예약 ID가 누락되었습니다.", BAD_REQUEST_ERROR);
@@ -198,7 +198,6 @@ const reservationAdminService = {
       if (!targetResRaw)
         throw myError("해당 예약을 찾을 수 없습니다.", NOT_FOUND_ERROR);
 
-      // plain 객체 변환 (중요: 인스턴스의 Getter 영향 없이 순수 데이터 접근)
       const targetRes = targetResRaw.get
         ? targetResRaw.get({ plain: true })
         : targetResRaw;
@@ -219,7 +218,7 @@ const reservationAdminService = {
           : engInstance;
         const todayJobs = eng.Reservations || [];
 
-        // 1. 가용성 체크
+        // 1. 가용성 체크 (±60분 여유)
         const checkStart = targetStart.subtract(60, "minute");
         const checkEnd = targetEnd.add(60, "minute");
 
@@ -233,7 +232,7 @@ const reservationAdminService = {
         // 2. 여유 시간 계산
         const totalRestTime = 480 - todayJobs.length * 60;
 
-        // 3. 거리 계산 (현재 수정 건 제외하고 직전 업무 찾기)
+        // 3. 거리 계산 (직전 업무의 매장 좌표 기준)
         const prevJob = todayJobs
           .filter((j) => {
             if (Number(j.id) === Number(id)) return false;
@@ -267,11 +266,22 @@ const reservationAdminService = {
         };
       });
 
-      // 거리 순, 여유 시간 순 정렬
+      // ✅ [확정 정렬 로직]
       return recommendedList.sort((a, b) => {
-        if (a.distanceKm !== null && b.distanceKm !== null)
-          return a.distanceKm - b.distanceKm;
-        return b.totalRestTime - a.totalRestTime;
+        // 1. 거리(distanceKm) 비교 (둘 다 숫자가 있을 때)
+        if (a.distanceKm !== null && b.distanceKm !== null) {
+          if (a.distanceKm !== b.distanceKm) {
+            return a.distanceKm - b.distanceKm; // 가까운 거리 우선
+          }
+        }
+
+        // 2. 거리 null 처리 (숫자가 있는 쪽을 무조건 위로, null은 아래로)
+        if (a.distanceKm !== b.distanceKm) {
+          return a.distanceKm === null ? 1 : -1;
+        }
+
+        // 3. 2순위: 여유 시간 정렬 (거리가 같거나 둘 다 null인 경우)
+        return b.totalRestTime - a.totalRestTime; // 많이 쉰 사람 우선
       });
     } catch (error) {
       console.error("[Service getRecommendedEngineers Error]:", error);
