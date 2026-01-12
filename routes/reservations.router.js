@@ -1,0 +1,39 @@
+/**
+ * @file routes/reservations.router.js
+ * @description 예약 관련 라우터 (상대 경로 보정 완료)
+ */
+import express from "express";
+import reservationsController from "../app/controllers/reservations.controller.js";
+import authMiddleware from "../app/middlewares/auth/auth.middleware.js";
+
+const router = express.Router();
+
+// 예약 생성 및 자동 배정
+router.post(
+  "/",
+  authMiddleware,
+  reservationsController.createAndAssignReservation
+);
+
+// 예약 가능 여부 조회
+router.get(
+  "/availability",
+  authMiddleware,
+  reservationsController.getAvailability
+);
+
+// 사용자 ID로 예약 목록 조회
+router.get(
+  "/by-user/:userId",
+  authMiddleware,
+  reservationsController.getReservationsForUser
+);
+
+// 예약 취소
+router.patch(
+  "/cancel/:reservationId",
+  authMiddleware,
+  reservationsController.cancelReservation
+);
+
+export default router;
