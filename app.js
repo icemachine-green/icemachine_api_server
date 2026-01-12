@@ -21,6 +21,7 @@ import reservationsRouter from "./routes/reservations.router.js";
 import adminRouter from "./routes/admin.router.js";
 import servicePoliciesRouter from "./routes/servicePolicies.route.js";
 import userAdminRouter from "./routes/user.admin.router.js";
+import engineerAdminRouter from "./routes/engineer.admin.router.js";
 
 // 에러 핸들러 임포트
 import errorHandler from "./app/errors/errorHandler.js";
@@ -70,6 +71,7 @@ app.use("/api/reservations", reservationsRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/admin/users", userAdminRouter);
 app.use("/api/service-policies", servicePoliciesRouter);
+app.use("/api/admin/engineers", engineerAdminRouter);
 
 // 🚩 [핵심] 에러 핸들러는 반드시 모든 라우터 설정 뒤에 위치해야 합니다.
 // 컨트롤러에서 next(err)가 호출되면 최종적으로 여기서 응답을 처리합니다.
