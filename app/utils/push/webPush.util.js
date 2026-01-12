@@ -1,11 +1,4 @@
-import webpush from "web-push";
-
-// VAPID 설정 (서버 시작 시 1회)
-webpush.setVapidDetails(
-  "mailto:admin@icemachine.com",
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+import webpush from "../../../configs/webpush.config.js";
 
 export async function sendWebPush(subscription, payload) {
   try {

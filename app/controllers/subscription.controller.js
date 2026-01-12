@@ -1,3 +1,4 @@
+import { SUCCESS } from '../../configs/responseCode.config.js';
 import subscriptionService from '../services/subscription.service.js';
 
 const subscriptionController = {
@@ -6,29 +7,28 @@ const subscriptionController = {
    */
   async createSubscription(req, res, next) {
     try {
-      const userId = req.user.id; // authMiddleware에서 주입
-      const { endpoint, keys, userAgent } = req.body;
+      // subscription의 구조
+      // {
+      //   endpoint: 'https://fcm.googleapis.com/fcm/send/dFlTq11Ly-w:...',
+      //   expirationTime: null,
+      //   keys: {
+      //     p256dh: 'BD9B5KMdQbwgG7...',
+      //     auth: 'OL56CZS...'
+      //   }
+      // }
+      // deviceInfo의 구조
+      // {
+      //   userAgent: navigator.userAgent,   // 브라우저/디바이스 정보
+      //   language: navigator.language      // 언어 정보
+      // }
+      const { subscription, deviceInfo } = req.body;
+      const userId = req.user.id;
 
-      if (!endpoint || !keys?.p256dh || !keys?.auth) {
-        return res.status(400).json({
-          message: 'Invalid subscription payload',
-        });
-      }
+      await subscriptionService.createSubscription({userId, subscription, deviceInfo});
 
-      const subscription = await subscriptionService.saveSubscription({
-        userId,
-        endpoint,
-        p256dh: keys.p256dh,
-        auth: keys.auth,
-        userAgent,
-      });
-
-      return res.status(201).json({
-        message: 'Subscription saved',
-        data: subscription,
-      });
-    } catch (error) {
-      next(error);
+      return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS));
+    } catch(error) {
+      return next(error);
     }
   },
 };

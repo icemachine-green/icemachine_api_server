@@ -1,37 +1,38 @@
 import db from "../models/index.js";
+import subscriptionRepository from "../repositories/subscription.repository.js";
 
 const { Subscription } = db;
 
 /**
  * Push Subscription 저장 (중복 endpoint 처리)
  */
-const saveSubscription = async({userId, endpoint, p256dh, auth, userAgent}) => {
-  // 1. 동일 endpoint 존재 여부 확인
-  const existing = await Subscription.findOne({
-    where: { endpoint },
-  });
+const createSubscription = async({userId, subscription, deviceInfo}) => {
+  // subscription의 구조
+  // {
+  //   endpoint: 'https://fcm.googleapis.com/fcm/send/dFlTq11Ly-w:...',
+  //   expirationTime: null,
+  //   keys: {
+  //     p256dh: 'BD9B5KMdQbwgG7...',
+  //     auth: 'OL56CZS...'
+  //   }
+  // }
+  // deviceInfo의 구조
+  // {
+  //   userAgent: navigator.userAgent,   // 브라우저/디바이스 정보
+  //   language: navigator.language      // 언어 정보
+  // }
+  const { endpoint, keys } = subscription;
+  const { userAgent } = deviceInfo;
 
-  // 2. 이미 존재하면 업데이트 (재구독 케이스)
-  if (existing) {
-    existing.userId = userId;
-    existing.p256dh = p256dh;
-    existing.auth = auth;
-    existing.userAgent = userAgent;
-    existing.isActive = true;
-
-    await existing.save();
-    return existing;
+  const data = {
+    userId: userId,
+    endpoint: endpoint,
+    p256dh: keys.p256dh,
+    auth: keys.auth,
+    userAgent: userAgent
   }
 
-  // 3. 신규 구독 저장
-  return Subscription.create({
-    userId,
-    endpoint,
-    p256dh,
-    auth,
-    userAgent,
-    isActive: true,
-  });
+  return await subscriptionRepository.upsert(null, data);
 };
 
 /**
@@ -47,6 +48,6 @@ const getActiveSubscriptionsByUser = async (userId) => {
 };
 
 export default {
-  saveSubscription,
+  createSubscription,
   getActiveSubscriptionsByUser,
 };

@@ -18,8 +18,7 @@ import icemachinesRouter from "./routes/icemachines.router.js"; // 제빙기 라
 import reservationsRouter from "./routes/reservations.router.js"; // 예약 라우터 import
 import engineersRouter from "./routes/engineers.router.js";
 import errorHandler from "./app/errors/errorHandler.js";
-import { subscriptionRouter } from "./routes/subscription.router.js";
-import { pushRouter } from "./routes/push.router.js";
+import subscriptionRouter from "./routes/subscription.router.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -67,7 +66,6 @@ app.use("/api/icemachines", icemachinesRouter); // 제빙기 라우터 등록
 app.use("/api/reservations", reservationsRouter); // 예약 라우터 등록
 
 app.use("/api/subscriptions", subscriptionRouter);
-app.use("/api/push", pushRouter);
 
 // -------------------------------
 // 뷰 반환  처리
