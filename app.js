@@ -33,7 +33,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // 미들웨어 설정
-// app.use(corsMiddleware);
+app.use(corsMiddleware);
 app.use(cookieParser()); // cookie-parser 미들웨어 등록
 app.use(express.json()); // JSON 형태의 요청 body를 파싱하기 위함
 app.use(express.urlencoded({ extended: false })); // form-urlencoded 형태의 요청 body를 파싱하기 위함
