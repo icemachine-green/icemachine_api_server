@@ -18,7 +18,7 @@ export default cors({
   origin: function (origin, callback) {
     // 허용된 목록에 있거나, dev 모드이면 허용
     if (
-      !origion ||
+      !origin ||
       allowedOrigins.indexOf(origin) !== -1 ||
       process.env.APP_MODE === "development"
     ) {
