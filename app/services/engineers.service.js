@@ -110,17 +110,19 @@ const getDailyReservations = async ({ userId, date, limit, offset }) => {
     throw myError("ENGINEER_INACTIVE", DATA_ABNORMALITY_ERROR);
   }
 
+  const queryDate = date || new Date().toISOString().slice(0, 10);
+
   const result =
     await reservationsRepository.findByEngineerAndDate({
       engineerId: engineer.id,
-      date,
+      date: queryDate,
       limit,
       offset,
     });
 
   const today = new Date();
   const yyyyMmDd = today.toISOString().slice(0, 10);
-  const isToday = date === yyyyMmDd;
+  const isToday = queryDate === yyyyMmDd;
 
   const rowsWithCanStart = await Promise.all(
     result.rows.map(async (r) => {
