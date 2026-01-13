@@ -32,7 +32,12 @@ export default function errorHandler(e, req, res, next) {
     console.log(`[DEBUG ERROR] ${e.name}: ${e.message}`);
   }
 
-  logger.error(`${e.name}: ${e.message}\n${e.stack}`);
+  if (
+    e.codeInfo.code === SYSTEM_ERROR.code ||
+    e.codeInfo.code === DB_ERROR.code
+  ) {
+    logger.error(`${e.name}: ${e.message}\n${e.stack}`);
+  }
 
   //  [핵심 보강] 개발 모드일 때는 응답에 상세 원인(e.message)을 끼워 넣어줌
   const response = createBaseResponse(e.codeInfo);

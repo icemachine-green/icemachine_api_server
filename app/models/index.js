@@ -5,7 +5,6 @@
  * 251222 v1.1.0 Lee update new schema models
  */
 import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
 import User from "./User.js";
 import Admin from "./Admin.js";
 import Business from "./Business.js"; // Business 모델 추가
@@ -18,8 +17,6 @@ import Review from "./Review.js";
 import SchedulePhoto from "./SchedulePhoto.js";
 import AdminNotification from "./AdminNotification.js";
 import Subscription from "./Subscription.js";
-
-dotenv.config();
 
 const db = {};
 
