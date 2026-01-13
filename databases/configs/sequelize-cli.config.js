@@ -3,8 +3,9 @@
  * @description Sequelize CLI 설정
  * 251216 v1.0.0 Lee init
  */
-import dotenv from "dotenv";
-dotenv.config(); // .env 파일의 환경 변수를 로드
+// import dotenv from "dotenv";
+// dotenv.config(); // .env 파일의 환경 변수를 로드
+import "../../configs/env.config.js";
 
 const config = {
   development: {
@@ -12,6 +13,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
     dialect: "mysql",
   },
   test: {
@@ -19,6 +21,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
     dialect: "mysql",
   },
   production: {
@@ -26,6 +29,7 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
     dialect: "mysql",
   },
 };

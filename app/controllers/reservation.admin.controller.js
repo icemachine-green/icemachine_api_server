@@ -8,7 +8,7 @@ import { asyncHandler } from "../utils/asyncHandler.util.js";
 
 const reservationAdminController = {
   getDashboardStats: asyncHandler(async (req, res) => {
-    // 🚩 프론트에서 넘어온 ?mode=today&startDate=... 전체를 서비스로 전달
+    // 프론트에서 넘어온 ?mode=today&startDate=... 전체를 서비스로 전달
     const stats = await reservationAdminService.getDashboardStats(req.query);
     return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS, stats));
   }),

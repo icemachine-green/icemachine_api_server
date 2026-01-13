@@ -12,7 +12,7 @@ const engineerAdminRepository = {
 
     if (licenseLevel) where.skillLevel = licenseLevel;
 
-    // 🚩 상태 필터 로직 고도화
+    //  상태 필터 로직 고도화
     if (status === "활성") {
       where.isActive = true;
       where.deletedAt = null;

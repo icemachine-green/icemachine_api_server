@@ -5,7 +5,6 @@
  */
 import "./configs/env.config.js"; // 환경변수 설정 파일 임포트
 import express from "express";
-import cors from "cors";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
