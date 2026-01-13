@@ -29,6 +29,7 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT),
     dialect: "mysql",
     logging: console.log, // 로깅 process.env.APP_MODE === "development" &&
     // --- 타임존 설정 추가 시작 ---
