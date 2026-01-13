@@ -4,7 +4,7 @@
 import { BaseError } from "sequelize";
 import { DB_ERROR, SYSTEM_ERROR } from "../../configs/responseCode.config.js";
 import { createBaseResponse } from "../utils/createBaseResponse.util.js";
-// import { logger } from "../middlewares/loggers/winston.logger.js";
+import { logger } from "../middlewares/loggers/winston.logger.js";
 /**
  * 에러 핸들러
  * 모든 에러는 `err.codeInfo` 프로퍼티를 포함하고 있을 것
@@ -31,6 +31,8 @@ export default function errorHandler(e, req, res, next) {
   if (process.env.APP_MODE === "development") {
     console.log(`[DEBUG ERROR] ${e.name}: ${e.message}`);
   }
+
+  logger.error(`${e.name}: ${e.message}\n${e.stack}`);
 
   //  [핵심 보강] 개발 모드일 때는 응답에 상세 원인(e.message)을 끼워 넣어줌
   const response = createBaseResponse(e.codeInfo);
