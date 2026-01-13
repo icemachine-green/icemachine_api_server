@@ -12,7 +12,7 @@ const router = express.Router();
 router.use(authAdminMiddleware);
 
 /**
- * 🚩 고객 관리 API 리스트
+ * 고객 관리 API 리스트
  * 1. 전체 고객 목록 조회 (검색/필터/정렬/페이징)
  */
 router.get("/", userAdminController.getUsers);

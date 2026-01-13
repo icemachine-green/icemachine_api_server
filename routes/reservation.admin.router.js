@@ -36,7 +36,7 @@ router.get(
 );
 
 /**
- * 🚩 신규: 기사 배정 확정
+ * 신규: 기사 배정 확정
  * Full Path: PATCH /api/admin/reservations/:id/assign
  */
 router.patch(

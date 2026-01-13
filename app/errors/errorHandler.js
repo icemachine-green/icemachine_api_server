@@ -32,11 +32,10 @@ export default function errorHandler(e, req, res, next) {
     console.log(`[DEBUG ERROR] ${e.name}: ${e.message}`);
   }
 
-  // 🚩 [핵심 보강] 개발 모드일 때는 응답에 상세 원인(e.message)을 끼워 넣어줌
+  //  [핵심 보강] 개발 모드일 때는 응답에 상세 원인(e.message)을 끼워 넣어줌
   const response = createBaseResponse(e.codeInfo);
 
   if (process.env.APP_MODE === "development") {
-    // 프론트엔드에서 "error.debug"를 찍어보면 "Unknown column 'brandName'"이 보일 겁니다.
     response.debug = {
       name: e.name,
       message: e.message,

@@ -1,16 +1,29 @@
+/**
+ * @file routes/admin.router.js
+ * @description 관리자 통합 라우터
+ * 260113 v1.0.2 Lee update: 푸시 구독 라우터 추가
+ */
 import express from "express";
 import adminNotificationController from "../app/controllers/admin.notification.controller.js";
 import adminController from "../app/controllers/admin.controller.js";
 import authAdminMiddleware from "../app/middlewares/auth/auth.admin.middleware.js";
 import verifyRole from "../app/middlewares/auth/verifyRole.js";
-import reservationAdminRouter from "./reservation.admin.router.js"; // 경로 수정
+import reservationAdminRouter from "./reservation.admin.router.js";
+import adminSubscriptionRouter from "./admin.subscription.router.js"; // 신규 추가
 
 const router = express.Router();
 
-// NOTE: 모든 /admin 경로에 관리자 인증 미들웨어 적용 (추후 활성화)
-// router.use(authAdminMiddleware); // 이 미들웨어를 전역적으로 사용하지 않으므로 각 라우트에 개별 적용
+// --- 인증이 필요 없는 경로 ---
+router.post("/login", adminController.loginAdmin);
+router.post("/reissue", adminController.reissue);
 
-// API for AdminNotification
+// --- 인증이 필요한 경로 (authAdminMiddleware 적용) ---
+
+// 1. 관리자 푸시 구독 (추가)
+// /api/admin/subscriptions 경로로 연결됩니다.
+router.use("/subscriptions", adminSubscriptionRouter);
+
+// 2. 관리자 알림(DB 내역) 관리
 router.get(
   "/notifications",
   authAdminMiddleware,
@@ -32,7 +45,7 @@ router.patch(
   adminNotificationController.hideNotification
 );
 
-// API for Admin Account Management
+// 3. 관리자 계정 생성 (SUPER_ADMIN 전용)
 router.post(
   "/accounts",
   authAdminMiddleware,
@@ -40,11 +53,7 @@ router.post(
   adminController.createAdminAccount
 );
 
-// API for Admin Login
-router.post("/login", adminController.loginAdmin);
-router.post("/reissue", adminController.reissue);
-
-// API for Admin Reservation Management
-router.use("/", reservationAdminRouter); // 새로운 예약 관리 라우터 마운트
+// 4. 예약 관리
+router.use("/", reservationAdminRouter);
 
 export default router;

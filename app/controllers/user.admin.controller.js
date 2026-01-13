@@ -8,7 +8,7 @@ const userAdminController = {
    * 고객 목록 조회 (검색/필터/정렬/페이징)
    */
   getUsers: asyncHandler(async (req, res) => {
-    // 🚩 쿼리 파라미터: userName, businessName, address, startDate, endDate, sort, page, limit
+    // 쿼리 파라미터: userName, businessName, address, startDate, endDate, sort, page, limit
     const result = await userAdminService.getUsers(req.query);
     return res.status(SUCCESS.status).send(createBaseResponse(SUCCESS, result));
   }),

@@ -72,9 +72,9 @@ const findAllReservations = async ({
   status,
   totalSearch,
   reservationId,
-  userName, // 🚩 추가: 고객명 정밀 검색
-  businessName, // 🚩 추가: 매장명 정밀 검색
-  engineerName, // 🚩 추가: 기사명 정밀 검색
+  userName, //  추가: 고객명 정밀 검색
+  businessName, //  추가: 매장명 정밀 검색
+  engineerName, //  추가: 기사명 정밀 검색
 }) => {
   const whereClause = getWhereClauseByMode(mode, startDate);
 
@@ -82,7 +82,7 @@ const findAllReservations = async ({
     whereClause.status = status;
   }
 
-  // 🚩 검색 로직 정교화 (우선순위: ID > 개별필터 > 통합검색)
+  //  검색 로직 정교화 (우선순위: ID > 개별필터 > 통합검색)
   if (reservationId) {
     whereClause.id = reservationId;
   } else if (userName || businessName || engineerName) {
