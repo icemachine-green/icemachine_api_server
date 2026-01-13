@@ -110,13 +110,19 @@ const getDailyReservations = async ({ userId, date, limit, offset }) => {
     throw myError("ENGINEER_INACTIVE", DATA_ABNORMALITY_ERROR);
   }
 
+  const queryDate = date || new Date().toISOString().slice(0, 10);
+
   const result =
     await reservationsRepository.findByEngineerAndDate({
       engineerId: engineer.id,
-      date,
+      date: queryDate,
       limit,
       offset,
     });
+
+  const today = new Date();
+  const yyyyMmDd = today.toISOString().slice(0, 10);
+  const isToday = queryDate === yyyyMmDd;
 
   const rowsWithCanStart = await Promise.all(
     result.rows.map(async (r) => {
@@ -129,7 +135,7 @@ const getDailyReservations = async ({ userId, date, limit, offset }) => {
 
       return {
         ...r.toJSON(),
-        canStart: !hasPrevUnfinished,
+        canStart: !hasPrevUnfinished && isToday,
       };
     })
   );
@@ -169,6 +175,11 @@ const getReservationDetail = async (userId, reservationId) => {
       serviceStartTime: reservation.serviceStartTime,
     });
 
+  // 오늘 날짜인지 확인
+  const today = new Date();
+  const yyyyMmDd = today.toISOString().slice(0, 10);
+  const isToday = reservation.reservedDate === yyyyMmDd;
+
   // 4. 응답 매핑
   return {
     reservationId: reservation.id,
@@ -178,7 +189,7 @@ const getReservationDetail = async (userId, reservationId) => {
       end: reservation.serviceEndTime,
     },
     status: reservation.status,
-    canStart: !hasPrevUnfinished,
+    canStart: !hasPrevUnfinished && isToday,
     business: {
       name: reservation.Business.name,
       managerName: reservation.Business.managerName,
