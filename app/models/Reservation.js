@@ -93,8 +93,8 @@ const attributes = {
   },
   cancelReason: {
     field: "cancel_reason",
-    type: DataTypes.TEXT, // STRING 또는 TEXT (사유 길이에 따라 선택)
-    allowNull: true, // TODO: 기사페이지에서만 구현이 된 상태라 기사 프론트에서 취소사유 없을시 클릭 막음. 추후 보완 필요
+    type: DataTypes.TEXT,
+    allowNull: true,
     comment: "예약 취소 사유",
   },
   createdAt: {
@@ -129,27 +129,65 @@ const attributes = {
   },
 };
 
-// ... 기존 코드 상단 동일
 const options = {
   tableName: "reservations",
   timestamps: true,
   paranoid: true,
   hooks: {
-    // status가 'CANCELED'로 업데이트될 때 알림 생성
+    // status가 'CANCELED'로 업데이트될 때 알림 및 푸시 전송
     afterUpdate: async (reservation, options) => {
       if (reservation.changed("status") && reservation.status === "CANCELED") {
-        const { AdminNotification } = reservation.sequelize.models;
-        await AdminNotification.create({
-          type: "RESERVATION_CANCEL",
-          referenceId: reservation.id,
-          message: `예약 번호 ${reservation.id}번이 취소되었습니다.`,
-          isTodo: true, // 취소건은 중요하므로 자동으로 TODO 등록
-        });
+        const { AdminNotification, Engineer } = reservation.sequelize.models;
+
+        try {
+          // 1. 관리자 대시보드 알림 기록
+          await AdminNotification.create({
+            type: "RESERVATION_CANCEL",
+            referenceId: reservation.id,
+            message: `예약 번호 ${reservation.id}번이 취소되었습니다.`,
+            isTodo: true,
+          });
+
+          // 2. 푸시 서비스 호출
+          const pushServiceModule = await import("../services/push.service.js");
+          const pushService = pushServiceModule.default;
+
+          const targetUserIds = [reservation.userId];
+
+          if (reservation.engineerId) {
+            const engineer = await Engineer.findByPk(reservation.engineerId);
+            if (engineer && engineer.userId) {
+              targetUserIds.push(engineer.userId);
+            }
+          }
+
+          const uniqueIds = [...new Set(targetUserIds)];
+
+          // 날짜 및 시작/종료 시간(시) 추출
+          const resDate = reservation.reservedDate;
+          const startHour = dayjs(
+            reservation.getDataValue("serviceStartTime")
+          ).format("H");
+          const endHour = dayjs(
+            reservation.getDataValue("serviceEndTime")
+          ).format("H");
+
+          await pushService.sendToUsers(uniqueIds, {
+            title: "예약 취소 알림",
+            message: `[취소 안내] ${resDate} ${startHour}시~${endHour}시 예약이 관리자에 의해 취소되었습니다.`,
+            data: {
+              targetUrl: "/reservations",
+              reservationId: reservation.id,
+            },
+          });
+        } catch (err) {
+          console.error("[Reservation Hook Error]:", err);
+        }
       }
     },
   },
 };
-// ...
+
 const Reservation = {
   init: (sequelize) => {
     return sequelize.define(modelName, attributes, options);
@@ -166,7 +204,7 @@ const Reservation = {
     });
     db.Reservation.belongsTo(db.Engineer, {
       foreignKey: "engineer_id",
-      targetKey: "id", // Engineer 테이블의 PK 기준
+      targetKey: "id",
     });
     db.Reservation.belongsTo(db.IceMachine, {
       foreignKey: "ice_machine_id",
@@ -176,10 +214,6 @@ const Reservation = {
       foreignKey: "service_policy_id",
       targetKey: "id",
     });
-    // db.Reservation.hasMany(db.AdminNotification, {
-    //   foreignKey: 'referenceId',
-    //   sourceKey: 'id',
-    // });
     db.Reservation.hasMany(db.AdminNotification, {
       foreignKey: "referenceId",
       sourceKey: "id",
